@@ -1,0 +1,34 @@
+package com.shangin.automationexercise.pages;
+
+import org.openqa.selenium.By;
+
+import com.shangin.automationexercise.base.BasePage;
+
+public class AccountDeletedPage extends BasePage {
+
+    private static final By ACCOUNT_DELETED_MESSAGE = By.cssSelector("[data-qa='account-deleted']");
+    private static final By CONTINUE_BUTTON = By.cssSelector("[data-qa='continue-button']");
+
+    public boolean isAccountDeleted() {
+        return isDisplayed(ACCOUNT_DELETED_MESSAGE);
+    }
+
+    public HomePage continueShopping() {
+        waitUntilClickable(CONTINUE_BUTTON).click();
+        return new HomePage();
+    }
+
+    public String getAccountDeletedMessage() {
+        return waitUntilVisible(ACCOUNT_DELETED_MESSAGE).getText();
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isDisplayed(ACCOUNT_DELETED_MESSAGE);
+    }
+
+    @Override
+    public void waitUntilLoaded() {
+        waitUntilVisible(ACCOUNT_DELETED_MESSAGE);
+    }
+}
