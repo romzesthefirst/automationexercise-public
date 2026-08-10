@@ -1,30 +1,32 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(
+            name: 'BROWSER',
+            choices: ['chrome', 'firefox'],
+            description: 'Browser'
+        )
+
+        booleanParam(
+            name: 'HEADLESS',
+            defaultValue: true,
+            description: 'Run headless'
+        )
+    }
+
     environment {
         PATH = "/opt/homebrew/bin:${env.PATH}"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Test') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Environment') {
-            steps {
-                sh '''
-                    java -version
-                    mvn -version
-                    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --version
-                '''
-            }
-        }
-
-        stage('Tests') {
-            steps {
-                sh 'mvn clean test -Dheadless=true'
+                sh """
+                    mvn clean test \
+                        -Dbrowser=${params.BROWSER} \
+                        -Dheadless=${params.HEADLESS}
+                """
             }
         }
     }

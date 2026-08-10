@@ -46,7 +46,7 @@ public class ConfigReader {
     }
 
     public static String getBrowser() {
-        return getProperty("browser");
+        return System.getProperty("browser", properties.getProperty("browser", "chrome"));
     }
 
     public static boolean isHeadless() {
