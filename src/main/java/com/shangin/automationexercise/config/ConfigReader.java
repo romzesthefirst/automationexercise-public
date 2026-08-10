@@ -58,10 +58,6 @@ public class ConfigReader {
         return Boolean.parseBoolean(getProperty("incognito"));
     }
 
-    public static String getChromeDriverPath() {
-        return properties.getProperty("chrome.driver.path");
-    }
-
     public static Path getDownloadDirectory() {
         return Paths.get(System.getProperty("user.dir"), "target", "downloads");
     }
