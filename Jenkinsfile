@@ -13,6 +13,12 @@ pipeline {
             defaultValue: true,
             description: 'Run headless'
         )
+        
+        choice(
+        	name: 'THREAD_COUNT',
+        	choices: ['1', '2', '4', '6', '8'],
+        	description: 'Number of parallel test threads'
+    	)
     }
 
     environment {
@@ -25,7 +31,8 @@ pipeline {
                 sh """
                     mvn clean test \
                         -Dbrowser=${params.BROWSER} \
-                        -Dheadless=${params.HEADLESS}
+                        -Dheadless=${params.HEADLESS} \
+                        -DthreadCount=${params.THREAD_COUNT}
                 """
             }
         }
