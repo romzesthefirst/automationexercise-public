@@ -20,6 +20,7 @@
 		<aspectj.version>1.9.25</aspectj.version>
 		<javafaker.version>1.0.2</javafaker.version>
 		<surefire.version>3.1.2</surefire.version>
+		<jackson.version>3.2.1</jackson.version>
 	</properties>
 
 	<dependencyManagement>
@@ -73,6 +74,13 @@
 			<artifactId>javafaker</artifactId>
 			<version>${javafaker.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>tools.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

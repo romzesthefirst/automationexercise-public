@@ -28,6 +28,10 @@ public class ConfigReader {
     public static String getBaseUrl() {
         return getProperty("base.url");
     }
+    
+    public static String getApiBaseUrl() {
+        return getProperty("api.base.url");
+    }
 
     public static int getScriptTimeout() {
         return Integer.parseInt(getProperty("script.timeout"));
