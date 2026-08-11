@@ -9,6 +9,7 @@ import com.shangin.automationexercise.pages.HomePage;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class ScrollTest extends BaseTest {
     @Test
     @Description("Test Case 25: Verify Scroll Up using 'Arrow' button and Scroll Down functionality")

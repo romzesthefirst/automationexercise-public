@@ -33,4 +33,25 @@ public class UserFactory {
                 FAKER.phoneNumber().cellPhone()
 				);
 	}
+
+    public static User updatedUserFrom(User currentUser) {
+        return new User (
+                "Mr",
+                FAKER.name().firstName(),
+                FAKER.name().lastName(),
+                currentUser.email(),
+                currentUser.password(),
+                String.valueOf(FAKER.number().numberBetween(1, 28)),
+                String.valueOf(FAKER.number().numberBetween(1, 12)),
+                String.valueOf(FAKER.number().numberBetween(1990, 2005)),
+                FAKER.company().name(),
+                FAKER.address().streetAddress(),
+                FAKER.address().secondaryAddress(),
+                "Israel",
+                FAKER.address().state(),
+                FAKER.address().city(),
+                FAKER.address().zipCode(),
+                FAKER.phoneNumber().cellPhone()
+                );
+    }
 }

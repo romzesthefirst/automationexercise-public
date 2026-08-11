@@ -12,6 +12,7 @@ public class ProductApiAssertions {
     }
 
     public static void assertValidProducts(List<ProductDto> products) {
+        
         Assert.assertFalse(products.isEmpty(), "Products list should not be empty");
 
         for (ProductDto product : products) {
@@ -68,5 +69,24 @@ public class ProductApiAssertions {
                     product.category().usertype().usertype().isBlank(),
                     "User type value should not be blank");
         }
+    }
+    
+    private static String normalize(String value) {
+        return value.toLowerCase().replaceAll("[\\s-]", "");
+    }
+    
+    public static void assertValidSearchProducts(List<ProductDto> products, String query) {
+        
+        String normalizedQuery = normalize(query);
+        
+        for (ProductDto product : products) {
+            
+            String nomalizedProductName = normalize(product.name());
+            
+            Assert.assertTrue(
+                    nomalizedProductName.contains(normalizedQuery),
+                    "Incorrect search result for \"" + query + "\". Found unexpected \"" + product.name() + "\". Normalized: ");
+        }
+
     }
 }

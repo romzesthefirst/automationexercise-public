@@ -18,6 +18,7 @@ import com.shangin.automationexercise.pages.ProductsPage;
 import com.shangin.automationexercise.components.CartItemComponent;
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class ProductsPageTest extends BaseTest {
 
     @Test @Description("Test Case 8: Verify All Products and product detail page")

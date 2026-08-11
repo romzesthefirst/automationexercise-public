@@ -13,6 +13,7 @@ import com.shangin.automationexercise.resources.TestResources;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class ContactUsFormTest extends BaseTest {
     @Test @Description("Test Case 6: Contact Us Form")
     public void shouldSendMessage() {

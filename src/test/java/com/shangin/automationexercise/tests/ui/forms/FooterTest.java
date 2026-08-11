@@ -11,6 +11,7 @@ import com.shangin.automationexercise.pages.HomePage;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class FooterTest extends BaseTest {
     private static final Faker FAKER = new Faker();
     

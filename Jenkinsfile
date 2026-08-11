@@ -5,13 +5,13 @@ pipeline {
         choice(
             name: 'BROWSER',
             choices: ['chrome', 'firefox', 'edge'],
-            description: 'Browser'
+            description: 'Browser for UI tests'
         )
 
         booleanParam(
             name: 'HEADLESS',
             defaultValue: true,
-            description: 'Run headless'
+            description: 'Run UI tests in headless'
         )
         
         choice(
@@ -26,10 +26,21 @@ pipeline {
     }
 
     stages {
+	    stage('API Tests') {
+	        steps {
+	            sh """
+	                mvn test \
+	                    -DtestGroups=api \
+	                    -DthreadCount=${params.THREAD_COUNT}
+	            """
+	        }
+	    }
+	    
         stage('Test') {
             steps {
                 sh """
                     mvn clean test \
+                    	-DtestGroups=ui \
                         -Dbrowser=${params.BROWSER} \
                         -Dheadless=${params.HEADLESS} \
                         -DthreadCount=${params.THREAD_COUNT}

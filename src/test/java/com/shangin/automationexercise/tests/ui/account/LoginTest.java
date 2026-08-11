@@ -15,6 +15,7 @@ import com.shangin.automationexercise.steps.UserSteps;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class LoginTest extends BaseTest {
 
     @Test @Description("Test Case 2: Login User with correct email and password")

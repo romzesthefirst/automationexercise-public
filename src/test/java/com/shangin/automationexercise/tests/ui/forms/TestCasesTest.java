@@ -9,6 +9,7 @@ import com.shangin.automationexercise.pages.TestCasesPage;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class TestCasesTest extends BaseTest {
     @Test @Description("Test Case 7: Verify Test Cases Page")
     public void shouldOpenTestCase() {

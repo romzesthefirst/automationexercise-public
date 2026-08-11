@@ -7,5 +7,4 @@ public record ProductDto(
         String price,
         String brand,
         CategoryDto category
-        )
-{}
+) {}

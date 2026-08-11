@@ -26,6 +26,17 @@ public final class ApiResponseParser {
         }
     }
 
+    public static <T> T extract(Response response, Class<T> type) {
+        String json = response.htmlPath().getString("body");
+
+        try {
+            return OBJECT_MAPPER.readValue(json, type);
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Failed to deserialize API response to " + type.getSimpleName(), e);
+        }
+    }
+
     public static <T> List<T> extractList(Response response, String field, Class<T> type) {
         JsonNode root = extractJson(response);
 

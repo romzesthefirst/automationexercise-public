@@ -35,6 +35,7 @@ import com.shangin.automationexercise.steps.UserSteps;
 
 import io.qameta.allure.Description;
 
+@Test(groups = "ui")
 public class PlaceOrderTest extends BaseTest {
     private static final Faker FAKER = new Faker();
 
