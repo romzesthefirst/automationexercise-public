@@ -4,7 +4,7 @@ pipeline {
     parameters {
         choice(
             name: 'BROWSER',
-            choices: ['chrome', 'firefox'],
+            choices: ['chrome', 'firefox', 'edge'],
             description: 'Browser'
         )
 
