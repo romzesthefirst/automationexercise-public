@@ -19,6 +19,7 @@ public class ApiUserSteps {
     }
 
     public User createUser() {
+        
         User user = UserFactory.randomUser();
 
         Response response = accountApiClient.createAccount(user);

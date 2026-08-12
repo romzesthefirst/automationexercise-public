@@ -16,7 +16,7 @@ pipeline {
         
         choice(
         	name: 'THREAD_COUNT',
-        	choices: ['1', '2', '4', '6', '8'],
+        	choices: ['4', '1', '2', '6', '8'],
         	description: 'Number of parallel test threads'
     	)
     }
