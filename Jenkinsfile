@@ -26,6 +26,11 @@ pipeline {
     }
 
     stages {
+		stage('Clean') {
+		    steps {
+		        sh 'mvn clean'
+		    }
+}
 	    stage('API Tests') {
 	        steps {
 	            sh """
@@ -39,7 +44,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh """
-                    mvn clean test \
+                    mvn test \
                     	-DtestGroups=ui \
                         -Dbrowser=${params.BROWSER} \
                         -Dheadless=${params.HEADLESS} \
