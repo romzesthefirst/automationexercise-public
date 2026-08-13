@@ -19,10 +19,20 @@ public class ApiSpecifications {
                 .addFilter(new AllureRestAssured())
                 .build();
 
+    private static final RequestSpecification FORM_REQUEST_SPEC =
+            new RequestSpecBuilder()
+                    .addRequestSpecification(REQUEST_SPEC)
+                    .setContentType("application/x-www-form-urlencoded")
+                    .build();
+    
     private ApiSpecifications() {
     }
 
     public static RequestSpecification defaultRequest() {
         return given().spec(REQUEST_SPEC);
+    }
+    
+    public static RequestSpecification formRequest() {
+        return given().spec(FORM_REQUEST_SPEC);
     }
 }
