@@ -19,14 +19,19 @@ public class ContactUsPage extends BasePage {
     private static final By SUCCESS_MESSAGE = By.cssSelector(".status.alert.alert-success");
     private static final By HOME_BUTTON = By.cssSelector(".btn.btn-success");
 
-    public void submitFeedback(Feedback feedback, Path attachment) {
+    public void submitFeedback() {
+        click(SUBMIT_BUTTON);
+    }
+    
+    public void confirmAlert() {
+        acceptAlert();
+    }
+
+    public void fillInSubmitForm(Feedback feedback) {
         type(NAME_INPUT, feedback.name());
         type(EMAIL_INPUT, feedback.email());
         type(SUBJECT_INPUT, feedback.subject());
         type(MESSAGE_INPUT, feedback.message());
-        uploadAttachment(attachment);
-        click(SUBMIT_BUTTON);
-        acceptAlert();
     }
 
     public void uploadAttachment(Path file) {

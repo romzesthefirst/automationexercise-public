@@ -40,8 +40,8 @@ public class SignupLoginPage extends BasePage {
         homePage.waitUntilLoaded();
         return homePage;
     }
-    
-    public void failedLogin(User user) {
+
+    public void attemptToLogin(User user) {
         type(LOGIN_EMAIL_INPUT, user.email());
         type(LOGIN_PASSWORD_INPUT, user.password());
         click(LOGIN_BUTTON);

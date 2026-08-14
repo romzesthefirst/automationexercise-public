@@ -7,42 +7,39 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
+import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.config.ConfigReader;
 import com.shangin.automationexercise.driver.DriverFactory;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.listeners.TestListener;
+import com.shangin.automationexercise.steps.ApiUserSteps;
 
 @Listeners(TestListener.class)
 public abstract class BaseTest {
 
-	@BeforeMethod(alwaysRun = true)
-	public void setup() {
+    protected final AccountApiClient accountApiClient = new AccountApiClient();
 
-	    WebDriver driver = DriverFactory.createDriver();
-	    
-	    DriverManager.setDriver(driver);
+    protected final ApiUserSteps apiUserSteps = new ApiUserSteps(accountApiClient);
 
-        driver
-        	.manage()
-        	.timeouts()
-        	.implicitlyWait(Duration.ofSeconds(
-        						ConfigReader.getImplicitWait()));
+    @BeforeMethod(alwaysRun = true)
+    public void setup() {
 
-        driver
-        	.manage()
-        	.timeouts()
-        	.pageLoadTimeout(Duration.ofSeconds(
-        						ConfigReader.getPageLoadTimeout()));
+        WebDriver driver = DriverFactory.createDriver();
 
-        driver
-        	.manage()
-        	.timeouts()
-        	.scriptTimeout(Duration.ofSeconds(
-        						ConfigReader.getScriptTimeout()));
-	}
+        DriverManager.setDriver(driver);
 
-	@AfterMethod
-	public void tearDown() {
+        driver.manage().timeouts()
+                .implicitlyWait(Duration.ofSeconds(ConfigReader.getImplicitWait()));
+
+        driver.manage().timeouts()
+                .pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
+
+        driver.manage().timeouts()
+                .scriptTimeout(Duration.ofSeconds(ConfigReader.getScriptTimeout()));
+    }
+
+    @AfterMethod
+    public void tearDown() {
         DriverManager.quitDriver();
     }
 }
