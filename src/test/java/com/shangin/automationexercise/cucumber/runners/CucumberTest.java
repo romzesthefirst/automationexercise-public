@@ -9,7 +9,10 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "com.shangin.automationexercise.cucumber",
-        plugin = "pretty"
+        plugin = {
+                "pretty",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+             }
         )
 
 @Test(groups = "cucumber")
