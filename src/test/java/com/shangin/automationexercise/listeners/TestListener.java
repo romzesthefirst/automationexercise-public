@@ -12,7 +12,13 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
+
+        if (!DriverManager.hasDriver()) {
+            return;
+        }
+
         WebDriver driver = DriverManager.getDriver();
+
         Allure.addAttachment("Current URL", "text/plain", driver.getCurrentUrl());
     }
 }
