@@ -1,5 +1,6 @@
 package com.shangin.automationexercise.pages;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddressComponent;
 import com.shangin.automationexercise.components.CartItemComponent;
+import com.shangin.automationexercise.model.ActualProduct;
 
 public class CheckoutPage extends BasePage {
 
@@ -62,6 +64,16 @@ public class CheckoutPage extends BasePage {
 
     public String getTotalAmount() {
         return getText(TOTAL_AMOUNT);
+    }
+    
+    public BigDecimal getTotalPrice() {
+        return new BigDecimal(getText(TOTAL_AMOUNT).replaceAll("[^\\d]", ""));
+    }
+
+    public List<ActualProduct> getActualProducts() {
+        return getCartItems().stream()
+                .map(item -> new ActualProduct(item.getName(), item.getPrice(), item.getQuantity()))
+                .toList();
     }
 
 }

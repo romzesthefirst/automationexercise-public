@@ -6,7 +6,7 @@ import com.shangin.automationexercise.components.ProductListComponent;
 import com.shangin.automationexercise.model.ExpectedProduct;
 
 public class ProductMapper {
-    
+
     private ProductMapper() {
     }
 
@@ -14,5 +14,9 @@ public class ProductMapper {
         return products.getProducts().stream()
                 .map(product -> new ExpectedProduct(product.getName(), product.getPrice(), 1))
                 .toList();
+    }
+
+    public static ExpectedProduct toExpectedProduct(ExpectedProduct product) {
+        return new ExpectedProduct(product.name(), product.price(), 1);
     }
 }

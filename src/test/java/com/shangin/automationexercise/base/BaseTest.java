@@ -13,6 +13,7 @@ import com.shangin.automationexercise.driver.DriverFactory;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.listeners.TestListener;
 import com.shangin.automationexercise.steps.ApiUserSteps;
+import com.shangin.automationexercise.steps.UiProductSteps;
 
 @Listeners(TestListener.class)
 public abstract class BaseTest {
@@ -20,6 +21,8 @@ public abstract class BaseTest {
     protected final AccountApiClient accountApiClient = new AccountApiClient();
 
     protected final ApiUserSteps apiUserSteps = new ApiUserSteps(accountApiClient);
+    
+    protected final UiProductSteps uiProductSteps = new UiProductSteps();
 
     @BeforeMethod(alwaysRun = true)
     public void setup() {
@@ -38,7 +41,7 @@ public abstract class BaseTest {
                 .scriptTimeout(Duration.ofSeconds(ConfigReader.getScriptTimeout()));
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         DriverManager.quitDriver();
     }

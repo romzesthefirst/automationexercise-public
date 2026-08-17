@@ -15,7 +15,7 @@ import com.shangin.automationexercise.components.ProductListComponent;
 import com.shangin.automationexercise.config.ConfigReader;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.model.AddToCartResult;
-import com.shangin.automationexercise.model.ProductInfo;
+import com.shangin.automationexercise.model.ExpectedProduct;
 
 public class HomePage extends BasePage {
 
@@ -23,8 +23,8 @@ public class HomePage extends BasePage {
     private static final By PRODUCTS_SECTION = By.cssSelector(".features_items");
     private static final By CATEGORIES = By.id("accordian");
     private static final By BRANDS = By.cssSelector(".brands_products");
-    private static final By RECOMMENDED_ITEM_CAROUSEL = By.id("recommended-item-carousel");
-    private static final By RECOMMENDED_ITEM_CAROUSEL_TITLE
+    private static final By RECOMMENDED_ITEMS_CAROUSEL = By.id("recommended-item-carousel");
+    private static final By RECOMMENDED_ITEMS_CAROUSEL_TITLE
             = By.cssSelector(".recommended_items > .title");
     private static final By VISIBLE_PRODUCTS_IN_ITEM_CAROUSEL
             = By.cssSelector(".item.active .product-image-wrapper");
@@ -69,11 +69,16 @@ public class HomePage extends BasePage {
     }
 
     public ProductListComponent recommendedItems() {
-        return new ProductListComponent(find(RECOMMENDED_ITEM_CAROUSEL));
+        return new ProductListComponent(find(RECOMMENDED_ITEMS_CAROUSEL));
     }
 
     public AddToCartModalComponent addProductToCart(int index) {
         products().addProductToCart(index);
+        return waitForAddToCartModal();
+    }
+    
+    public AddToCartModalComponent addProductToCart(String name) {
+        products().addProductToCart(name);
         return waitForAddToCartModal();
     }
 
@@ -85,12 +90,12 @@ public class HomePage extends BasePage {
         return isDisplayed(BRANDS);
     }
 
-    public void scrollToCarousel() {
-        scrollPageToElement(find(RECOMMENDED_ITEM_CAROUSEL));
+    public void scrollToRecommendedItems() {
+        scrollPageToElement(find(RECOMMENDED_ITEMS_CAROUSEL));
     }
 
     public String getCarouselItemsTitle() {
-        return getText(RECOMMENDED_ITEM_CAROUSEL_TITLE);
+        return getText(RECOMMENDED_ITEMS_CAROUSEL_TITLE);
     }
 
     public List<ProductCardComponent> getVisibleProducts() {
@@ -105,7 +110,7 @@ public class HomePage extends BasePage {
 
     public AddToCartResult addFirstVisibleRecommendedProductToCart() {
         ProductCardComponent product = getFirstVisibleRecommendedProductToCart();
-        ProductInfo productInfo = product.getInfo();
+        ExpectedProduct productInfo = product.getInfo();
         product.addToCart();
         AddToCartModalComponent modal = waitForAddToCartModal();
         return new AddToCartResult(productInfo, modal);

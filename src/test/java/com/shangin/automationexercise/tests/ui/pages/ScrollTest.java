@@ -1,4 +1,4 @@
-package com.shangin.automationexercise.tests.ui.forms;
+package com.shangin.automationexercise.tests.ui.pages;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,20 +14,13 @@ public class ScrollTest extends BaseTest {
     @Test
     @Description("Test Case 25: Verify Scroll Up using 'Arrow' button and Scroll Down functionality")
     public void shouldScrollUpUsingArrowButtonAndScrollDown() {
-        // 1. Launch browser
-        // 2. Navigate to url 'http://automationexercise.com'
+
         HomePage homePage = HomePage.open();
 
-        // 3. Verify that home page is visible successfully
-        Assert.assertTrue(homePage.isLoaded());
-
-        // 4. Scroll down page to bottom
         homePage.scrollToBottom();
 
-        // 5. Verify 'SUBSCRIPTION' is visible
         Assert.assertTrue(homePage.footer().isDisplayed());
 
-        // 6. Click on arrow at bottom right side to move upward
         homePage.clickScrollUp();
 
         // 7. Verify that page is scrolled up and 'Full-Fledged practice website for

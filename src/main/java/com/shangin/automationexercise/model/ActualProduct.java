@@ -2,7 +2,7 @@ package com.shangin.automationexercise.model;
 
 import java.math.BigDecimal;
 
-public record ExpectedProduct(String name, String price, int quantity) {
+public record ActualProduct(String name, String price, int quantity) {
 
     public BigDecimal total() {
         BigDecimal unitPrice = parsePrice(price);
@@ -11,6 +11,7 @@ public record ExpectedProduct(String name, String price, int quantity) {
     }
 
     private BigDecimal parsePrice(String price) {
-        return new BigDecimal(price.replaceAll("[^\\d]", ""));
+        return new BigDecimal(price.replaceAll("[^\\d.]", ""));
     }
+    
 }

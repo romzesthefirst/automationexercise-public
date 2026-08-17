@@ -129,8 +129,13 @@
 
 					<groups>${testGroups}</groups>
 
-					<parallel>methods</parallel>
-					<threadCount>${threadCount}</threadCount>
+
+					<properties>
+						<property>
+							<name>dataproviderthreadcount</name>
+							<value>${threadCount}</value>
+						</property>
+					</properties>
 				</configuration>
 
 				<dependencies>

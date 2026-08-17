@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
-import com.shangin.automationexercise.model.ProductInfo;
+import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.pages.ProductDetailsPage;
 
 public class ProductCardComponent extends BaseComponent {
@@ -26,10 +26,6 @@ public class ProductCardComponent extends BaseComponent {
         return getText(PRICE);
     }
 
-//    public void addToCart() {
-//        click(ADD_TO_CART);
-//    }
-
     public ProductDetailsPage viewProduct() {
         click(VIEW_PRODUCT);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage();
@@ -42,10 +38,11 @@ public class ProductCardComponent extends BaseComponent {
         click(ADD_TO_CART);
     }
     
-    public ProductInfo getInfo() {
-        return new ProductInfo(
+    public ExpectedProduct getInfo() {
+        return new ExpectedProduct(
                 getName(),
-                getPrice()
+                getPrice(),
+                1
         );
     }
 

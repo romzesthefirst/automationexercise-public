@@ -3,6 +3,7 @@ package com.shangin.automationexercise.pages;
 import org.openqa.selenium.By;
 
 import com.shangin.automationexercise.base.BasePage;
+import com.shangin.automationexercise.components.BrandsComponent;
 import com.shangin.automationexercise.components.BreadcrumbsComponent;
 import com.shangin.automationexercise.components.CategoriesComponent;
 import com.shangin.automationexercise.components.ProductListComponent;
@@ -13,6 +14,7 @@ public class CategoryProductsPage extends BasePage {
     private static final By PRODUCTS_SECTION = By.cssSelector(".features_items");
     private static final By CATEGORIES = By.id("accordian");
     private static final By BREADCRUMBS = By.cssSelector(".breadcrumbs");
+    private static final By BRANDS = By.cssSelector(".brands_products");
 
     @Override
     public boolean isLoaded() {
@@ -32,6 +34,10 @@ public class CategoryProductsPage extends BasePage {
 
     public CategoriesComponent categories() {
         return new CategoriesComponent(find(CATEGORIES));
+    }
+
+    public BrandsComponent brands() {
+        return new BrandsComponent(find(BRANDS));
     }
 
     public BreadcrumbsComponent breadcrumbs() {

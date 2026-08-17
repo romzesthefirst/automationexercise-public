@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
@@ -26,6 +27,12 @@ public class ProductListComponent extends BaseComponent {
         return products.get(index);
     }
 
+    public ProductCardComponent getProductCard(String productName) {
+        return getProducts().stream()
+                .filter(product -> product.getName().equalsIgnoreCase(productName)).findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName));
+    }
+
     public boolean hasProducts() {
         return !getProducts().isEmpty();
     }
@@ -42,6 +49,10 @@ public class ProductListComponent extends BaseComponent {
 
     public void addProductToCart(int index) {
         getProductCard(index).addToCart();
+    }
+    
+    public void addProductToCart(String name) {
+        getProductCard(name).addToCart();
     }
 
     public ProductCardComponent getRandomProduct() {

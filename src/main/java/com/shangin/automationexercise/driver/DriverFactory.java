@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.shangin.automationexercise.config.ConfigReader;
 import com.shangin.automationexercise.enums.Browser;
+import com.shangin.automationexercise.support.AdsHandler;
 
 public final class DriverFactory {
 
@@ -22,7 +23,7 @@ public final class DriverFactory {
 
     public static WebDriver createDriver(Browser browser) {
 
-        return switch (browser) {
+        WebDriver driver = switch (browser) {
 
         case CHROME -> new ChromeDriver(BrowserOptionsFactory.chrome());
 
@@ -31,6 +32,10 @@ public final class DriverFactory {
         case EDGE -> new EdgeDriver(BrowserOptionsFactory.edge());
 
         };
+
+        AdsHandler.blockGoogleAds(driver);
+
+        return driver;
 
     }
 

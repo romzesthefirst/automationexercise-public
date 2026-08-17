@@ -1,39 +1,59 @@
 package com.shangin.automationexercise.assertions;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.testng.Assert;
 
-import com.shangin.automationexercise.components.CartItemComponent;
+import com.shangin.automationexercise.model.ActualProduct;
 import com.shangin.automationexercise.model.ExpectedProduct;
-import com.shangin.automationexercise.pages.CartPage;
 
 public class CartAssertions {
+
     private CartAssertions() {
     }
 
-    public static
-            void
-            assertContainsProducts(CartPage cart, List<ExpectedProduct> expectedProducts) {
-        List<CartItemComponent> actualProducts = cart.getCartItems();
+    public static BigDecimal calculateExpectedTotal(List<ExpectedProduct> products) {
+
+        return products.stream().map(ExpectedProduct::total)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    public static void assertProductsMatch(
+            List<ActualProduct> actualProducts,
+            List<ExpectedProduct> expectedProducts) {
 
         Assert.assertEquals(
                 actualProducts.size(),
                 expectedProducts.size(),
-                "Cart items count is incorrect");
+                "Unexpected number of products");
 
         for (ExpectedProduct expected : expectedProducts) {
-            CartItemComponent actual = cart.getProduct(expected.name());
+
+            ActualProduct actual = actualProducts.stream()
+                    .filter(product -> product.name().equalsIgnoreCase(expected.name())).findFirst()
+                    .orElseThrow(() -> new AssertionError("Product not found: " + expected.name()));
 
             Assert.assertEquals(
-                    actual.getPrice(),
+                    actual.price(),
                     expected.price(),
-                    "Incorrect price for: " + expected.name());
+                    "Incorrect price for product: " + expected.name());
 
             Assert.assertEquals(
-                    actual.getQuantity(),
+                    actual.quantity(),
                     expected.quantity(),
-                    "Incorrect quantity for: " + expected.name());
+                    "Incorrect quantity for product: " + expected.name());
         }
+
+    }
+
+    public static void assertProductsTotalPrice(
+                    BigDecimal actualTotal,
+                    List<ExpectedProduct> expectedProducts) {
+        
+        Assert.assertEquals(
+                actualTotal,
+                calculateExpectedTotal(expectedProducts),
+                "Unexpected total price of products");
     }
 }

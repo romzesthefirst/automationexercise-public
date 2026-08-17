@@ -1,4 +1,4 @@
-package com.shangin.automationexercise.tests.ui.forms;
+package com.shangin.automationexercise.tests.ui.pages;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

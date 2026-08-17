@@ -11,6 +11,7 @@ import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.CartItemComponent;
 import com.shangin.automationexercise.components.CheckoutModalComponent;
 import com.shangin.automationexercise.components.ProductListComponent;
+import com.shangin.automationexercise.model.ActualProduct;
 
 public class CartPage extends BasePage {
 
@@ -69,13 +70,28 @@ public class CartPage extends BasePage {
                                 "Product not found in cart: " + productName));
     }
 
-    public final void deleteProductByIndex(int index) {
+    public final void deleteProduct(int index) {
         getCartItems().get(index).delete();
     }
-    
+
+    public final void deleteProduct(String productName) {
+        CartItemComponent product = getProduct(productName);
+
+        product.delete();
+
+        wait.until(
+                ignored -> getCartItems().stream()
+                        .noneMatch(item -> item.getName().equalsIgnoreCase(productName)));
+    }
+
     public boolean hasProduct(String name) {
+        return getCartItems().stream().anyMatch(product -> product.getName().equals(name));
+    }
+
+    public List<ActualProduct> getActualProducts() {
         return getCartItems().stream()
-                .anyMatch(product -> product.getName().equals(name));
+                .map(item -> new ActualProduct(item.getName(), item.getPrice(), item.getQuantity()))
+                .toList();
     }
 
 }

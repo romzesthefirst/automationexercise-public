@@ -36,7 +36,7 @@ public class PaymentPage extends BasePage {
         type(CARD_EXPIRY_YEAR, card.expirationYear());
     }
 
-    public String payAndGetSuccessMessage() {
+    public String payAndGetResultMessage() {
         // System.out.println(driver.getCurrentUrl());
         // System.out.println(find(By.id("success_message")).getAttribute("class"));
         // click(PAY_AND_CONFIRM_BUTTON);

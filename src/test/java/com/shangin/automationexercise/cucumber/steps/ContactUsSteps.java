@@ -15,14 +15,6 @@ public class ContactUsSteps {
     
     private final ContactUsPage contactUsPage = new ContactUsPage();
 
-    @Then("the Get In Touch section should be displayed")
-    public void getInTouchSectionShouldBeDisplayed() {
-
-        Assert.assertTrue(
-                contactUsPage.isLoaded(),
-                "Get In Touch section should be displayed");
-    }
-
     @When("the user fills in the contact form")
     public void userFillsInTheContactForm() {
 
@@ -47,6 +39,14 @@ public class ContactUsSteps {
     public void userConfirmsTheSubmissionAlert() {
 
         contactUsPage.confirmAlert();
+    }
+    
+    @Then("the Get In Touch section should be displayed")
+    public void getInTouchSectionShouldBeDisplayed() {
+
+        Assert.assertTrue(
+                contactUsPage.isLoaded(),
+                "Get In Touch section should be displayed");
     }
 
     @Then("the contact form success message should be displayed")

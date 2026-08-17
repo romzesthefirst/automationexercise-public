@@ -10,6 +10,7 @@ import com.shangin.automationexercise.components.ProductListComponent;
 public class ProductsPage extends BasePage {
 
     private static final By PRODUCTS_SECTION = By.cssSelector(".features_items");
+    private static final By PRODUCT_CARD = By.cssSelector(".product-image-wrapper");
     private static final By PAGE_TITLE = By.cssSelector("h2.title.text-center");
     private static final By SEARCH_INPUT = By.id("search_product");
     private static final By SEARCH_BUTTON = By.id("submit_search");
@@ -24,6 +25,7 @@ public class ProductsPage extends BasePage {
     @Override
     public void waitUntilLoaded() {
         waitUntilVisible(PAGE_TITLE);
+        waitUntilVisible(PRODUCT_CARD);
     }
 
     public ProductListComponent products() {
@@ -50,7 +52,11 @@ public class ProductsPage extends BasePage {
         products().addProductToCart(index);
         return waitForAddToCartModal();
     }
-
+    
+    public AddToCartModalComponent addProductToCart(String name) {
+        products().addProductToCart(name);
+        return waitForAddToCartModal();
+    }
 
     public void addAllProductsToCart() {
         int productCount = products().getProductCount();
@@ -58,7 +64,7 @@ public class ProductsPage extends BasePage {
             addProductToCart(i).continueShopping();
         }
     }
-    
+
     public boolean isCategoriesVisible() {
         return isDisplayed(CATEGORIES);
     }
@@ -70,6 +76,4 @@ public class ProductsPage extends BasePage {
     public BrandsComponent brands() {
         return new BrandsComponent(find(BRANDS));
     }
-
-
 }

@@ -38,6 +38,7 @@ public abstract class BasePage extends AbstractPageObject {
     }
 
     protected final void removeAds() {
+        AdsHandler.disableGoogleAnnotations();
         AdsHandler.removeGoogleAds();
     }
 
@@ -96,6 +97,10 @@ public abstract class BasePage extends AbstractPageObject {
     private long getScrollY() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return (Long) js.executeScript("return Math.round(window.scrollY);");
+    }
+
+    public void goBack() {
+        driver.navigate().back();
     }
 
 }

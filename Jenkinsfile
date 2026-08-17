@@ -41,11 +41,11 @@ pipeline {
 	        }
 	    }
 	    
-        stage('Test') {
+        stage('Cucumber Tests') {
             steps {
                 sh """
                     mvn test \
-                    	-DtestGroups=ui \
+                    	-DtestGroups=cucumber \
                         -Dbrowser=${params.BROWSER} \
                         -Dheadless=${params.HEADLESS} \
                         -DthreadCount=${params.THREAD_COUNT}
