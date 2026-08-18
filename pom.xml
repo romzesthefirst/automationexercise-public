@@ -25,6 +25,7 @@
 		<cucumber.version>7.34.6</cucumber.version>
 		<cucumber-testng.version>7.34.6</cucumber-testng.version>
 		<picocontainer.version>7.34.6</picocontainer.version>
+		<commons-lang3.version>3.20.0</commons-lang3.version>
 	</properties>
 
 	<dependencyManagement>
@@ -73,6 +74,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.22.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
@@ -80,10 +88,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>${javafaker.version}</version>
-			<scope>test</scope>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>2.7.0</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>

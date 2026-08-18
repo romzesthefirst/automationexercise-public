@@ -8,7 +8,7 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.base.BaseTest;

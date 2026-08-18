@@ -5,7 +5,7 @@ import java.time.Duration;
 
 import org.testng.Assert;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.constants.UiMessages;

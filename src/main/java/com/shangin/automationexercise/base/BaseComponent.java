@@ -39,22 +39,4 @@ public abstract class BaseComponent extends AbstractPageObject{
             }
         });
     }
-    
-    /* protected List<WebElement> findAll(By locator)
-     * root.findElements(locator);
-     * 
-     * protected int count(By locator)
-     * return findAll(locator).size();
-     * 
-     * protected boolean isDisplayed(By locator)
-     * isPresent(locator) && find(locator).isDisplayed();
-     * 
-     * protected String getAttribute(By locator, String attribute)
-     * 
-     * protected String getCssValue(By locator, String property)
-     * 
-     * protected List<String> getTexts(By locator)
-     * 
-     * protected void waitUntilHidden()
-     */
 }

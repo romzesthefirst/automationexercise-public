@@ -3,7 +3,7 @@ package com.shangin.automationexercise.tests.ui.pages;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.shangin.automationexercise.base.BaseTest;
 import com.shangin.automationexercise.components.FooterComponent;
 import com.shangin.automationexercise.constants.UiMessages;

@@ -2,8 +2,9 @@ package com.shangin.automationexercise.factories;
 
 import java.util.UUID;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.shangin.automationexercise.model.User;
+import net.datafaker.providers.base.Text;
 
 public class UserFactory {
 	
@@ -12,14 +13,24 @@ public class UserFactory {
     private UserFactory() {
         // Utility class
     }
+
 	
 	public static User randomUser() {
+		String password = FAKER.text().text(
+				Text.TextSymbolsBuilder.builder()
+						.len(12)
+						.with(Text.EN_LOWERCASE, 1)
+						.with(Text.EN_UPPERCASE, 1)
+						.with(Text.DIGITS, 1)
+						.build()
+		);
+
 		return new User (
 				"Mr",
 				FAKER.name().firstName(),
 				FAKER.name().lastName(),
 				UUID.randomUUID() + "@test.com",
-				FAKER.internet().password(8, 16, true, true),
+				password,
 				String.valueOf(FAKER.number().numberBetween(1, 28)),
                 String.valueOf(FAKER.number().numberBetween(1, 12)),
                 String.valueOf(FAKER.number().numberBetween(1990, 2005)),

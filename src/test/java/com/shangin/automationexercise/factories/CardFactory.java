@@ -1,6 +1,6 @@
 package com.shangin.automationexercise.factories;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import com.shangin.automationexercise.model.CardDetails;
 
 public class CardFactory {
