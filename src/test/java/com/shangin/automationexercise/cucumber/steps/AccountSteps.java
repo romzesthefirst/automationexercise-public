@@ -1,7 +1,6 @@
 package com.shangin.automationexercise.cucumber.steps;
 
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
-import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.steps.ApiUserSteps;
 
 import io.cucumber.java.en.Given;
@@ -23,7 +22,7 @@ public class AccountSteps {
 
     @Given("credentials for an unregistered user")
     public void createUnregisteredUser() {
-        context.setUser(UserFactory.randomUser());
+        context.setUser(context.newUser());
     }
     
 }

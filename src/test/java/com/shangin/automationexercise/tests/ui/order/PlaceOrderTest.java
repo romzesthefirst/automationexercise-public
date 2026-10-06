@@ -11,13 +11,12 @@ import org.testng.annotations.Test;
 import net.datafaker.Faker;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
-import com.shangin.automationexercise.base.BaseTest;
+import com.shangin.automationexercise.base.AccountUiTestBase;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.CheckoutModalComponent;
 import com.shangin.automationexercise.components.ProductCardComponent;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.factories.CardFactory;
-import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.model.CardDetails;
 import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.model.User;
@@ -34,7 +33,7 @@ import com.shangin.automationexercise.resources.DownloadHelper;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
-public class PlaceOrderTest extends BaseTest {
+public class PlaceOrderTest extends AccountUiTestBase {
 
     private static final Faker FAKER = new Faker();
 
@@ -58,7 +57,7 @@ public class PlaceOrderTest extends BaseTest {
 
         SignupLoginPage loginPage = cart.proceedToCheckoutAsGuest().registerOrLogin();
 
-        User newUser = UserFactory.randomUser();
+        User newUser = accounts.newUser();
         AccountCreatedPage accountCreated = loginPage.register(newUser).createAccount(newUser);
 
         Assert.assertTrue(accountCreated.isAccountCreated());
@@ -101,7 +100,7 @@ public class PlaceOrderTest extends BaseTest {
 
         HomePage homePage = HomePage.open();
 
-        User newUser = UserFactory.randomUser();
+        User newUser = accounts.newUser();
         AccountCreatedPage accountCreatedPage
                 = homePage.header().openSignupLoginPage().register(newUser).createAccount(newUser);
 
@@ -158,7 +157,7 @@ public class PlaceOrderTest extends BaseTest {
     @Test @Description("Test Case 16: Place Order: Login before Checkout")
     public void shouldPlaceOrderLoginBeforeCheckout() {
 
-        User user = apiUserSteps.createUser();
+        User user = accounts.createUser();
 
         HomePage homePage = HomePage.open();
 
@@ -215,7 +214,7 @@ public class PlaceOrderTest extends BaseTest {
     @Test @Description("Test Case 23: Verify address details in checkout page")
     public void shouldDisplayCorrectDeliveryAndBillingAddressesOnCheckoutPage() {
 
-        User newUser = UserFactory.randomUser();
+        User newUser = accounts.newUser();
 
         HomePage homePage = HomePage.open();
 
@@ -273,7 +272,7 @@ public class PlaceOrderTest extends BaseTest {
 
         SignupLoginPage signupLoginPage = checkoutModal.registerOrLogin();
 
-        User newUser = UserFactory.randomUser();
+        User newUser = accounts.newUser();
         AccountCreatedPage accountCreatedPage
                 = signupLoginPage.register(newUser).createAccount(newUser);
 

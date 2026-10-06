@@ -18,7 +18,7 @@ public class AllureTestLifecycleListener implements TestLifecycleListener {
     @Override
     public void beforeTestStop(TestResult result) {
 
-        if (!shouldCaptureScreenshot(result.getStatus())) {
+        if (!shouldCaptureScreenshot(result.getStatus()) || !DriverManager.hasDriver()) {
             return;
         }
 

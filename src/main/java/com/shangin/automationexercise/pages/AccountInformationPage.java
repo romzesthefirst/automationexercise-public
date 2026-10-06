@@ -8,7 +8,7 @@ import com.shangin.automationexercise.model.User;
 public class AccountInformationPage extends BasePage {
 
     private static final By ACCOUNT_INFO_TITLE
-            = By.xpath("//div[contains(@class,'login-form')]/h2");
+            = By.xpath("//div[contains(@class,'login-form')][.//input[@data-qa='password']]/h2");
     private static final By MR_RADIO = By.cssSelector("[data-qa='title'] [value='Mr']");
     private static final By MRS_RADIO = By.cssSelector("[data-qa='title'] [value='Mrs']");
     // private static final By NAME_INPUT = By.cssSelector("[data-qa='name']");
@@ -84,12 +84,15 @@ public class AccountInformationPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        return isDisplayed(ACCOUNT_INFO_TITLE);
+        return isDisplayed(ACCOUNT_INFO_TITLE) && isDisplayed(PASSWORD_INPUT)
+                && isDisplayed(CREATE_ACCOUNT_BTN);
     }
 
     @Override
     public void waitUntilLoaded() {
         waitUntilVisible(ACCOUNT_INFO_TITLE);
+        waitUntilVisible(PASSWORD_INPUT);
+        waitUntilClickable(CREATE_ACCOUNT_BTN);
         removeAds();
     }
 

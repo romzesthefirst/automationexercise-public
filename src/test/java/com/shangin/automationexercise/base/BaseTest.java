@@ -7,21 +7,15 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.config.ConfigReader;
 import com.shangin.automationexercise.driver.DriverFactory;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.listeners.TestListener;
-import com.shangin.automationexercise.steps.ApiUserSteps;
 import com.shangin.automationexercise.steps.UiProductSteps;
 
 @Listeners(TestListener.class)
 public abstract class BaseTest {
 
-    protected final AccountApiClient accountApiClient = new AccountApiClient();
-
-    protected final ApiUserSteps apiUserSteps = new ApiUserSteps(accountApiClient);
-    
     protected final UiProductSteps uiProductSteps = new UiProductSteps();
 
     @BeforeMethod(alwaysRun = true)

@@ -109,3 +109,60 @@ hosted Jenkins execution remain unverified.
 Test results are written to `target/surefire-reports`; Allure results are written
 to `target/allure-results`. Full report presentation and portable CI setup are
 tracked separately in the roadmap.
+
+## Test account cleanup
+
+Each account-enabled TestNG invocation and Cucumber scenario owns a separate registry containing
+only freshly generated test identities. Register an identity with
+`accounts.newUser()` (TestNG) or `context.newUser()` (Cucumber) before any
+UI creation attempt. `accounts.createUser()` and Cucumber's `ApiUserSteps.createUser()` register before the API request,
+so an interrupted request or failed setup still leaves credentials for teardown.
+Assigning an arbitrary user to `ScenarioContext` does not grant cleanup ownership.
+
+`BaseTest` manages the browser without account infrastructure. UI classes that
+create accounts explicitly extend `AccountUiTestBase`; API account tests extend
+`AccountTestBase`. Both compose the same `AccountFixture` for ownership and
+reporting. UI classes that never use accounts continue to extend `BaseTest`.
+
+Cleanup runs for every outcome and does not depend on `@user`. It attempts every
+owned account, validates HTTP and application codes, and confirms absence with
+an independent email lookup. A deletion 404 with an existing account is a failure.
+Cleanup errors appear in report attachments and are suppressed onto an existing
+TestNG error; a failed Cucumber scenario keeps its original failure. Cleanup failure
+after a successful test/scenario fails the build. External service outages may
+prevent removal; the report records that failure instead of claiming success.
+Abrupt process termination cannot execute teardown.
+
+Run the autonomous cleanup regression without a browser or external requests:
+
+```sh
+./mvnw test -Dtest=AccountCleanupTest
+```
+
+The tests deliberately run failing nested TestNG fixtures to verify teardown and
+reporting. Those fixture failures are expected in Allure; the ten enclosing
+regression checks must pass. Use separate result directories to avoid mixing them
+with ordinary suite reports.
+
+For an explicitly selected real-site acceptance check:
+
+```sh
+./mvnw test -Dtest=AccountCleanupLiveTest
+```
+
+This creates fresh synthetic accounts and checks their absence after a passing
+run, deliberate setup/test failures, and a deliberately lost creation response.
+The outer check passes only when each account is confirmed absent; expected
+fixture failures remain visible in Allure. UI registration/cart/order/invoice
+coverage still requires the corresponding real `ui` and `bdd` runs. Current
+external acceptance status is recorded in roadmap item 3.
+
+Focused cleanup acceptance on Java 17.0.20/headless Chrome passed real API fault
+injection and absence checks. Selected UI tests passed 12/13 (registration failed
+before account creation on the page title assertion); selected BDD scenarios
+passed 11/11, including invoice without `@user`. Additional deliberate browser
+setup/test/scenario failures also left their owned accounts absent. These checks
+verify cleanup, not a clean full-suite UI/BDD regression. Reports and the subsequent registration/readiness fix are recorded in roadmap
+item 3. After adding explicit form readiness and separating duplicate-email
+attempts, affected UI checks passed 7/7 and BDD checks passed 6/6 in real Chrome;
+all thirteen owned accounts were confirmed absent.

@@ -3,12 +3,23 @@ package com.shangin.automationexercise.cucumber.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.shangin.automationexercise.api.support.OwnedAccounts;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.CheckoutModalComponent;
 import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.model.User;
 
 public class ScenarioContext {
+
+    private final OwnedAccounts ownedAccounts;
+
+    public ScenarioContext(OwnedAccounts ownedAccounts) {
+        this.ownedAccounts = ownedAccounts;
+    }
+
+    public User newUser() {
+        return ownedAccounts.newUser();
+    }
 
     private User user;
 

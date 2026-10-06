@@ -1,25 +1,33 @@
 package com.shangin.automationexercise.cucumber.hooks;
 
-import com.shangin.automationexercise.api.clients.AccountApiClient;
-import com.shangin.automationexercise.api.support.ApiCleanupHelper;
-import com.shangin.automationexercise.cucumber.context.ScenarioContext;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
+import com.shangin.automationexercise.api.clients.AccountApiClient;
+import com.shangin.automationexercise.api.support.OwnedAccounts;
 import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
 
 public class AccountHooks {
-
-    private final ScenarioContext context;
+    private final OwnedAccounts ownedAccounts;
     private final AccountApiClient accountApiClient;
 
-    public AccountHooks(ScenarioContext context, AccountApiClient accountApiClient) {
-        this.context = context;
+    public AccountHooks(OwnedAccounts ownedAccounts, AccountApiClient accountApiClient) {
+        this.ownedAccounts = ownedAccounts;
         this.accountApiClient = accountApiClient;
     }
 
-    @After("@user")
-    public void cleanupUser() {
-        if (context.getUser() != null) {
-            ApiCleanupHelper.deleteAccountQuietly(accountApiClient, context.getUser());
+    @After(order = 0)
+    public void cleanupUser(Scenario scenario) {
+        try {
+            ownedAccounts.cleanup(accountApiClient);
+        } catch (AssertionError failure) {
+            StringWriter details = new StringWriter();
+            failure.printStackTrace(new PrintWriter(details));
+            scenario.attach(details.toString(), "text/plain", "Account cleanup failure");
+            if (!scenario.isFailed()) {
+                throw failure;
+            }
         }
     }
 }

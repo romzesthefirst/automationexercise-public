@@ -25,10 +25,16 @@ public class SignupLoginPage extends BasePage {
     private static final By SIGNUP_ERROR_MESSAGE = By.cssSelector("form[action='/signup'] p");
 
     public AccountInformationPage register(User user) {
+        attemptToRegister(user);
+        AccountInformationPage page = new AccountInformationPage();
+        page.waitUntilLoaded();
+        return page;
+    }
+
+    public void attemptToRegister(User user) {
         type(SIGNUP_NAME_INPUT, user.firstName());
         type(SIGNUP_EMAIL_INPUT, user.email());
         click(SIGNUP_BUTTON);
-        return new AccountInformationPage();
     }
 
     // result is void because of incorrect name/login

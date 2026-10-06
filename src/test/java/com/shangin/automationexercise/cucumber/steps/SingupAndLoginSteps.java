@@ -65,7 +65,7 @@ public class SingupAndLoginSteps {
     public void userAttemptsToSignupWithTheRegisteredEmail() {
 
         User user = context.getUser();
-        new HomePage().header().openSignupLoginPage().register(user);
+        new HomePage().header().openSignupLoginPage().attemptToRegister(user);
     }
     
     @When("the user creates an account from checkout modal window")

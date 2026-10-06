@@ -3,10 +3,8 @@ package com.shangin.automationexercise.tests.ui.account;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.shangin.automationexercise.api.support.ApiCleanupHelper;
-import com.shangin.automationexercise.base.BaseTest;
+import com.shangin.automationexercise.base.AccountUiTestBase;
 import com.shangin.automationexercise.constants.UiMessages;
-import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.AccountCreatedPage;
 import com.shangin.automationexercise.pages.AccountDeletedPage;
@@ -17,7 +15,7 @@ import com.shangin.automationexercise.pages.SignupLoginPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
-public class RegistrationTest extends BaseTest {
+public class RegistrationTest extends AccountUiTestBase {
     @Test @Description("Test Case 1: Register User")
     public void shouldRegisterNewUser() {
 
@@ -29,7 +27,7 @@ public class RegistrationTest extends BaseTest {
 
         Assert.assertEquals(loginPage.getUserSignupHeader(), UiMessages.NEW_USER_SIGNUP);
 
-        User newUser = UserFactory.randomUser();
+        User newUser = accounts.newUser();
         AccountInformationPage accountInformationPage = loginPage.register(newUser);
 
         Assert.assertEquals(
@@ -63,31 +61,24 @@ public class RegistrationTest extends BaseTest {
     @Test @Description("Test Case 5: Register User with existing email")
     public void userCantRegisterWithExistiongEmal() {
 
-        User user = apiUserSteps.createUser();
+        User user = accounts.createUser();
 
-        try {
+        HomePage homePage = HomePage.open();
 
-            HomePage homePage = HomePage.open();
+        Assert.assertTrue(homePage.isLoaded());
 
-            Assert.assertTrue(homePage.isLoaded());
+        SignupLoginPage signupLoginPage = homePage.header().openSignupLoginPage();
 
-            SignupLoginPage signupLoginPage = homePage.header().openSignupLoginPage();
+        Assert.assertEquals(
+                signupLoginPage.getUserSignupHeader(),
+                UiMessages.NEW_USER_SIGNUP,
+                "Login form header is incorrect");
 
-            Assert.assertEquals(
-                    signupLoginPage.getUserSignupHeader(),
-                    UiMessages.NEW_USER_SIGNUP,
-                    "Login form header is incorrect");
+        signupLoginPage.attemptToRegister(user);
 
-            signupLoginPage.register(user);
-
-            Assert.assertEquals(
-                    signupLoginPage.getSignUpErrorMessage(),
-                    UiMessages.EMAIL_ALREADY_EXISTS);
-
-        } finally {
-
-            ApiCleanupHelper.deleteAccountQuietly(accountApiClient, user);
-        }
+        Assert.assertEquals(
+                signupLoginPage.getSignUpErrorMessage(),
+                UiMessages.EMAIL_ALREADY_EXISTS);
     }
 
 }

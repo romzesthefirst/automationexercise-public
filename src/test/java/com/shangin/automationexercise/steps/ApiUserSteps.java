@@ -4,7 +4,7 @@ import org.testng.Assert;
 
 import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.api.support.ApiResponseParser;
-import com.shangin.automationexercise.factories.UserFactory;
+import com.shangin.automationexercise.api.support.OwnedAccounts;
 import com.shangin.automationexercise.model.User;
 
 import io.restassured.response.Response;
@@ -14,13 +14,16 @@ public class ApiUserSteps {
 
     private final AccountApiClient accountApiClient;
 
-    public ApiUserSteps(AccountApiClient accountApiClient) {
+    private final OwnedAccounts ownedAccounts;
+
+    public ApiUserSteps(AccountApiClient accountApiClient, OwnedAccounts ownedAccounts) {
         this.accountApiClient = accountApiClient;
+        this.ownedAccounts = ownedAccounts;
     }
 
     public User createUser() {
         
-        User user = UserFactory.randomUser();
+        User user = ownedAccounts.newUser();
 
         Response response = accountApiClient.createAccount(user);
         JsonNode body = ApiResponseParser.extractJson(response);

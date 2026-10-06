@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.shangin.automationexercise.assertions.CartAssertions;
-import com.shangin.automationexercise.base.BaseTest;
+import com.shangin.automationexercise.base.AccountUiTestBase;
 import com.shangin.automationexercise.components.ProductCardComponent;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.mappers.ProductMapper;
@@ -22,7 +22,7 @@ import com.shangin.automationexercise.pages.ProductsPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
-public class CartTest extends BaseTest {
+public class CartTest extends AccountUiTestBase {
 
     @Test @Description("Test Case 17: Remove Products From Cart")
     public void shouldRemoveProductFromCart() {
@@ -65,7 +65,7 @@ public class CartTest extends BaseTest {
     @Test @Description("Test Case 20: Search Products and Verify Cart After Login")
     public void shoulSaveCartAfterLogin() {
 
-        User user = apiUserSteps.createUser();
+        User user = accounts.createUser();
 
         HomePage homePage = HomePage.open();
 
