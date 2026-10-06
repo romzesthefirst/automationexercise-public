@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
 
@@ -13,8 +12,8 @@ public class ProductListComponent extends BaseComponent {
 
     private static final By PRODUCT_CARDS = By.cssSelector(".product-image-wrapper");
 
-    public ProductListComponent(WebElement root) {
-        super(root);
+    public ProductListComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     public List<ProductCardComponent> getProducts() {

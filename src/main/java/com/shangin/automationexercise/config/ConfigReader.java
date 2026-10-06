@@ -41,10 +41,6 @@ public class ConfigReader {
         return Integer.parseInt(getProperty("page.load.timeout"));
     }
 
-    public static long getImplicitWait() {
-        return Integer.parseInt(getProperty("implicit.wait"));
-    }
-
     public static long getExplicitWait() {
         return Long.parseLong(getProperty("explicit.wait"));
     }
@@ -56,6 +52,11 @@ public class ConfigReader {
     public static boolean isHeadless() {
         return Boolean.parseBoolean(
                 System.getProperty("headless", properties.getProperty("headless", "false")));
+    }
+
+    public static boolean isAdsHandlingEnabled() {
+        return Boolean.parseBoolean(System.getProperty("ads.handling.enabled",
+                properties.getProperty("ads.handling.enabled", "true")));
     }
 
     public static boolean isIncognito() {

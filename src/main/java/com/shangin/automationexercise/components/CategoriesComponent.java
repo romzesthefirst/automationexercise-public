@@ -18,8 +18,8 @@ public class CategoriesComponent extends BaseComponent {
     private static final By CATEGORY_NAME = By.cssSelector(".panel-title > a");
     private static final By SUBCATEGORY_NAME = By.cssSelector(".panel-body li > a");
 
-    public CategoriesComponent(WebElement root) {
-        super(root);
+    public CategoriesComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     public List<String> getCategoryNames() {
@@ -85,7 +85,7 @@ public class CategoriesComponent extends BaseComponent {
 
         WebElement subcategory = waitUntilSubcategoryVisible(categoryName, subcategoryName);
 
-        subcategory.click();
+        navigate(subcategory);
 
         CategoryProductsPage categoryProductsPage = new CategoryProductsPage();
         categoryProductsPage.waitUntilLoaded();

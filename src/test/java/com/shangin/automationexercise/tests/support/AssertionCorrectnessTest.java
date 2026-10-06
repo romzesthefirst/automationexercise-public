@@ -47,7 +47,7 @@ public class AssertionCorrectnessTest {
     @Test public void positiveUiSearchRejectsEmptyResultsInActualBddStep() {
         WebElement empty = element("", Map.of());
         useDom(Map.of(By.cssSelector(".features_items"), List.of(empty)));
-        ProductListComponent products = new ProductListComponent(empty);
+        ProductListComponent products = new ProductListComponent(By.cssSelector(".features_items"));
         // A negative case checks emptiness explicitly, rather than an all-match predicate.
         Assert.assertFalse(products.hasProducts());
         Assert.assertEquals(products.getProductCount(), 0);

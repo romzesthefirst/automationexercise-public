@@ -26,8 +26,8 @@ public class DriverTransportTimeoutTest {
         var properties = (java.util.Properties) field.get(null);
         var original = (java.util.Properties) properties.clone();
         try {
-            // In particular, a 60-second implicit wait must not hit the old 40-second limit.
-            for (int[] settings : new int[][] {{30, 30, 60, 70}, {90, 30, 60, 100}, {30, 120, 60, 130}}) {
+            // Implicit waits remain zero even if the legacy file property is changed.
+            for (int[] settings : new int[][] {{30, 30, 60, 40}, {90, 30, 60, 100}, {30, 120, 60, 130}}) {
                 properties.setProperty("page.load.timeout", Integer.toString(settings[0]));
                 properties.setProperty("script.timeout", Integer.toString(settings[1]));
                 properties.setProperty("implicit.wait", Integer.toString(settings[2]));

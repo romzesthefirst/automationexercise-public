@@ -1,7 +1,6 @@
 package com.shangin.automationexercise.components;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.model.User;
@@ -17,8 +16,8 @@ import com.shangin.automationexercise.pages.TestCasesPage;
 
 public class HeaderComponent extends BaseComponent{
     
-	public HeaderComponent(WebElement root) {
-        super(root);
+    public HeaderComponent(By rootLocator) {
+        super(rootLocator);
     }
 	
 	// Logo
@@ -41,66 +40,66 @@ public class HeaderComponent extends BaseComponent{
 	private static final By LOGGED_IN_AS_NAME = By.xpath("//a[i[contains(@class,'fa-user')]]/b");
 
 	public HomePage clickLogo() {
-		click(LOGO);
+		navigate(LOGO);
 		HomePage homePage = new HomePage();
         homePage.waitUntilLoaded();
-		return new HomePage();
+		return homePage;
 	}
 	
 	public HomePage openHomePage() {
-		click(HOME_LINK);
+		navigate(HOME_LINK);
 		HomePage homePage = new HomePage();
 		homePage.waitUntilLoaded();
-		return new HomePage();
+		return homePage;
 	}
 	
 	public ProductsPage openProducts() {
-		click(PRODUCTS_LINK);
+		navigate(PRODUCTS_LINK);
 		ProductsPage productsPage = new ProductsPage();
 		productsPage.waitUntilLoaded();
-		return new ProductsPage();
+		return productsPage;
 	}
 	
 	public CartPage openCart() {
-		click(CART_LINK);
+		navigate(CART_LINK);
 		CartPage cartPage = new CartPage();
 		cartPage.waitUntilLoaded();
-		return new CartPage();
+		return cartPage;
 	}
 	
 	public SignupLoginPage openSignupLoginPage() {
-		click(SIGNUP_LOGIN_LINK);
+		navigate(SIGNUP_LOGIN_LINK);
 		SignupLoginPage signupLoginPage = new SignupLoginPage();
 		signupLoginPage.waitUntilLoaded();
-		return new SignupLoginPage();
+		return signupLoginPage;
 	}
 	
 	public TestCasesPage openTestCases() {
-		click(TEST_CASES_LINK);
+		navigate(TEST_CASES_LINK);
 		TestCasesPage testCasesPage = new TestCasesPage();
 		testCasesPage.waitUntilLoaded();
-		return new TestCasesPage();
+		return testCasesPage;
 	}
 	
 	public ApiListPage openApiTesting() {
-		click(API_TESTING_LINK);
+		navigate(API_TESTING_LINK);
 		ApiListPage apiListPage = new ApiListPage();
 		apiListPage.waitUntilLoaded();
-		return new ApiListPage();
+		return apiListPage;
 	}
 	
 	public ContactUsPage openContactUs() {
-		click(CONTACT_US_LINK);
+		navigate(CONTACT_US_LINK);
 		ContactUsPage contactUsPage = new ContactUsPage();
 		contactUsPage.waitUntilLoaded();
-		return new ContactUsPage();
+		return contactUsPage;
 	}
 	
 	public AccountDeletedPage deleteAccount() {
 		click(DELETE_ACCOUNT_LINK);
 		AccountDeletedPage accountDeletedPage = new AccountDeletedPage();
 		accountDeletedPage.waitUntilLoaded();
-		return new AccountDeletedPage();
+		return accountDeletedPage;
 	}
 	
 	public SignupLoginPage logout() {

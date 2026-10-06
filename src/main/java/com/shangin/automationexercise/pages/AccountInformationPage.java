@@ -84,8 +84,7 @@ public class AccountInformationPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        return isDisplayed(ACCOUNT_INFO_TITLE) && isDisplayed(PASSWORD_INPUT)
-                && isDisplayed(CREATE_ACCOUNT_BTN);
+        return isDisplayed(PASSWORD_INPUT) && isDisplayed(CREATE_ACCOUNT_BTN);
     }
 
     @Override

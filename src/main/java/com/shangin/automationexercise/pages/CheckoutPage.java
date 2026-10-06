@@ -24,12 +24,14 @@ public class CheckoutPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        return isDisplayed(CHECKOUT_INFO);
+        return isDisplayed(CHECKOUT_INFO) && isDisplayed(PLACE_ORDER_BUTTON);
     }
 
     @Override
     public void waitUntilLoaded() {
-        // TODO Auto-generated method stub
+        wait.until(ignored -> isLoaded());
+        waitUntilClickable(PLACE_ORDER_BUTTON);
+        removeAds();
 
     }
 
@@ -38,11 +40,11 @@ public class CheckoutPage extends BasePage {
     }
 
     public AddressComponent deliveryAddress() {
-        return new AddressComponent(find(DELIVERY_ADDRESS));
+        return new AddressComponent(DELIVERY_ADDRESS);
     }
 
     public AddressComponent billingAddress() {
-        return new AddressComponent(find(BILLING_ADDRESS));
+        return new AddressComponent(BILLING_ADDRESS);
     }
 
     public void addComment(String message) {
@@ -50,7 +52,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public PaymentPage placeOrder() {
-        click(PLACE_ORDER_BUTTON);
+        navigate(PLACE_ORDER_BUTTON);
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.waitUntilLoaded();
         return paymentPage;

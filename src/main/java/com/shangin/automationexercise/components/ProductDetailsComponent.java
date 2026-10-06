@@ -1,7 +1,6 @@
 package com.shangin.automationexercise.components;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
 
@@ -17,8 +16,8 @@ public class ProductDetailsComponent extends BaseComponent {
     private static final By QUANTITY = By.id("quantity");
     private static final By ADD_TO_CART_BUTTON = By.cssSelector(".cart");
 
-    public ProductDetailsComponent(WebElement root) {
-        super(root);
+    public ProductDetailsComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     public String getName() {

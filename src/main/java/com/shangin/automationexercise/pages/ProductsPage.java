@@ -1,6 +1,8 @@
 package com.shangin.automationexercise.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
@@ -10,8 +12,7 @@ import com.shangin.automationexercise.components.ProductListComponent;
 public class ProductsPage extends BasePage {
 
     private static final By PRODUCTS_SECTION = By.cssSelector(".features_items");
-    private static final By PRODUCT_CARD = By.cssSelector(".product-image-wrapper");
-    private static final By PAGE_TITLE = By.cssSelector("h2.title.text-center");
+    private static final By PAGE_TITLE = By.cssSelector(".features_items > h2.title.text-center");
     private static final By SEARCH_INPUT = By.id("search_product");
     private static final By SEARCH_BUTTON = By.id("submit_search");
     private static final By CATEGORIES = By.id("accordian");
@@ -19,17 +20,18 @@ public class ProductsPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        return isDisplayed(PAGE_TITLE);
+        return isDisplayed(PAGE_TITLE) && isDisplayed(SEARCH_INPUT);
     }
 
     @Override
     public void waitUntilLoaded() {
-        waitUntilVisible(PAGE_TITLE);
-        waitUntilVisible(PRODUCT_CARD);
+        wait.until(ignored -> isLoaded());
+        waitUntilClickable(SEARCH_BUTTON);
+        removeAds();
     }
 
     public ProductListComponent products() {
-        return new ProductListComponent(find(PRODUCTS_SECTION));
+        return new ProductListComponent(PRODUCTS_SECTION);
     }
 
     public boolean isOpened() {
@@ -37,10 +39,14 @@ public class ProductsPage extends BasePage {
     }
 
     public ProductsPage search(String query) {
-        String oldTitle = getText(PAGE_TITLE);
+        WebElement oldResults = waitUntilVisible(PRODUCTS_SECTION);
         type(SEARCH_INPUT, query);
         click(SEARCH_BUTTON);
-        waitUntilTextChanged(PAGE_TITLE, oldTitle);
+        // Search reloads the results document, even when the heading remains the same.
+        wait.until(ExpectedConditions.stalenessOf(oldResults));
+        waitUntilVisible(PRODUCTS_SECTION);
+        wait.until(ExpectedConditions.textToBe(PAGE_TITLE, "SEARCHED PRODUCTS"));
+        waitUntilLoaded();
         return this;
     }
 
@@ -74,6 +80,6 @@ public class ProductsPage extends BasePage {
     }
 
     public BrandsComponent brands() {
-        return new BrandsComponent(find(BRANDS));
+        return new BrandsComponent(BRANDS);
     }
 }

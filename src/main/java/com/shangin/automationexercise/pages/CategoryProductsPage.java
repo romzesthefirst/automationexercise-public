@@ -18,34 +18,35 @@ public class CategoryProductsPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        // TODO Auto-generated method stub
-        return false;
+        return getCurrentUrl().contains("/category_products/")
+                && isDisplayed(By.cssSelector(".features_items .product-image-wrapper"));
     }
 
     @Override
     public void waitUntilLoaded() {
-        // TODO Auto-generated method stub
+        wait.until(ignored -> isLoaded());
+        removeAds();
 
     }
 
     public ProductListComponent products() {
-        return new ProductListComponent(find(PRODUCTS_SECTION));
+        return new ProductListComponent(PRODUCTS_SECTION);
     }
 
     public CategoriesComponent categories() {
-        return new CategoriesComponent(find(CATEGORIES));
+        return new CategoriesComponent(CATEGORIES);
     }
 
     public BrandsComponent brands() {
-        return new BrandsComponent(find(BRANDS));
+        return new BrandsComponent(BRANDS);
     }
 
     public BreadcrumbsComponent breadcrumbs() {
-        return new BreadcrumbsComponent(find(BREADCRUMBS));
+        return new BreadcrumbsComponent(BREADCRUMBS);
     }
 
     public String getTitle() {
-        return find(HEADER).getText();
+        return getText(HEADER);
     }
 
 }

@@ -1,10 +1,13 @@
 package com.shangin.automationexercise.core;
 
 import java.nio.file.Path;
+import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.shangin.automationexercise.config.ConfigReader;
 import com.shangin.automationexercise.driver.DriverManager;
+import com.shangin.automationexercise.support.AdsHandler;
 
 public abstract class AbstractPageObject {
     protected final WebDriver driver;
@@ -64,12 +68,70 @@ public abstract class AbstractPageObject {
 
     protected abstract List<WebElement> findAll(By locator);
 
+    protected final void scrollIntoView(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element);
+    }
+
     protected final void hover(WebElement element) {
+        scrollIntoView(element);
+        wait.until(ignored -> (Boolean) ((JavascriptExecutor) driver).executeScript("""
+                const r = arguments[0].getBoundingClientRect();
+                return r.width > 0 && r.height > 0 && r.bottom > 0 && r.right > 0
+                    && r.top < window.innerHeight && r.left < window.innerWidth;
+                """, element));
         new Actions(driver).moveToElement(element).perform();
     }
 
     protected final void click(By locator) {
-        waitUntilClickable(locator).click();
+        AdsHandler.removeGoogleAds();
+        AdsHandler.disableGoogleAnnotations();
+        wait.until(ignored -> {
+            try {
+                WebElement element = find(locator);
+                if (!element.isDisplayed() || !element.isEnabled()) {
+                    return false;
+                }
+                clickElement(element);
+                return true;
+            } catch (NoSuchElementException | StaleElementReferenceException
+                    | ElementNotInteractableException failure) {
+                return false;
+            }
+        });
+    }
+
+    private void clickElement(WebElement element) {
+        scrollIntoView(element);
+        element.click();
+    }
+
+    protected final void navigate(By locator) {
+        navigate(waitUntilClickable(locator));
+    }
+
+    protected final void navigate(By locator, String destination) {
+        navigate(waitUntilClickable(locator), destination);
+    }
+
+    protected final void navigate(WebElement link) {
+        navigate(link, URI.create(link.getAttribute("href")).getPath());
+    }
+
+    private void navigate(WebElement link, String destination) {
+        AdsHandler.removeGoogleAds();
+        AdsHandler.disableGoogleAnnotations();
+        clickElement(link);
+        wait.until(ignored -> URI.create(driver.getCurrentUrl()).getPath().equals(destination)
+                || (ConfigReader.isAdsHandlingEnabled() && driver.getCurrentUrl().contains("#google_vignette")));
+        if (ConfigReader.isAdsHandlingEnabled() && driver.getCurrentUrl().contains("#google_vignette")) {
+            // A vignette may consume the first click instead of following the link.
+            // Remove its injected DOM and retry the original navigation once.
+            AdsHandler.removeGoogleAds();
+            AdsHandler.disableGoogleAnnotations();
+            clickElement(link);
+            wait.until(ignored -> URI.create(driver.getCurrentUrl()).getPath().equals(destination));
+        }
     }
 
     protected final void type(By locator, String text) {
@@ -142,7 +204,4 @@ public abstract class AbstractPageObject {
         return wait.until(ExpectedConditions.alertIsPresent()).getText();
     }
 
-    protected final void waitUntilTextChanged(By locator, String oldText) {
-        wait.until(driver -> !find(locator).getText().equals(oldText));
-    }
 }

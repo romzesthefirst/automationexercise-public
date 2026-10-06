@@ -106,6 +106,61 @@ A damaged signature requires a valid browser copy; the launcher does not alter
 or re-sign the installed application. Other platforms use normal Selenium
 Firefox launch without this macOS launcher.
 
+## Page readiness and interaction waits
+
+The implicit wait is always zero and is not configurable. Page objects use the
+configured `explicit.wait` for visible and
+clickable controls. Clicks scroll targets into view and retry temporary
+interception until the explicit deadline; pointer hovering also waits for the
+target to intersect the viewport. Navigation returns the instance whose readiness was checked.
+Search waits for the old result section to detach and for the new results heading,
+so repeated and empty-result searches do not depend on a changed title.
+Contact and review messages are read only after they become visible. Chrome and
+Firefox use eager document loading; explicit readiness conditions await usable
+page controls without waiting for unrelated advertisement resources to finish.
+
+Container components resolve their root locator on every access, including after
+navigation or DOM replacement. Product cards and cart rows retain their item
+identity as element snapshots. Reacquire these items from the page after a DOM
+replacement; using an obsolete snapshot fails immediately with a descriptive
+error instead of polling it until timeout. Closing the cart modal waits for its
+shopping button to disappear before the next interaction.
+
+Payment confirmation is transient: the website shows it and redirects to the
+order page. A JavaScript `MutationObserver` captures the visible text in
+same-origin `sessionStorage` before the redirect. The payment method clears any
+previous capture, explicitly waits for a nonempty new capture, waits for the
+order page, then removes the stored message. Missing confirmation fails with an
+explicit-wait timeout; landing on the order page alone is insufficient.
+
+Advertisement handling defaults to enabled. Set `-Dads.handling.enabled=false`
+to disable all framework ad handling for a run, or change the file default.
+Enabled handling blocks selected Google ad requests through CDP in Chrome and
+Edge. Firefox has no equivalent request blocking in this implementation. All
+three browsers remove matching ad elements on pages that invoke `removeAds()`
+and install a DOM observer to restore original words in Google annotation links
+and remove injected suggestion chips. Link navigation retries the original
+link once if a Google vignette consumes the first click. This changes the
+page compared with normal browsing and does not guarantee removal of every ad.
+Changing the setting affects new sessions; it cannot undo already blocked
+requests or restore removed elements in an existing page.
+
+Run controlled delayed-DOM checks plus real-site API-page/category/brand
+navigation and repeated searches:
+
+```sh
+./mvnw test -Dtest=PageReadinessLiveTest -Dreadiness.live=true \
+  -Dbrowser=chrome -Dheadless=true
+```
+
+Repeat for `edge` and `firefox`; on macOS add the Firefox launcher described
+above. This opt-in test is outside the default suite selectors. Its local HTTP
+fixture injects delayed DOM updates without sleeps in the test code, verifies
+confirmation across an actual redirect, checks stale component behavior, and
+checks the ad-handling toggle. Actual website submissions remain covered by
+`ContactUsTest`, `ProductsPageTest#shouldAddReviewOnProduct`, and
+`PlaceOrderTest#shouldPlaceOrderLoginBeforeCheckout`.
+
 ## Browser lifecycle and failure evidence
 
 The driver factory configures window size, advertisement blocking, and all three

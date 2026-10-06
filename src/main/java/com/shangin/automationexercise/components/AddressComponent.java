@@ -25,6 +25,10 @@ public class AddressComponent extends BaseComponent {
     public AddressComponent(WebElement root) {
         super(root);
     }
+
+    public AddressComponent(By rootLocator) {
+        super(rootLocator);
+    }
     
     public List<String> getAddressLines() {
         return findAll(ADDRESS_LINES)

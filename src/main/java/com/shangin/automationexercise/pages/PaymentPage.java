@@ -8,7 +8,6 @@ import com.shangin.automationexercise.model.CardDetails;
 
 public class PaymentPage extends BasePage {
 
-    private static final By PAYMENT_HEADING = By.cssSelector(".heading");
     private static final By CARD_NAME_ON_INPUT = By.cssSelector("input[data-qa='name-on-card']");
     private static final By CARD_NUMBER_INPUT = By.cssSelector("input[data-qa='card-number']");
     private static final By CARD_CVC = By.cssSelector("input[data-qa='cvc']");
@@ -19,12 +18,13 @@ public class PaymentPage extends BasePage {
 
     @Override
     public boolean isLoaded() {
-        return isDisplayed(PAYMENT_HEADING);
+        return isDisplayed(CARD_NUMBER_INPUT) && isDisplayed(PAY_AND_CONFIRM_BUTTON);
     }
 
     @Override
     public void waitUntilLoaded() {
-        waitUntilVisible(PAYMENT_HEADING);
+        wait.until(ignored -> isLoaded());
+        waitUntilClickable(PAY_AND_CONFIRM_BUTTON);
         removeAds();
     }
 
@@ -37,13 +37,9 @@ public class PaymentPage extends BasePage {
     }
 
     public String payAndGetResultMessage() {
-        // System.out.println(driver.getCurrentUrl());
-        // System.out.println(find(By.id("success_message")).getAttribute("class"));
-        // click(PAY_AND_CONFIRM_BUTTON);
-        // System.out.println(driver.getCurrentUrl());
-        // System.out.println(find(By.id("success_message")).getAttribute("class"));
-        // System.out.println(driver.getCurrentUrl());
-        // return waitUntilVisible(SUCCESS_MESSAGE).getText();
+        // The site briefly shows confirmation and immediately redirects. A browser-side
+        // observer preserves that transient text in same-origin sessionStorage so Selenium
+        // can await it after navigation, rather than missing it between remote commands.
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         js.executeScript("""
@@ -63,7 +59,7 @@ public class PaymentPage extends BasePage {
                             && style.visibility !== 'hidden'
                             && target.offsetParent !== null;
 
-                        if (visible) {
+                        if (visible && target.innerText.trim()) {
                             sessionStorage.setItem(
                                 'orderSuccessMessage',
                                 target.innerText.trim()
@@ -75,19 +71,22 @@ public class PaymentPage extends BasePage {
 
                     observer.observe(target, {
                         attributes: true,
-                        attributeFilter: ['class', 'style']
+                        childList: true,
+                        subtree: true,
+                        characterData: true
                     });
                 """);
 
         click(PAY_AND_CONFIRM_BUTTON);
 
-        String message = (String) js
-                .executeScript("return sessionStorage.getItem('orderSuccessMessage');");
-
-        if (message == null) {
-            throw new AssertionError("Order success message was not displayed before redirect");
-        }
-
+        String message = wait.withMessage("Order success message was not captured before redirect")
+                .until(ignored -> {
+                    String captured = (String) js.executeScript(
+                            "return sessionStorage.getItem('orderSuccessMessage');");
+                    return captured == null || captured.isBlank() ? null : captured;
+                });
+        new PaymentDonePage().waitUntilLoaded();
+        js.executeScript("sessionStorage.removeItem('orderSuccessMessage');");
         return message;
     }
 

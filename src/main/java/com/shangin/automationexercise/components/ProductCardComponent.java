@@ -27,7 +27,7 @@ public class ProductCardComponent extends BaseComponent {
     }
 
     public ProductDetailsPage viewProduct() {
-        click(VIEW_PRODUCT);
+        navigate(VIEW_PRODUCT);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage();
         productDetailsPage.waitUntilLoaded();
         return productDetailsPage;

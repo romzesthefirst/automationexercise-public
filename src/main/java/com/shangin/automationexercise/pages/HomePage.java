@@ -42,11 +42,11 @@ public class HomePage extends BasePage {
     }
 
     public CategoriesComponent categories() {
-        return new CategoriesComponent(find(CATEGORIES));
+        return new CategoriesComponent(CATEGORIES);
     }
 
     public BrandsComponent brands() {
-        return new BrandsComponent(find(BRANDS));
+        return new BrandsComponent(BRANDS);
     }
 
     public boolean isOpened() {
@@ -65,11 +65,11 @@ public class HomePage extends BasePage {
     }
 
     public ProductListComponent products() {
-        return new ProductListComponent(find(PRODUCTS_SECTION));
+        return new ProductListComponent(PRODUCTS_SECTION);
     }
 
     public ProductListComponent recommendedItems() {
-        return new ProductListComponent(find(RECOMMENDED_ITEMS_CAROUSEL));
+        return new ProductListComponent(RECOMMENDED_ITEMS_CAROUSEL);
     }
 
     public AddToCartModalComponent addProductToCart(int index) {

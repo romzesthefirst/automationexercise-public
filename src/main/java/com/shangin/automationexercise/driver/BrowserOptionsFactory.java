@@ -46,6 +46,8 @@ public final class BrowserOptionsFactory {
 
     public static FirefoxOptions firefox() {
         FirefoxOptions options = new FirefoxOptions().configureFromEnv();
+        // Page objects await usable DOM; unrelated ad resources must not delay navigation.
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         options.addArguments("--width=" + ConfigReader.getBrowserWidth(),
                 "--height=" + ConfigReader.getBrowserHeight());
         if (ConfigReader.isHeadless()) {

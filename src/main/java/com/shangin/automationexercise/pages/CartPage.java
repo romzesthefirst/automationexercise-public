@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
@@ -43,19 +42,19 @@ public class CartPage extends BasePage {
     }
 
     public final CheckoutPage proceedToCheckoutAsLoggedInUser() {
-        click(PROCEED_TO_CHECKOUT_BUTTON);
+        navigate(PROCEED_TO_CHECKOUT_BUTTON, "/checkout");
         CheckoutPage checkoutPage = new CheckoutPage();
         checkoutPage.waitUntilLoaded();
         return checkoutPage;
     }
 
     public final CheckoutModalComponent waitForCheckoutModal() {
-        WebElement modal = waitUntilVisible(CHECKOUT_MODAL);
-        return new CheckoutModalComponent(modal);
+        waitUntilVisible(CHECKOUT_MODAL);
+        return new CheckoutModalComponent(CHECKOUT_MODAL);
     }
 
     public final ProductListComponent products() {
-        return new ProductListComponent(find(PRODUCTS_SECTION));
+        return new ProductListComponent(PRODUCTS_SECTION);
     }
 
     public final AddToCartModalComponent addProductToCart(int index) {

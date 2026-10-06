@@ -14,8 +14,10 @@ public class AccountCreatedPage extends BasePage {
     }
 
     public HomePage continueShopping() {
-        waitUntilClickable(CONTINUE_BUTTON).click();
-        return new HomePage();
+        navigate(CONTINUE_BUTTON);
+        HomePage page = new HomePage();
+        page.waitUntilLoaded();
+        return page;
     }
 
     public String getAccountCreatedMessage() {

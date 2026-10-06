@@ -12,8 +12,8 @@ import com.shangin.automationexercise.pages.BrandProductsPage;
 public class BrandsComponent extends BaseComponent {
     private static final By BRANDS = By.cssSelector(".brands-name li a");
 
-    public BrandsComponent(WebElement root) {
-        super(root);
+    public BrandsComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     public List<String> getBrandNames() {
@@ -25,7 +25,7 @@ public class BrandsComponent extends BaseComponent {
                 .filter(element -> getBrandName(element).equalsIgnoreCase(name)).findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Brand not found: " + name));
 
-        brand.click();
+        navigate(brand);
 
         BrandProductsPage page = new BrandProductsPage();
         page.waitUntilLoaded();

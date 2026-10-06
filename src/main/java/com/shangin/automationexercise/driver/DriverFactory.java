@@ -41,10 +41,9 @@ public final class DriverFactory {
     }
 
     static ClientConfig clientConfiguration() {
-        // Let configured page/script/implicit deadlines expire first, but bound dead sessions
+        // Let configured page/script deadlines expire first, but bound dead sessions
         // during evidence collection and shutdown as well as normal commands.
-        long seconds = Math.max(ConfigReader.getImplicitWait(),
-                Math.max(ConfigReader.getPageLoadTimeout(), ConfigReader.getScriptTimeout())) + 10L;
+        long seconds = Math.max(ConfigReader.getPageLoadTimeout(), ConfigReader.getScriptTimeout()) + 10L;
         return ClientConfig.defaultConfig().readTimeout(Duration.ofSeconds(seconds));
     }
 
@@ -68,7 +67,7 @@ public final class DriverFactory {
     static void initialize(WebDriver driver) {
         driver.manage().window().setSize(new Dimension(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight()));
         AdsHandler.blockGoogleAds(driver);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ConfigReader.getImplicitWait()));
+        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(ConfigReader.getScriptTimeout()));
     }

@@ -1,13 +1,13 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
 
 import com.shangin.automationexercise.base.BaseComponent;
 
 public class BreadcrumbsComponent extends BaseComponent {
 
-    public BreadcrumbsComponent(WebElement root) {
-        super(root);
+    public BreadcrumbsComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     

@@ -39,11 +39,11 @@ public class ContactUsPage extends BasePage {
     }
 
     public String getSuccessMessage() {
-        return find(SUCCESS_MESSAGE).getText();
+        return getText(SUCCESS_MESSAGE);
     }
 
     public HomePage goToHome() {
-        click(HOME_BUTTON);
+        navigate(HOME_BUTTON);
         HomePage homePage = new HomePage();
         homePage.waitUntilLoaded();
         return homePage;

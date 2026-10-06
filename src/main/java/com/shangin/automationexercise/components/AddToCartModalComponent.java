@@ -1,15 +1,14 @@
 package com.shangin.automationexercise.components;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.pages.CartPage;
 
 public class AddToCartModalComponent extends BaseComponent {
 
-    public AddToCartModalComponent(WebElement root) {
-        super(root);
+    public AddToCartModalComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     private static final By TITLE = By.cssSelector(".modal-title");
@@ -26,7 +25,7 @@ public class AddToCartModalComponent extends BaseComponent {
     }
 
     public CartPage viewCart() {
-        click(VIEW_CART_LINK);
+        navigate(VIEW_CART_LINK);
         CartPage cartPage = new CartPage();
         cartPage.waitUntilLoaded();
         return cartPage;
@@ -34,5 +33,6 @@ public class AddToCartModalComponent extends BaseComponent {
 
     public void continueShopping() {
         click(CONTINUE_SHOPPING_BUTTON);
+        waitUntilInvisible(CONTINUE_SHOPPING_BUTTON);
     }
 }

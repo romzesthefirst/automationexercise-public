@@ -32,7 +32,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public ProductDetailsComponent productDetails() {
-        return new ProductDetailsComponent(find(PRODUCT_INFORMATION));
+        return new ProductDetailsComponent(PRODUCT_INFORMATION);
     }
 
     public boolean isOpened() {
@@ -59,7 +59,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public String getSuccessMessage() {
-        return find(SUCCESS_ALERT).getText();
+        return getText(SUCCESS_ALERT);
     }
 
 }

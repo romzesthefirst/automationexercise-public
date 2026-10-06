@@ -1,14 +1,13 @@
 package com.shangin.automationexercise.components;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.shangin.automationexercise.base.BaseComponent;
 
 public class FooterComponent extends BaseComponent {
 
-    public FooterComponent(WebElement root) {
-        super(root);
+    public FooterComponent(By rootLocator) {
+        super(rootLocator);
     }
 
     private static final By SUBSCRIPTION_HEADER = By.cssSelector(".single-widget h2");
@@ -30,7 +29,7 @@ public class FooterComponent extends BaseComponent {
     }
 
     public boolean isDisplayed() {
-        return root.isDisplayed();
+        return root().isDisplayed();
     }
 
 }

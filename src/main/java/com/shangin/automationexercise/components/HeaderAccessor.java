@@ -2,7 +2,6 @@ package com.shangin.automationexercise.components;
 
 import org.openqa.selenium.By;
 
-import com.shangin.automationexercise.driver.DriverManager;
 
 public class HeaderAccessor {
 
@@ -10,6 +9,6 @@ public class HeaderAccessor {
 
     public HeaderComponent header() {
         
-        return new HeaderComponent(DriverManager.getDriver().findElement(HEADER));
+        return new HeaderComponent(HEADER);
     }
 }

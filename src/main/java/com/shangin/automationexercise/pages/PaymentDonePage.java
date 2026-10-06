@@ -22,7 +22,7 @@ public class PaymentDonePage extends BasePage {
     }
     
     public HomePage continueButton() {
-        click(CONTINUE_BUTTON);
+        navigate(CONTINUE_BUTTON);
         HomePage homePage = new HomePage();
         homePage.waitUntilLoaded();
         return homePage;

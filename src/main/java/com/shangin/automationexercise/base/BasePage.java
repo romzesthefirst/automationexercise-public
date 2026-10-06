@@ -20,11 +20,11 @@ public abstract class BasePage extends AbstractPageObject {
     private static final By SCROLL_UP_BUTTON = By.id("scrollUp");
 
     public HeaderComponent header() {
-        return new HeaderComponent(find(HEADER));
+        return new HeaderComponent(HEADER);
     }
 
     public FooterComponent footer() {
-        return new FooterComponent(find(FOOTER));
+        return new FooterComponent(FOOTER);
     }
 
     @Override
@@ -67,8 +67,8 @@ public abstract class BasePage extends AbstractPageObject {
     }
 
     protected final AddToCartModalComponent waitForAddToCartModal() {
-        WebElement modal = waitUntilVisible(ADD_TO_CART_MODAL);
-        return new AddToCartModalComponent(modal);
+        waitUntilVisible(ADD_TO_CART_MODAL);
+        return new AddToCartModalComponent(ADD_TO_CART_MODAL);
     }
 
     public final void clickScrollUp() {
