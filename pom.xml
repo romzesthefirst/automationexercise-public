@@ -11,6 +11,7 @@
 		<threadCount>4</threadCount>
 		<testGroups></testGroups>
 		<test.includes>**/tests/api/*Test.java</test.includes>
+		<test.reports.directory>${project.build.directory}/surefire-reports</test.reports.directory>
 		<cucumber.filter.tags></cucumber.filter.tags>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -164,6 +165,7 @@
 				<version>${surefire.version}</version>
 
 				<configuration>
+					<reportsDirectory>${test.reports.directory}</reportsDirectory>
 					<argLine>
 						-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
 					</argLine>

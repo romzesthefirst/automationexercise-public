@@ -3,6 +3,8 @@
 A Java 17 test automation framework using Selenium, TestNG, Cucumber, REST Assured,
 and Allure against [Automation Exercise](https://automationexercise.com).
 
+[![Quick checks](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml/badge.svg)](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml)
+
 ## Prerequisites
 
 - JDK 17; set `JAVA_HOME` to the JDK directory.
@@ -335,8 +337,82 @@ both smoke checks passed. Subsequent full browser regression results are recorde
 in roadmap item 4. Windows Wrapper and hosted Jenkins execution remain unverified.
 
 Test results are written to `target/surefire-reports`; Allure results are written
-to `target/allure-results`. Full report presentation and portable CI setup are
-tracked separately in the roadmap.
+to `target/allure-results`. CI uses separate directories described below; full
+Allure report presentation is tracked separately in the roadmap.
+
+## Continuous integration
+
+[Quick checks](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml)
+runs on pushes, pull requests, and manual dispatch on fresh Ubuntu 24.04 runners
+with Temurin Java 17 and the installed Chrome. It runs three independent jobs:
+all 14 API tests, one TestNG UI smoke test, and one Cucumber smoke scenario.
+The matrix keeps running after a job fails. Jobs require no repository secrets;
+checkout credentials are not persisted and token permissions are read-only.
+
+[External-site regression](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/regression.yml)
+is a separate manual workflow for full Chrome headless TestNG UI and Cucumber
+suites. Each suite runs in its own job with one worker and a 60-minute timeout.
+Use **Actions → External-site regression → Run workflow** and select the revision.
+Quick checks have a 20-minute timeout per job.
+
+Both workflows use the same portable runner as Jenkins. Python 3.9 or newer is
+required, in addition to the prerequisites above. Local equivalents are:
+
+```sh
+python3 tools/run_ci.py api
+python3 tools/run_ci.py ui-smoke
+python3 tools/run_ci.py bdd-smoke
+# Broader regression, separately from quick checks:
+python3 tools/run_ci.py ui
+python3 tools/run_ci.py bdd --threads 1
+```
+
+On Windows use `python` instead of `python3`; the runner invokes `mvnw.cmd`.
+Set `JAVA_HOME` to Java 17. The runner calls the Wrapper with `test -Papi`,
+`test -Pui,smoke`, `test -Pbdd,smoke`, `test -Pui`, or `test -Pbdd` respectively,
+plus browser/headless/worker settings and unique report/download directories.
+It rejects a different Java major version. It returns Maven's failure code and
+also fails when reports are missing, empty, malformed, failed, or skipped.
+`--discovery` is only for local selection validation: it labels outputs as
+**discovery**, and neither CI workflow uses it.
+
+Every invocation creates a new `target/ci/<run>-<attempt>-<suite>-<unique-id>/`.
+It never reads previous results. Each directory contains `run.json` (source
+revision, CI run URL, timestamps, exact command, Java version, exit status and
+counts), `summary.md`, `console.log`, Surefire XML/text, and Allure results with
+existing HTTP/browser failure attachments. Run the local commands in a fresh
+checkout for CI-equivalent compilation; do not run concurrent Maven invocations
+in one workspace. Avoid `clean` between suites because it deletes their evidence.
+
+GitHub exposes the counts in the job summary. Download the corresponding
+`quick-<suite>-<run-id>-<attempt>` or `regression-<suite>-<run-id>-<attempt>` artifact
+from that workflow run. Upload runs on failure as well as success; retention is
+14 days. Compilation/startup failures can have metadata and logs without test
+XML or Allure results. Runner loss or forced cancellation can prevent upload.
+Artifacts contain full test diagnostics and generated synthetic test data.
+They are execution evidence; use the separate publication-sample process when
+preparing curated public examples.
+
+Jenkins starts with a fresh checkout, disables concurrent builds in the same job,
+and runs API plus both smoke selections by default. Enable `REGRESSION` for API
+plus full UI/BDD. A failed suite marks the build and stage failed while allowing
+the remaining suites to run; cancellation and timeout still stop execution.
+The `always` post block archives `target/ci/**`, publishes Surefire XML through
+JUnit, and builds Allure from all current invocation directories. Jenkins retains
+20 builds and artifacts for the latest 10. Agent requirements: Java 17 configured
+through `JAVA_HOME`/PATH, Python (`python3` on Unix, `python` on Windows), Git,
+Wrapper download prerequisites, and the selected browser. Required Jenkins
+plugins: Pipeline, Git, JUnit, and Allure; configure an Allure command-line
+installation in Jenkins tools. No Homebrew installation or machine-specific
+PATH is assumed. Windows support is implemented but awaits a Windows CI run.
+
+All these checks use the external Automation Exercise website. API tests and
+full regression create fresh synthetic accounts and attempt owned-account
+cleanup; the two browser smoke selections only navigate pages. Network outages,
+Cloudflare errors, rate limits, site changes, and cleanup failures remain visible
+as failures. CI does not automatically retry or reinterpret them as success.
+A passing quick workflow proves only its API and smoke selections; full UI/BDD
+coverage requires the separate regression workflow.
 
 ## Test account cleanup
 

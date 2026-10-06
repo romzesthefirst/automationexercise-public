@@ -17,3 +17,6 @@
 !/tools/compare_browser_results.py
 /docs/
 /src/test/java/com/shangin/automationexercise/tests/diagnostics/
+
+!/tools/run_ci.py
+!/tools/test_run_ci.py
