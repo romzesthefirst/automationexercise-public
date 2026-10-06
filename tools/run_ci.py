@@ -10,12 +10,12 @@ import sys
 import uuid
 import xml.etree.ElementTree as ET
 
-PROFILES = {"api": "api", "ui-smoke": "ui,smoke", "bdd-smoke": "bdd,smoke",
+PROFILES = {"api": "api", "api-smoke": "api,smoke", "ui-smoke": "ui,smoke", "bdd-smoke": "bdd,smoke",
             "ui": "ui", "bdd": "bdd"}
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def run(suite, browser="chrome", headless="true", threads=1, discovery=False):
+def run(suite, browser="chrome", headless="true", threads=4, discovery=False):
     run_id = (os.getenv("GITHUB_RUN_ID") or os.getenv("BUILD_NUMBER") or
               datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     attempt = os.getenv("GITHUB_RUN_ATTEMPT", "1")
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     parser.add_argument("suite", choices=PROFILES)
     parser.add_argument("--browser", choices=["chrome", "firefox", "edge"], default="chrome")
     parser.add_argument("--headless", choices=["true", "false"], default="true")
-    parser.add_argument("--threads", type=int, choices=range(1, 9), default=1)
+    parser.add_argument("--threads", type=int, choices=range(1, 9), default=4)
     parser.add_argument("--discovery", action="store_true", help="Labelled discovery only; does not execute tests")
     args = parser.parse_args()
     sys.exit(run(args.suite, args.browser, args.headless, args.threads, args.discovery))

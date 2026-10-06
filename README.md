@@ -371,6 +371,8 @@ On Windows use `python` instead of `python3`; the runner invokes `mvnw.cmd`.
 Set `JAVA_HOME` to Java 17. The runner calls the Wrapper with `test -Papi`,
 `test -Pui,smoke`, `test -Pbdd,smoke`, `test -Pui`, or `test -Pbdd` respectively,
 plus browser/headless/worker settings and unique report/download directories.
+The runner defaults to four Cucumber workers; use `--threads` to override.
+`python3 tools/run_ci.py api-smoke` selects only the API smoke test (`-Papi,smoke`).
 It rejects a different Java major version. It returns Maven's failure code and
 also fails when reports are missing, empty, malformed, failed, or skipped.
 `--discovery` is only for local selection validation: it labels outputs as
@@ -394,8 +396,10 @@ They are execution evidence; use the separate publication-sample process when
 preparing curated public examples.
 
 Jenkins starts with a fresh checkout, disables concurrent builds in the same job,
-and runs API plus both smoke selections by default. Enable `REGRESSION` for API
-plus full UI/BDD. A failed suite marks the build and stage failed while allowing
+and runs the full API, UI, and BDD suites by default, with `THREAD_COUNT=4`.
+The `SMOKE` checkbox defaults to unchecked. Enable it to run only the API, UI,
+and BDD smoke selections (one test/scenario each). A failed suite marks the
+build and stage failed while allowing
 the remaining suites to run; cancellation and timeout still stop execution.
 The `always` post block archives `target/ci/**`, publishes Surefire XML through
 JUnit, and builds Allure from all current invocation directories. Jenkins retains

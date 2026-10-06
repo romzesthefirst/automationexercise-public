@@ -18,10 +18,10 @@ pipeline {
                description: 'Installed browser for UI tests')
         booleanParam(name: 'HEADLESS', defaultValue: true,
                      description: 'Run UI tests in headless mode')
-        choice(name: 'THREAD_COUNT', choices: ['1', '2', '4', '6', '8'],
+        choice(name: 'THREAD_COUNT', choices: ['4', '1', '2', '6', '8'],
                description: 'Cucumber worker count')
-        booleanParam(name: 'REGRESSION', defaultValue: false,
-                     description: 'Run full UI and BDD suites instead of smoke checks')
+        booleanParam(name: 'SMOKE', defaultValue: false,
+                     description: 'Run only API, UI and BDD smoke tests')
     }
 
     stages {
@@ -34,7 +34,7 @@ pipeline {
         stage('Test suites') {
             steps {
                 script {
-                    def suites = params.REGRESSION ? ['api', 'ui', 'bdd'] : ['api', 'ui-smoke', 'bdd-smoke']
+                    def suites = params.SMOKE ? ['api-smoke', 'ui-smoke', 'bdd-smoke'] : ['api', 'ui', 'bdd']
                     for (suite in suites) {
                         stage(suite) {
                             catchError(buildResult: 'FAILURE', stageResult: 'FAILURE', catchInterruptions: false) {
