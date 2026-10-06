@@ -7,7 +7,8 @@ and Allure against [Automation Exercise](https://automationexercise.com).
 
 - JDK 17; set `JAVA_HOME` to the JDK directory.
 - Internet access for Maven downloads and the external test website.
-- Chrome for the UI and BDD commands below. Selenium Manager resolves its driver.
+- Chrome, Firefox, or Microsoft Edge for UI/BDD execution. Selenium Manager
+  resolves the matching driver.
 - On Unix, a shell, `curl` or `wget`, and `unzip` for the Maven Wrapper.
 
 The committed Maven Wrapper pins Maven 3.9.16 and checks its distribution SHA-256
@@ -73,13 +74,64 @@ to avoid mixing discovery results with real execution results.
 
 ## Browser launch settings
 
-All three browsers use `headless`, `browser.width`, and `browser.height` from
-`src/main/resources/config.properties`. The committed defaults are headed mode
-(`headless=false`) and a 1920 by 1080 window. `-Dheadless=true` or
-`-Dheadless=false` overrides the file for any browser. Startup arguments and a
-shared WebDriver window-size operation apply the configured dimensions before
-either runner receives the browser. These are outer window dimensions; browser
-chrome can make the page viewport height differ between browsers.
+TestNG and Cucumber use the same driver factory and configuration reader.
+Every key below resolves in this order: Java system property (`-Dkey=value`),
+environment variable, then `src/main/resources/config.properties`. Environment
+names use `AE_` plus the uppercase key with dots replaced by underscores.
+An empty override is an error, rather than falling back to another source.
+Values are checked before browser startup or an API request; errors name the key
+and its environment variable. Booleans accept only `true` or `false` (case insensitive),
+and numeric settings must be positive integers. Implicit waits always remain zero.
+
+| System property | Environment variable | File default |
+| --- | --- | --- |
+| `base.url` | `AE_BASE_URL` | `https://automationexercise.com/` |
+| `api.base.url` | `AE_API_BASE_URL` | `https://automationexercise.com/api` |
+| `browser` | `AE_BROWSER` | `chrome` (`chrome`, `firefox`, `edge`) |
+| `headless` | `AE_HEADLESS` | `false` |
+| `incognito` | `AE_INCOGNITO` | `false` |
+| `browser.width` | `AE_BROWSER_WIDTH` | `1920` |
+| `browser.height` | `AE_BROWSER_HEIGHT` | `1080` |
+| `page.load.timeout` | `AE_PAGE_LOAD_TIMEOUT` | `30` seconds |
+| `script.timeout` | `AE_SCRIPT_TIMEOUT` | `30` seconds |
+| `explicit.wait` | `AE_EXPLICIT_WAIT` | `10` seconds |
+| `ads.handling.enabled` | `AE_ADS_HANDLING_ENABLED` | `true` |
+| `download.directory` | `AE_DOWNLOAD_DIRECTORY` | `target/downloads` |
+| `download.timeout` | `AE_DOWNLOAD_TIMEOUT` | `10` seconds |
+| `download.mime.types` | `AE_DOWNLOAD_MIME_TYPES` | `text/plain,application/octet-stream` |
+
+URLs must be absolute HTTP(S) URLs without embedded credentials, query, or
+fragment. Use a trailing slash for the home URL to match the website's canonical
+URL. Relative download roots resolve against the working directory; each session
+creates and removes only its own child directory. Automatic download prompts are
+disabled. Both runners wait up to `download.timeout` for a completed invoice. Firefox uses the MIME list for automatic saving; Chromium handles
+attachment responses without a MIME allowlist. Inline documents and browser/OS
+security restrictions can still prevent automatic downloads.
+
+All browsers apply the requested outer window dimensions before the runner
+receives its driver. Browser chrome can make viewport heights differ. Chrome
+uses `--incognito`, Edge uses `--inprivate`, and Firefox enables permanent private
+browsing in its temporary profile. Each browser has a fresh session profile even
+when private mode is disabled. All use eager page loading with explicit page
+readiness waits. The transport response limit is the larger page/script timeout
+plus ten seconds. Chromium download routing also uses
+[`Page.setDownloadBehavior`](https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-setDownloadBehavior)
+for the current page context, including private sessions. Rerun the download
+probe after browser/driver upgrades.
+
+```sh
+AE_BROWSER=edge AE_HEADLESS=true ./mvnw test -Pui,smoke \
+  -Dbrowser.width=1440 -Dbrowser.height=900 -Dincognito=true
+AE_API_BASE_URL=https://automationexercise.com/api ./mvnw test -Papi,smoke
+./mvnw test -Dtest=ConfigReaderTest,DriverLifecycleTest,DriverTransportTimeoutTest,ParallelIsolationTest
+./mvnw test -Dtest=BrowserConfigurationLiveTest -Ddriver.lifecycle.live=true \
+  -Dbrowser=edge -Dbrowser.width=1440 -Dbrowser.height=900 \
+  -Dpage.load.timeout=25 -Dscript.timeout=20 -Ddownload.directory=target/custom-downloads
+```
+
+The live configuration probe exercises headed/headless and ordinary/private
+sessions, actual outer dimensions and timeouts, and a local HTTP attachment
+download. Add the Firefox launcher settings below on affected macOS systems.
 
 Firefox also accepts Selenium's `-Dwebdriver.firefox.bin` binary override.
 On macOS 27, direct execution can fail before profile selection because Firefox
@@ -413,3 +465,36 @@ repeated four-worker BDD run passed 4/4. All 32 invoices reached across these
 additional runs passed their content checks and used distinct directories;
 account and directory cleanup succeeded. Exact results and limitations are in
 roadmap item 8; local evidence is `target/parallel-validation/cross-browser/report.md`.
+
+## Compare complete browser runs
+
+Run each full suite into a fresh, separate Allure directory, using the same
+configuration, worker count, and seed. Preserve failures and do not skip cases.
+For example, repeat these commands with `chrome`, `firefox`, and `edge`:
+
+```sh
+./mvnw test -Pui -Dbrowser=chrome -Dheadless=true -Dtest.seed=824 \
+  -Dallure.results.directory=target/browser-comparison/chrome-ui/allure-results
+./mvnw test -Pbdd -Dbrowser=chrome -Dheadless=true -Dtest.seed=824 -DthreadCount=1 \
+  -Dallure.results.directory=target/browser-comparison/chrome-bdd/allure-results
+python3 tools/compare_browser_results.py target/browser-comparison \
+  --output target/browser-comparison/comparison.md
+```
+
+The comparison joins UI methods and BDD source locations plus example parameters,
+reports missing cases, and includes the original error for each failure. It
+rejects duplicate cases from mixed runs. Compare individual outcomes before
+claiming equivalent browser support; external-site failures require investigation
+and cannot be excused solely because another run passed.
+
+The 2026-10-06 Java 17/macOS 27 acceptance checked Chrome 154, Firefox 157.0,
+and Edge 154 in all four headed/headless × ordinary/private modes. Live
+configuration/download probes passed for all twelve sessions. Both-runner smoke
+passed 23/24 initially; one Firefox 520 page was retained, and that mode's
+separate repeat passed 2/2. Complete headless/ordinary UI/BDD comparison passed
+Chrome 26/26 + 35/35, Edge 26/26 + 35/35, and Firefox 22/26 + 32/35. Every
+Firefox full-run difference displayed a Cloudflare 520 page; focused repeats
+passed except BDD logout, which displayed 520 again. This is not a green full
+Firefox claim. Roadmap item 9 records the scope; local detailed evidence is
+`target/configuration-validation/report.md` and `comparison.md`. Windows/Linux
+and full headed/private suites were not run.

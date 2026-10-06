@@ -66,6 +66,11 @@ public final class DownloadHelper {
         throw new AssertionError("Download did not complete (nonempty stable file without temporary downloads): " + file);
     }
 
+    public static String waitAndRead(String fileName) throws IOException {
+        return waitAndRead(fileName, Duration.ofSeconds(
+                com.shangin.automationexercise.config.ConfigReader.getDownloadTimeout()));
+    }
+
     public static String waitAndRead(String fileName, Duration timeout) throws IOException {
         Path file = waitForFile(fileName, timeout);
         io.qameta.allure.Allure.addAttachment("Downloaded file", "text/plain", file.toString());

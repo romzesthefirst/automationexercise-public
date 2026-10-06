@@ -1,7 +1,6 @@
 package com.shangin.automationexercise.cucumber.steps;
 
 import java.io.IOException;
-import java.time.Duration;
 
 import org.testng.Assert;
 
@@ -79,7 +78,7 @@ public class CheckoutSteps {
 
         DownloadHelper.prepareFile("invoice.txt");
         paymentDonePage.downloadInvoice();
-        context.setInvoiceText(DownloadHelper.waitAndRead("invoice.txt", Duration.ofSeconds(10)));
+        context.setInvoiceText(DownloadHelper.waitAndRead("invoice.txt"));
     }
 
     @Then("the delivery address details should be correct")

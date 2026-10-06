@@ -15,10 +15,12 @@ public class ApiSpecifications {
     }
 
     public static RequestSpecification defaultRequest() {
+        ConfigReader.validate();
         return withDiagnostics(new RequestSpecBuilder().setBaseUri(ConfigReader.getApiBaseUrl()).build());
     }
     
     public static RequestSpecification formRequest() {
+        ConfigReader.validate();
         return withDiagnostics(new RequestSpecBuilder().setBaseUri(ConfigReader.getApiBaseUrl())
                 .setContentType("application/x-www-form-urlencoded").build());
     }

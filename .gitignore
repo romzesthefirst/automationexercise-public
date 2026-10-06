@@ -14,5 +14,6 @@
 /scripts/
 /tools/*
 !/tools/prepare_invoice_acceptance.py
+!/tools/compare_browser_results.py
 /docs/
 /src/test/java/com/shangin/automationexercise/tests/diagnostics/

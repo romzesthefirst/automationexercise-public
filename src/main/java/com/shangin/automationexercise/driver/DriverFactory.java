@@ -1,12 +1,15 @@
 package com.shangin.automationexercise.driver;
 
 import java.time.Duration;
+import java.util.Locale;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.http.ClientConfig;
@@ -22,12 +25,13 @@ public final class DriverFactory {
     }
 
     public static WebDriver createDriver() {
-        Browser browser = Browser.valueOf(ConfigReader.getBrowser().toUpperCase());
+        Browser browser = Browser.valueOf(ConfigReader.getBrowser().toUpperCase(Locale.ROOT));
 
         return createDriver(browser);
     }
 
     public static WebDriver createDriver(Browser browser) {
+        ConfigReader.validate();
         ClientConfig clientConfig = clientConfiguration();
         try {
             return createDriver(() -> switch (browser) {
@@ -72,6 +76,11 @@ public final class DriverFactory {
 
     static void initialize(WebDriver driver) {
         driver.manage().window().setSize(new Dimension(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight()));
+        if (driver instanceof ChromiumDriver chromium) {
+            // Preferences alone do not route private-mode downloads into the owned directory.
+            chromium.executeCdpCommand("Page.setDownloadBehavior", Map.of(
+                    "behavior", "allow", "downloadPath", DownloadDirectory.current().toString()));
+        }
         AdsHandler.blockGoogleAds(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));

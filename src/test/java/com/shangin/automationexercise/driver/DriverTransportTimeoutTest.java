@@ -21,22 +21,19 @@ import io.qameta.allure.model.TestResult;
 
 public class DriverTransportTimeoutTest {
     @Test public void transportAllowsEveryConfiguredBrowserWaitToFinish() throws Exception {
-        var field = com.shangin.automationexercise.config.ConfigReader.class.getDeclaredField("properties");
-        field.setAccessible(true);
-        var properties = (java.util.Properties) field.get(null);
-        var original = (java.util.Properties) properties.clone();
+        String page = System.getProperty("page.load.timeout");
+        String script = System.getProperty("script.timeout");
         try {
-            // Implicit waits remain zero even if the legacy file property is changed.
-            for (int[] settings : new int[][] {{30, 30, 60, 40}, {90, 30, 60, 100}, {30, 120, 60, 130}}) {
-                properties.setProperty("page.load.timeout", Integer.toString(settings[0]));
-                properties.setProperty("script.timeout", Integer.toString(settings[1]));
-                properties.setProperty("implicit.wait", Integer.toString(settings[2]));
-                Assert.assertEquals(DriverFactory.clientConfiguration().readTimeout(),
-                        Duration.ofSeconds(settings[3]));
+            for (int[] settings : new int[][] {{30, 30, 40}, {90, 30, 100}, {30, 120, 130}}) {
+                System.setProperty("page.load.timeout", Integer.toString(settings[0]));
+                System.setProperty("script.timeout", Integer.toString(settings[1]));
+                Assert.assertEquals(DriverFactory.clientConfiguration().readTimeout(), Duration.ofSeconds(settings[2]));
             }
         } finally {
-            properties.clear();
-            properties.putAll(original);
+            if (page == null) { System.clearProperty("page.load.timeout"); }
+            else { System.setProperty("page.load.timeout", page); }
+            if (script == null) { System.clearProperty("script.timeout"); }
+            else { System.setProperty("script.timeout", script); }
         }
     }
 

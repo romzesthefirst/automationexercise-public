@@ -1,7 +1,6 @@
 package com.shangin.automationexercise.tests.ui.order;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -309,7 +308,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
 
         DownloadHelper.prepareFile("invoice.txt");
         paymentDonePage.downloadInvoice();
-        String invoiceContent = DownloadHelper.waitAndRead("invoice.txt", Duration.ofSeconds(10));
+        String invoiceContent = DownloadHelper.waitAndRead("invoice.txt");
         Assert.assertEquals(
                 invoiceContent,
                 UiMessages.invoiceText(newUser.firstName(), newUser.lastName(), totalAmountStr));

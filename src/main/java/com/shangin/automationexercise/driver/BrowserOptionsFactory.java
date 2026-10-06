@@ -49,7 +49,8 @@ public final class BrowserOptionsFactory {
         options.addPreference("browser.download.folderList", 2);
         options.addPreference("browser.download.dir", DownloadDirectory.current().toString());
         options.addPreference("browser.download.useDownloadDir", true);
-        options.addPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain,application/octet-stream");
+        options.addPreference("browser.helperApps.neverAsk.saveToDisk", ConfigReader.getDownloadMimeTypes());
+        options.addPreference("browser.privatebrowsing.autostart", ConfigReader.isIncognito());
         // Page objects await usable DOM; unrelated ad resources must not delay navigation.
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         options.addArguments("--width=" + ConfigReader.getBrowserWidth(),
@@ -62,6 +63,11 @@ public final class BrowserOptionsFactory {
 
     public static EdgeOptions edge() {
         EdgeOptions options = new EdgeOptions();
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        options.addArguments("--disable-notifications");
+        // Prevent temporary test profiles from pinning Edge to the macOS Dock.
+        options.addArguments("--disable-features=EdgePinToDockNewUser,EdgePinToDockExistingUser");
+        if (ConfigReader.isIncognito()) { options.addArguments("--inprivate"); }
         options.setExperimentalOption("prefs", Map.of(
                 "download.default_directory", DownloadDirectory.current().toString(),
                 "download.prompt_for_download", false));
