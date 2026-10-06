@@ -14,9 +14,6 @@ public class ApiSpecifications {
     private static final RequestSpecification REQUEST_SPEC = 
             new RequestSpecBuilder()
                 .setBaseUri(ConfigReader.getApiBaseUrl())
-                .addFilter(new RequestLoggingFilter())
-                .addFilter(new ResponseLoggingFilter())
-                .addFilter(new AllureRestAssured())
                 .build();
 
     private static final RequestSpecification FORM_REQUEST_SPEC =
@@ -29,10 +26,17 @@ public class ApiSpecifications {
     }
 
     public static RequestSpecification defaultRequest() {
-        return given().spec(REQUEST_SPEC);
+        return withDiagnostics(REQUEST_SPEC);
     }
     
     public static RequestSpecification formRequest() {
-        return given().spec(FORM_REQUEST_SPEC);
+        return withDiagnostics(FORM_REQUEST_SPEC);
+    }
+    private static RequestSpecification withDiagnostics(RequestSpecification specification) {
+        // Bind logging to the current output stream for each request, rather than a shared filter.
+        return given().spec(specification)
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .filter(new AllureRestAssured());
     }
 }

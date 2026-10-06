@@ -11,3 +11,6 @@
 *.iml
 
 .DS_Store
+/scripts/
+/docs/
+/src/test/java/com/shangin/automationexercise/tests/diagnostics/

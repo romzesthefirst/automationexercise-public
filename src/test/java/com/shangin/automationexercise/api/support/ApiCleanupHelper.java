@@ -12,7 +12,7 @@ public final class ApiCleanupHelper {
         try {
             accountApiClient.deleteAccount(user);
         } catch (Exception e) {
-            System.err.println("Failed to cleanup user: " + user.email());
+            System.err.println("Failed to clean up test account: " + user.email());
         }
     }
 }
