@@ -11,26 +11,16 @@ import static io.restassured.RestAssured.given;
 
 public class ApiSpecifications {
 
-    private static final RequestSpecification REQUEST_SPEC = 
-            new RequestSpecBuilder()
-                .setBaseUri(ConfigReader.getApiBaseUrl())
-                .build();
-
-    private static final RequestSpecification FORM_REQUEST_SPEC =
-            new RequestSpecBuilder()
-                    .addRequestSpecification(REQUEST_SPEC)
-                    .setContentType("application/x-www-form-urlencoded")
-                    .build();
-    
     private ApiSpecifications() {
     }
 
     public static RequestSpecification defaultRequest() {
-        return withDiagnostics(REQUEST_SPEC);
+        return withDiagnostics(new RequestSpecBuilder().setBaseUri(ConfigReader.getApiBaseUrl()).build());
     }
     
     public static RequestSpecification formRequest() {
-        return withDiagnostics(FORM_REQUEST_SPEC);
+        return withDiagnostics(new RequestSpecBuilder().setBaseUri(ConfigReader.getApiBaseUrl())
+                .setContentType("application/x-www-form-urlencoded").build());
     }
     private static RequestSpecification withDiagnostics(RequestSpecification specification) {
         // Bind logging to the current output stream for each request, rather than a shared filter.

@@ -1,7 +1,7 @@
 package com.shangin.automationexercise.components;
 
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import com.shangin.automationexercise.support.TestRandom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -60,8 +60,10 @@ public class ProductListComponent extends BaseComponent {
         if (products.isEmpty()) {
             throw new IllegalStateException("Product list is empty");
         }
-        int randomIndex = ThreadLocalRandom.current().nextInt(products.size());
-        return products.get(randomIndex);
+        int randomIndex = TestRandom.productIndex(products.size());
+        ProductCardComponent selected = products.get(randomIndex);
+        TestRandom.selectedProduct(selected.getIdentifier());
+        return selected;
     }
 
     private void validateIndex(int index, int size) {

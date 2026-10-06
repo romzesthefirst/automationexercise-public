@@ -29,15 +29,21 @@ public final class DriverFactory {
 
     public static WebDriver createDriver(Browser browser) {
         ClientConfig clientConfig = clientConfiguration();
-        return createDriver(() -> switch (browser) {
+        try {
+            return createDriver(() -> switch (browser) {
 
-        case CHROME -> new ChromeDriver(BrowserOptionsFactory.chrome(), clientConfig);
+                case CHROME -> new ChromeDriver(BrowserOptionsFactory.chrome(), clientConfig);
 
-        case FIREFOX -> new FirefoxDriver(BrowserOptionsFactory.firefox(), clientConfig);
+                case FIREFOX -> new FirefoxDriver(BrowserOptionsFactory.firefox(), clientConfig);
 
-        case EDGE -> new EdgeDriver(BrowserOptionsFactory.edge(), clientConfig);
+                case EDGE -> new EdgeDriver(BrowserOptionsFactory.edge(), clientConfig);
 
-        }, DriverFactory::initialize);
+            }, DriverFactory::initialize);
+        } catch (RuntimeException | Error failure) {
+            try { DownloadDirectory.close(); }
+            catch (RuntimeException cleanupFailure) { failure.addSuppressed(cleanupFailure); }
+            throw failure;
+        }
     }
 
     static ClientConfig clientConfiguration() {

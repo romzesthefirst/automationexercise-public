@@ -5,17 +5,16 @@ import com.shangin.automationexercise.model.Feedback;
 
 public class FeedbackFactory {
     
-    private static final Faker FAKER = new Faker();
-    
     private FeedbackFactory() {
     }
     
     public static Feedback randomFeedback() {
+        Faker faker = TestData.faker();
         return new Feedback (
-                FAKER.name().firstName() + " " + FAKER.name().lastName(),
-                FAKER.internet().emailAddress(),
-                FAKER.lorem().sentence(),
-                FAKER.lorem().paragraph()
+                faker.name().firstName() + " " + faker.name().lastName(),
+                faker.internet().emailAddress(),
+                faker.lorem().sentence(),
+                faker.lorem().paragraph()
                 );
     }
 

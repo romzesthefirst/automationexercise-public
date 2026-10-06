@@ -3,7 +3,7 @@ package com.shangin.automationexercise.tests.ui.pages;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.datafaker.Faker;
+import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.base.BaseTest;
 import com.shangin.automationexercise.components.FooterComponent;
 import com.shangin.automationexercise.constants.UiMessages;
@@ -13,7 +13,6 @@ import io.qameta.allure.Description;
 
 @Test(groups = "ui")
 public class FooterTest extends BaseTest {
-    private static final Faker FAKER = new Faker();
     
     @Test @Description("Test Case 10: Verify Subscription in home page")
     public void shouldSubscribeFromHomePage() {
@@ -32,7 +31,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(footer.getSubscriptionHeader(), UiMessages.SUBSCRIPTION);
         
         // 6. Enter email address in input and click arrow button
-        footer.subscribe(FAKER.internet().emailAddress());
+        footer.subscribe(TestData.faker().internet().emailAddress());
         
         // 7. Verify success message 'You have been successfully subscribed!' is visible
         Assert.assertEquals(footer.getSubscriptionResult(), UiMessages.SUCCESS_SUBSCRIBE);
@@ -59,7 +58,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(footer.getSubscriptionHeader(), UiMessages.SUBSCRIPTION);
         
         // 7. Enter email address in input and click arrow button
-        footer.subscribe(FAKER.internet().emailAddress());
+        footer.subscribe(TestData.faker().internet().emailAddress());
         
         // 8. Verify success message 'You have been successfully subscribed!' is visible
         Assert.assertEquals(footer.getSubscriptionResult(), UiMessages.SUCCESS_SUBSCRIBE);

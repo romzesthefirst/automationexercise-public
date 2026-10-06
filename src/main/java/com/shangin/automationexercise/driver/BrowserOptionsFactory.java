@@ -20,7 +20,7 @@ public final class BrowserOptionsFactory {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put(
                 "download.default_directory",
-                ConfigReader.getDownloadDirectory().toAbsolutePath().toString());
+                DownloadDirectory.current().toAbsolutePath().toString());
         prefs.put("download.prompt_for_download", false);
 
         ChromeOptions options = new ChromeOptions();
@@ -46,6 +46,10 @@ public final class BrowserOptionsFactory {
 
     public static FirefoxOptions firefox() {
         FirefoxOptions options = new FirefoxOptions().configureFromEnv();
+        options.addPreference("browser.download.folderList", 2);
+        options.addPreference("browser.download.dir", DownloadDirectory.current().toString());
+        options.addPreference("browser.download.useDownloadDir", true);
+        options.addPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain,application/octet-stream");
         // Page objects await usable DOM; unrelated ad resources must not delay navigation.
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         options.addArguments("--width=" + ConfigReader.getBrowserWidth(),
@@ -58,6 +62,9 @@ public final class BrowserOptionsFactory {
 
     public static EdgeOptions edge() {
         EdgeOptions options = new EdgeOptions();
+        options.setExperimentalOption("prefs", Map.of(
+                "download.default_directory", DownloadDirectory.current().toString(),
+                "download.prompt_for_download", false));
         options.addArguments(windowSizeArgument());
         if (ConfigReader.isHeadless()) {
             options.addArguments("--headless=new");

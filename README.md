@@ -342,3 +342,74 @@ verify cleanup, not a clean full-suite UI/BDD regression. Reports and the subseq
 item 3. After adding explicit form readiness and separating duplicate-email
 attempts, affected UI checks passed 7/7 and BDD checks passed 6/6 in real Chrome;
 all thirteen owned accounts were confirmed absent.
+
+## Parallel execution and replay
+
+Cucumber scenarios use `-DthreadCount=N` (default 4). TestNG UI/API methods are
+sequential by default; opt into method parallelism with
+`-Dparallel=methods -DthreadCount=N`. The Cucumber data provider already schedules scenarios in parallel;
+do not also enable method parallelism for that runner.
+
+Each managed browser session downloads into a unique directory below
+`target/downloads/session-*`. Chrome, Edge, and Firefox use the same owned
+location. `DownloadHelper` rejects paths outside that directory, waits for a
+nonempty file whose size and modification time remain stable for 600 ms, and
+waits while `.crdownload`, `.part`, or `.tmp` files exist. This is a filesystem
+completion heuristic, not a checksum or browser download-event guarantee;
+a producer that pauses without a temporary suffix for longer than the stability
+window can still appear complete. Teardown removes only the owned directory,
+including after initialization/test/shutdown failure. Read the invoice before
+teardown; its path is retained in Allure for isolation diagnostics.
+
+Requests receive new REST Assured specifications and logging/Allure filters.
+Account registries and driver references remain worker-local; Cucumber context
+is scenario-scoped. Datafaker instances use invocation-local randomness rather
+than shared generators. Account emails always contain fresh UUIDs so replay
+never reuses or deletes an account from another invocation.
+
+Add `-Dtest.seed=824` to replay generated data and random product selection for
+one invocation with the same code, call order, and available product list.
+Without an override each invocation gets a new seed. Console and Allure record
+the seed and randomly selected product link, without credentials. Product
+selection has a separate random stream, so unrelated generated text does not
+change the product sequence. Seed replay does not reproduce external-site state.
+
+Autonomous regression (local HTTP server, no external site or browser):
+
+```sh
+./mvnw test -Dtest=ParallelIsolationTest,AccountCleanupTest,DriverLifecycleTest \
+  -Dallure.results.directory=target/parallel-validation/offline-allure
+```
+
+Repeat real TestNG invoice purchases with one and four workers; each invocation
+checks its own invoice text and cleans its accounts:
+
+```sh
+./mvnw test -Dtest=ParallelInvoiceLiveTest#repeatedInvoice -Dheadless=true \
+  -Dinvoice.invocations=2 -DthreadCount=1
+./mvnw test -Dtest=ParallelInvoiceLiveTest#repeatedInvoice -Dheadless=true \
+  -Dinvoice.invocations=4 -DthreadCount=4
+python3 tools/prepare_invoice_acceptance.py --copies 4
+./mvnw test -Pbdd -Dheadless=true -DthreadCount=4 \
+  -Dcucumber.features=target/parallel-validation/invoices.feature
+```
+
+The helper copies the existing invoice scenario into an ignored acceptance
+feature, leaving normal scenario discovery unchanged. Use `--copies 2` and
+`-DthreadCount=1` for its sequential comparison. Use separate Allure/report
+directories for each run.
+
+For Edge, add `-Dbrowser=edge` to the invoice commands. For Firefox, add
+`-Dbrowser=firefox`; on affected macOS systems use `bin/firefox-macos` and
+`AUTOMATION_FIREFOX_APP` as documented above. A one-worker run discovers two
+invocations; a four-worker run discovers four and checks each invoice against
+its own generated user.
+
+The 2026-10-06 invoice acceptance passed Edge 12/12. Firefox's initial matrix
+passed 6/12; explicit repeats of failed selections passed 7/10. Its failed
+TestNG runs had Cloudflare 520 after successful invoice checks, and two initial
+BDD scenarios stopped before download on the site's queue-full page. The
+repeated four-worker BDD run passed 4/4. All 32 invoices reached across these
+additional runs passed their content checks and used distinct directories;
+account and directory cleanup succeeded. Exact results and limitations are in
+roadmap item 8; local evidence is `target/parallel-validation/cross-browser/report.md`.

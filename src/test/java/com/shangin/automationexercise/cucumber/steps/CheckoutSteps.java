@@ -5,7 +5,7 @@ import java.time.Duration;
 
 import org.testng.Assert;
 
-import net.datafaker.Faker;
+import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.constants.UiMessages;
@@ -26,8 +26,6 @@ import io.cucumber.java.en.When;
 public class CheckoutSteps {
 
     private final ScenarioContext context;
-
-    private static final Faker FAKER = new Faker();
 
     CartPage cartPage = new CartPage();
     CheckoutPage checkoutPage = new CheckoutPage();
@@ -54,7 +52,7 @@ public class CheckoutSteps {
     @When("the user enters an order comment")
     public void userEntersOrderComment() {
 
-        checkoutPage.addComment(FAKER.lorem().sentence());
+        checkoutPage.addComment(TestData.faker().lorem().sentence());
     }
 
     @When("the user places the order")

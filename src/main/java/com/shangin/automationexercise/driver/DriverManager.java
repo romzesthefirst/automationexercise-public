@@ -28,12 +28,23 @@ public final class DriverManager {
     public static void quitDriver() {
         WebDriver driver = DRIVER.get();
 
+        Throwable shutdownFailure = null;
         try {
             if (driver != null) {
                 driver.quit();
             }
+        } catch (RuntimeException | Error failure) {
+            shutdownFailure = failure;
+            throw failure;
         } finally {
-            DRIVER.remove();
+            try {
+                DownloadDirectory.close();
+            } catch (RuntimeException | Error cleanupFailure) {
+                if (shutdownFailure == null) { throw cleanupFailure; }
+                shutdownFailure.addSuppressed(cleanupFailure);
+            } finally {
+                DRIVER.remove();
+            }
         }
     }
     

@@ -8,7 +8,7 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.datafaker.Faker;
+import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.base.AccountUiTestBase;
@@ -35,8 +35,6 @@ import io.qameta.allure.Description;
 
 @Test(groups = "ui")
 public class PlaceOrderTest extends AccountUiTestBase {
-
-    private static final Faker FAKER = new Faker();
 
     @Test @Description("Test Case 14: Place Order: Register while Checkout")
     public void shouldPlaceOrderRegisterWhileCheckout() {
@@ -74,7 +72,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
         CartAssertions.assertProductsMatch(checkoutPage.getActualProducts(), expectedProducts);
         CartAssertions.assertProductsTotalPrice(checkoutPage.getTotalPrice(), expectedProducts);
 
-        checkoutPage.addComment(FAKER.lorem().sentence());
+        checkoutPage.addComment(TestData.faker().lorem().sentence());
         PaymentPage paymentPage = checkoutPage.placeOrder();
 
         CardDetails card = CardFactory.randomCard();
@@ -132,7 +130,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
         CartAssertions.assertProductsMatch(checkoutPage.getActualProducts(), expectedProducts);
         CartAssertions.assertProductsTotalPrice(checkoutPage.getTotalPrice(), expectedProducts);
 
-        checkoutPage.addComment(FAKER.lorem().sentence());
+        checkoutPage.addComment(TestData.faker().lorem().sentence());
         PaymentPage paymentPage = checkoutPage.placeOrder();
 
         CardDetails card = CardFactory.randomCard();
@@ -191,7 +189,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
         CartAssertions.assertProductsMatch(checkoutPage.getActualProducts(), expectedProducts);
         CartAssertions.assertProductsTotalPrice(checkoutPage.getTotalPrice(), expectedProducts);
 
-        checkoutPage.addComment(FAKER.lorem().sentence());
+        checkoutPage.addComment(TestData.faker().lorem().sentence());
         PaymentPage paymentPage = checkoutPage.placeOrder();
 
         CardDetails card = CardFactory.randomCard();
@@ -297,7 +295,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
         
         String totalAmountStr = MonetaryValues.format(checkoutPage.getTotalPrice());
 
-        checkoutPage.addComment(FAKER.lorem().sentence());
+        checkoutPage.addComment(TestData.faker().lorem().sentence());
         PaymentPage paymentPage = checkoutPage.placeOrder();
 
         CardDetails card = CardFactory.randomCard();

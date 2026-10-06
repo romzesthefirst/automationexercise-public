@@ -18,6 +18,10 @@ public class ProductCardComponent extends BaseComponent {
         super(root);
     }
 
+    public String getIdentifier() {
+        return find(VIEW_PRODUCT).getAttribute("href");
+    }
+
     public String getName() {
         return getText(NAME);
     }

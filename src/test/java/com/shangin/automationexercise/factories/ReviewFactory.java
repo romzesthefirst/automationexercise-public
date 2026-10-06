@@ -4,16 +4,16 @@ import net.datafaker.Faker;
 import com.shangin.automationexercise.model.Review;
 
 public class ReviewFactory {
-    private static final Faker FAKER = new Faker();
 
     private ReviewFactory() {
     }
     
     public static Review randomReview() {
+        Faker faker = TestData.faker();
         return new Review (
-                FAKER.name().firstName() + " " + FAKER.name().lastName(),
-                FAKER.internet().emailAddress(),
-                FAKER.lorem().paragraph()
+                faker.name().firstName() + " " + faker.name().lastName(),
+                faker.internet().emailAddress(),
+                faker.lorem().paragraph()
                 );
     }
 }

@@ -12,6 +12,7 @@
 
 .DS_Store
 /scripts/
-/tools/
+/tools/*
+!/tools/prepare_invoice_acceptance.py
 /docs/
 /src/test/java/com/shangin/automationexercise/tests/diagnostics/
