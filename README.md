@@ -399,8 +399,9 @@ plus full UI/BDD. A failed suite marks the build and stage failed while allowing
 the remaining suites to run; cancellation and timeout still stop execution.
 The `always` post block archives `target/ci/**`, publishes Surefire XML through
 JUnit, and builds Allure from all current invocation directories. Jenkins retains
-20 builds and artifacts for the latest 10. Agent requirements: Java 17 configured
-through `JAVA_HOME`/PATH, Python (`python3` on Unix, `python` on Windows), Git,
+20 builds and artifacts for the latest 10. Configure a JDK installation named
+`Java17` under **Manage Jenkins → Tools** (and agent tool-location overrides when
+needed); the pipeline selects it and sets `JAVA_HOME`/PATH. Agent requirements: Python (`python3` on Unix, `python` on Windows), Git,
 Wrapper download prerequisites, and the selected browser. Required Jenkins
 plugins: Pipeline, Git, JUnit, and Allure; configure an Allure command-line
 installation in Jenkins tools. No Homebrew installation or machine-specific
