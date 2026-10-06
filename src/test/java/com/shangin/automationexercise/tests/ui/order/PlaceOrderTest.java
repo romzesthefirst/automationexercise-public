@@ -107,7 +107,8 @@ public class PlaceOrderTest extends AccountUiTestBase {
         Assert.assertTrue(accountCreatedPage.isAccountCreated());
         homePage = accountCreatedPage.continueShopping();
 
-        homePage.header().isLoggedInAs(newUser);
+        Assert.assertTrue(homePage.header().isLoggedInAs(newUser),
+                "Expected the logged-in user in the header: " + newUser.firstName());
 
         List<ExpectedProduct> expectedProducts = new ArrayList<>();
 
@@ -163,7 +164,8 @@ public class PlaceOrderTest extends AccountUiTestBase {
 
         homePage = homePage.header().openSignupLoginPage().successLogin(user);
 
-        homePage.header().isLoggedInAs(user);
+        Assert.assertTrue(homePage.header().isLoggedInAs(user),
+                "Expected the logged-in user in the header: " + user.firstName());
 
         List<ExpectedProduct> expectedProducts = new ArrayList<>();
 
@@ -279,7 +281,8 @@ public class PlaceOrderTest extends AccountUiTestBase {
         Assert.assertTrue(accountCreatedPage.isAccountCreated());
         homePage = accountCreatedPage.continueShopping();
 
-        homePage.header().isLoggedInAs(newUser);
+        Assert.assertTrue(homePage.header().isLoggedInAs(newUser),
+                "Expected the logged-in user in the header: " + newUser.firstName());
 
         cartPage = homePage.header().openCart();
 

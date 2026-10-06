@@ -1,5 +1,7 @@
 package com.shangin.automationexercise.cucumber.steps;
 
+import java.util.List;
+
 import org.testng.Assert;
 
 import com.shangin.automationexercise.assertions.CartAssertions;
@@ -153,7 +155,7 @@ public class ProductsSteps {
 
         Assert.assertTrue(
                 productsPage.products().allProductsContain(productName),
-                "All search results should match the search query: " + productName);
+                "Expected nonempty search results matching the search query: " + productName);
     }
 
     @Then("both products should be present in the cart with correct details")
@@ -166,8 +168,11 @@ public class ProductsSteps {
     @Then("the product should be present in the cart with quantity {int}")
     public void productShouldBePresentInCartWithQuantity(int quantity) {
 
-        CartAssertions
-                .assertProductsMatch(cartPage.getActualProducts(), context.getExpectedProducts());
+        Assert.assertEquals(context.getExpectedProducts().size(), 1,
+                "The quantity step expects exactly one added product");
+        ExpectedProduct product = context.getExpectedProducts().get(0);
+        CartAssertions.assertProductsMatch(cartPage.getActualProducts(),
+                List.of(new ExpectedProduct(product.name(), product.price(), quantity)));
     }
 
     @Then("the review success message should be displayed")

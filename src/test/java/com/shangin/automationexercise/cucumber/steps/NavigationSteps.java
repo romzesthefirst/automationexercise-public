@@ -156,7 +156,7 @@ public class NavigationSteps {
     @Then("{string} text is visible")
     public void homePageTextIsVisible(String text) {
         
-        Assert.assertEquals(homePage.getActiveSlideSubtitle(), UiMessages.CAROUSEL_SUBTITLE);
+        Assert.assertEquals(homePage.getActiveSlideSubtitle(), text, "Unexpected home page subtitle");
     }
 
 }

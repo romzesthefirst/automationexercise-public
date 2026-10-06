@@ -64,7 +64,7 @@ public class ProductsPageTest extends BaseTest {
 
         Assert.assertTrue(
                 productsPage.products().allProductsContain(searchText),
-                "All search results should match the search query");
+                "Expected nonempty search results matching the search query");
 
     }
 

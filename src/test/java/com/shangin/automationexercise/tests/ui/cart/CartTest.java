@@ -78,7 +78,7 @@ public class CartTest extends AccountUiTestBase {
 
         Assert.assertTrue(
                 productsPage.products().allProductsContain(query),
-                "Not all products match search query: " + query);
+                "Expected nonempty search results matching query: " + query);
         List<ExpectedProduct> expectedProducts
                 = ProductMapper.toExpectedProducts(productsPage.products());
 

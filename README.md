@@ -134,6 +134,18 @@ Focused regression checks do not call the external website:
 ./mvnw test -Dtest=DriverLifecycleTest,DriverTransportTimeoutTest,DriverReportingTest,CucumberFailureReportingTest,AccountCleanupTest
 ```
 
+Focused assertion regression checks also run without a browser or external service:
+
+```sh
+./mvnw test -Dtest=AssertionCorrectnessTest
+```
+
+They exercise the actual Cucumber text, quantity, and search steps against a
+controlled DOM and reject empty positive searches, wrong prices, quantities,
+text, missing products, displayed line totals, and checkout totals. Cart and
+checkout line totals are read from the page separately from unit price and
+quantity; a correct checkout total cannot hide an incorrect line total.
+
 The real browser probes are skipped by default. Enable them to verify
 intentionally failed TestNG and Cucumber tests against local HTML pages,
 including real PNG and URL attachments:

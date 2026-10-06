@@ -43,6 +43,12 @@ public class CartAssertions {
                     actual.quantity(),
                     expected.quantity(),
                     "Incorrect quantity for product: " + expected.name());
+
+            Assert.assertEquals(
+                    actual.total().compareTo(expected.total()),
+                    0,
+                    "Incorrect displayed line total for product: " + expected.name()
+                            + ". Expected: " + expected.total() + ", displayed: " + actual.displayedTotal());
         }
 
     }

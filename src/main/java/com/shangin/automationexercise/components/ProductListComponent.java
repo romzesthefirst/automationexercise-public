@@ -43,7 +43,8 @@ public class ProductListComponent extends BaseComponent {
 
     public boolean allProductsContain(String query) {
         String normalizedQuery = normalize(query);
-        return getProducts().stream()
+        List<ProductCardComponent> products = getProducts();
+        return !products.isEmpty() && products.stream()
                 .allMatch(product -> normalize(product.getName()).contains(normalizedQuery));
     }
 

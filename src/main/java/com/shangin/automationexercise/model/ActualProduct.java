@@ -2,16 +2,9 @@ package com.shangin.automationexercise.model;
 
 import java.math.BigDecimal;
 
-public record ActualProduct(String name, String price, int quantity) {
+public record ActualProduct(String name, String price, int quantity, String displayedTotal) {
 
     public BigDecimal total() {
-        BigDecimal unitPrice = parsePrice(price);
-
-        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+        return new BigDecimal(displayedTotal.replaceFirst("^[^\\d]*", "").replaceAll("[^\\d.]", ""));
     }
-
-    private BigDecimal parsePrice(String price) {
-        return new BigDecimal(price.replaceAll("[^\\d.]", ""));
-    }
-    
 }

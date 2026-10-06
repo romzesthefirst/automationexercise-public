@@ -77,15 +77,16 @@ public class ProductApiAssertions {
     
     public static void assertValidSearchProducts(List<ProductDto> products, String query) {
         
+        Assert.assertFalse(products.isEmpty(), "Expected search results for: " + query);
         String normalizedQuery = normalize(query);
         
         for (ProductDto product : products) {
             
-            String nomalizedProductName = normalize(product.name());
+            String normalizedProductName = normalize(product.name());
             
             Assert.assertTrue(
-                    nomalizedProductName.contains(normalizedQuery),
-                    "Incorrect search result for \"" + query + "\". Found unexpected \"" + product.name() + "\". Normalized: ");
+                    normalizedProductName.contains(normalizedQuery),
+                    "Incorrect search result for \"" + query + "\". Found unexpected \"" + product.name() + "\".");
         }
 
     }

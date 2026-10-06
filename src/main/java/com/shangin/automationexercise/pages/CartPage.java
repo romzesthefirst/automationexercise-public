@@ -90,7 +90,7 @@ public class CartPage extends BasePage {
 
     public List<ActualProduct> getActualProducts() {
         return getCartItems().stream()
-                .map(item -> new ActualProduct(item.getName(), item.getPrice(), item.getQuantity()))
+                .map(item -> new ActualProduct(item.getName(), item.getPrice(), item.getQuantity(), item.getTotal()))
                 .toList();
     }
 

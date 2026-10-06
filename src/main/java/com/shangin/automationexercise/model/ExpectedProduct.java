@@ -11,6 +11,6 @@ public record ExpectedProduct(String name, String price, int quantity) {
     }
 
     private BigDecimal parsePrice(String price) {
-        return new BigDecimal(price.replaceAll("[^\\d]", ""));
+        return new BigDecimal(price.replaceFirst("^[^\\d]*", "").replaceAll("[^\\d.]", ""));
     }
 }
