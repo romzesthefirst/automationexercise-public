@@ -28,14 +28,14 @@ pipeline {
     stages {
 		stage('Clean') {
 		    steps {
-		        sh 'mvn clean'
+		        sh './mvnw clean'
 		    }
 }
 	    stage('API Tests') {
 	        steps {
 	            sh """
-	                mvn test \
-	                    -DtestGroups=api \
+	                ./mvnw test \
+	                    -Papi \
 	                    -DthreadCount=${params.THREAD_COUNT}
 	            """
 	        }
@@ -44,8 +44,8 @@ pipeline {
         stage('Cucumber Tests') {
             steps {
                 sh """
-                    mvn test \
-                    	-DtestGroups=cucumber \
+                    ./mvnw test \
+                        -Pbdd \
                         -Dbrowser=${params.BROWSER} \
                         -Dheadless=${params.HEADLESS} \
                         -DthreadCount=${params.THREAD_COUNT}

@@ -21,7 +21,7 @@ public class ProductsApiTest {
     private final ProductsApiClient productsApiClient = new ProductsApiClient();
     private final ProductsApiClient searchProductsApiClient = new ProductsApiClient();
 
-    @Test @Description("API 1: Get All Products List")
+    @Test(groups = "smoke") @Description("API 1: Get All Products List")
     public void shouldReturnProductsList() {
         // API URL: https://automationexercise.com/api/productsList
         // Request Method: GET

@@ -2,7 +2,7 @@
 Feature: Test Case Page
 
   # Test Case 2: Login User with correct email and password
-  @TC_07
+  @TC_07 @smoke
   Scenario: Verify Test Cases Page
     Given the home page is opened
     When the user opens the Test Case page from the header

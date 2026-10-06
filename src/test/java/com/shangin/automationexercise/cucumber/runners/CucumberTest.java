@@ -15,12 +15,17 @@ import io.cucumber.testng.CucumberOptions;
              }
         )
 
-@Test(groups = "cucumber")
+@Test(groups = {"cucumber", "smoke"})
 public class CucumberTest extends AbstractTestNGCucumberTests {
    
     @Override
     @DataProvider(parallel = true)
     public Object[][] scenarios() {
-        return super.scenarios();
+        Object[][] scenarios = super.scenarios();
+        if (scenarios.length == 0) {
+            throw new IllegalStateException(
+                    "No Cucumber scenarios matched the requested selection. Check cucumber.filter.tags and features.");
+        }
+        return scenarios;
     }
 }
