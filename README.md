@@ -71,6 +71,40 @@ Expected discovery at this revision: API 14, UI 26, BDD 35 (including Examples),
 and one test/scenario for each smoke selection. Use a separate run or `clean`
 to avoid mixing discovery results with real execution results.
 
+## Browser lifecycle and failure evidence
+
+The driver factory configures advertisement blocking and all three configured
+Selenium timeouts before publishing a browser to either runner. If initialization
+fails, it attempts to close the new browser and preserves the initialization
+error, with a shutdown error suppressed when present. Driver teardown always
+clears its worker's thread-local reference, even when browser shutdown fails.
+
+TestNG captures browser evidence from an invocation listener before teardown;
+Cucumber captures it in its failure hook before the driver shutdown hook.
+Allure's lifecycle listener is a fallback. A single shared collector adds at most
+one URL and screenshot per report, plus browser diagnostics. Failed URL or
+screenshot commands do not replace the original error or prevent the other
+attachment from being attempted. Setup evidence belongs to the Allure setup
+report; API failures without a browser need no browser attachments.
+
+Focused regression checks do not call the external website:
+
+```sh
+./mvnw test -Dtest=DriverLifecycleTest,DriverReportingTest,AccountCleanupTest
+```
+
+The browser probe is skipped by default. Enable it to verify an intentionally
+failed TestNG test against a local HTML page in headless Chrome, including real
+PNG and URL attachments:
+
+```sh
+./mvnw test -Dtest=DriverReportingTest -Ddriver.lifecycle.live=true -Dheadless=true
+```
+
+The harness expects its inner failures and passes only when their original
+errors, evidence, and teardown behavior are verified. Probe Allure reports are
+written under `target/driver-lifecycle-validation/`.
+
 ## Dependency audit
 
 All dependencies used only by tests have test scope. Selenium remains a compile

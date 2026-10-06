@@ -1,24 +1,15 @@
 package com.shangin.automationexercise.listeners;
 
-import org.openqa.selenium.WebDriver;
-import org.testng.ITestListener;
+import org.testng.IInvokedMethod;
+import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 
-import com.shangin.automationexercise.driver.DriverManager;
-
-import io.qameta.allure.Allure;
-
-public class TestListener implements ITestListener {
-
+public class TestListener implements IInvokedMethodListener {
     @Override
-    public void onTestFailure(ITestResult result) {
-
-        if (!DriverManager.hasDriver()) {
-            return;
+    public void afterInvocation(IInvokedMethod method, ITestResult result) {
+        // TestNG invokes this before @AfterMethod, including failed setup methods.
+        if (result.getStatus() == ITestResult.FAILURE) {
+            BrowserFailureAttachments.captureCurrentTest();
         }
-
-        WebDriver driver = DriverManager.getDriver();
-
-        Allure.addAttachment("Current URL", "text/plain", driver.getCurrentUrl());
     }
 }
