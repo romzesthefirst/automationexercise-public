@@ -7,6 +7,7 @@ import org.testng.Assert;
 
 import com.shangin.automationexercise.model.ActualProduct;
 import com.shangin.automationexercise.model.ExpectedProduct;
+import com.shangin.automationexercise.model.MonetaryValues;
 
 public class CartAssertions {
 
@@ -35,9 +36,10 @@ public class CartAssertions {
                     .orElseThrow(() -> new AssertionError("Product not found: " + expected.name()));
 
             Assert.assertEquals(
-                    actual.price(),
-                    expected.price(),
-                    "Incorrect price for product: " + expected.name());
+                    MonetaryValues.parse(actual.price()).compareTo(MonetaryValues.parse(expected.price())),
+                    0,
+                    "Incorrect price for product: " + expected.name()
+                            + ". Expected: " + expected.price() + ", displayed: " + actual.price());
 
             Assert.assertEquals(
                     actual.quantity(),
@@ -56,10 +58,11 @@ public class CartAssertions {
     public static void assertProductsTotalPrice(
                     BigDecimal actualTotal,
                     List<ExpectedProduct> expectedProducts) {
-        
+        BigDecimal expectedTotal = calculateExpectedTotal(expectedProducts);
         Assert.assertEquals(
-                actualTotal,
-                calculateExpectedTotal(expectedProducts),
-                "Unexpected total price of products");
+                actualTotal.compareTo(expectedTotal),
+                0,
+                "Unexpected total price of products. Expected: " + expectedTotal
+                        + ", displayed: " + actualTotal);
     }
 }

@@ -21,6 +21,8 @@ import com.shangin.automationexercise.components.ProductListComponent;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.cucumber.steps.NavigationSteps;
+import com.shangin.automationexercise.cucumber.steps.CheckoutSteps;
+import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.cucumber.steps.ProductsSteps;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.model.ActualProduct;
@@ -112,6 +114,31 @@ public class AssertionCorrectnessTest {
     @Test public void lineTotalsPreserveDecimalPricesAndIgnoreScale() {
         CartAssertions.assertProductsMatch(List.of(new ActualProduct("Top", "Rs. 12.50", 2, "Rs. 25.0")),
                 List.of(new ExpectedProduct("Top", "Rs. 12.50", 2)));
+    }
+
+    @Test public void checkoutPreservesDecimalsAndRejectsMalformedAmounts() {
+        By total = By.xpath("//tr[td[contains(normalize-space(), 'Total Amount')]]//p[contains(@class,'cart_total_price')]");
+        useDom(Map.of(total, List.of(element("Rs. 12.50", Map.of()))));
+        CheckoutPage checkout = new CheckoutPage();
+        Assert.assertEquals(checkout.getTotalPrice(), new BigDecimal("12.50"));
+        CartAssertions.assertProductsTotalPrice(checkout.getTotalPrice(),
+                List.of(new ExpectedProduct("Top", "12.5", 1)));
+        useDom(Map.of(total, List.of(element("Rs. 12abc50", Map.of()))));
+        Assert.expectThrows(IllegalArgumentException.class, () -> new CheckoutPage().getTotalPrice());
+    }
+
+    @Test public void invoiceStepUsesCanonicalFractionalTotal() {
+        useDom(Map.of());
+        ScenarioContext context = context();
+        context.setUser(UserFactory.randomUser());
+        context.addExpectedProduct(new ExpectedProduct("Top", "Rs. 12.50", 3));
+        context.setInvoiceText(UiMessages.invoiceText(context.getUser().firstName(),
+                context.getUser().lastName(), "37.5"));
+        CheckoutSteps steps = new CheckoutSteps(context);
+        steps.textInInvoiceShouldBeCorrect();
+        context.setInvoiceText(UiMessages.invoiceText(context.getUser().firstName(),
+                context.getUser().lastName(), "3750"));
+        Assert.expectThrows(AssertionError.class, steps::textInInvoiceShouldBeCorrect);
     }
 
     private static void match(ActualProduct actual) {

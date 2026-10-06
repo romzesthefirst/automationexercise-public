@@ -19,6 +19,7 @@ import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.factories.CardFactory;
 import com.shangin.automationexercise.model.CardDetails;
 import com.shangin.automationexercise.model.ExpectedProduct;
+import com.shangin.automationexercise.model.MonetaryValues;
 import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.AccountCreatedPage;
 import com.shangin.automationexercise.pages.AccountDeletedPage;
@@ -294,7 +295,7 @@ public class PlaceOrderTest extends AccountUiTestBase {
         CartAssertions.assertProductsMatch(checkoutPage.getActualProducts(), expectedProducts);
         CartAssertions.assertProductsTotalPrice(checkoutPage.getTotalPrice(), expectedProducts);
         
-        String totalAmountStr = checkoutPage.getTotalAmount().replaceAll("\\D", "");
+        String totalAmountStr = MonetaryValues.format(checkoutPage.getTotalPrice());
 
         checkoutPage.addComment(FAKER.lorem().sentence());
         PaymentPage paymentPage = checkoutPage.placeOrder();

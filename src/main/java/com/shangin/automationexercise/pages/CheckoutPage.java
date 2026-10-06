@@ -10,6 +10,7 @@ import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddressComponent;
 import com.shangin.automationexercise.components.CartItemComponent;
 import com.shangin.automationexercise.model.ActualProduct;
+import com.shangin.automationexercise.model.MonetaryValues;
 
 public class CheckoutPage extends BasePage {
 
@@ -69,7 +70,7 @@ public class CheckoutPage extends BasePage {
     }
     
     public BigDecimal getTotalPrice() {
-        return new BigDecimal(getText(TOTAL_AMOUNT).replaceAll("[^\\d]", ""));
+        return MonetaryValues.parse(getTotalAmount());
     }
 
     public List<ActualProduct> getActualProducts() {

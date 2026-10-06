@@ -9,6 +9,7 @@ import net.datafaker.Faker;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.constants.UiMessages;
+import com.shangin.automationexercise.model.MonetaryValues;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.factories.CardFactory;
 import com.shangin.automationexercise.model.CardDetails;
@@ -131,7 +132,7 @@ public class CheckoutSteps {
 
         User user = context.getUser();
         String totalAmountStr
-                = CartAssertions.calculateExpectedTotal(context.getExpectedProducts()).toString();
+                = MonetaryValues.format(CartAssertions.calculateExpectedTotal(context.getExpectedProducts()));
 
         Assert.assertEquals(
                 context.getInvoiceText(),

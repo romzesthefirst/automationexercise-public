@@ -201,6 +201,27 @@ text, missing products, displayed line totals, and checkout totals. Cart and
 checkout line totals are read from the page separately from unit price and
 quantity; a correct checkout total cannot hide an incorrect line total.
 
+Monetary values use one parser for expected prices, displayed cart line totals,
+checkout totals, and invoice expectations. Supported input is a nonnegative
+number with an optional `Rs.` prefix, a dot as the decimal separator, and optional
+commas in groups of three for thousands (`Rs. 1,234.50`). Outer whitespace and
+whitespace after the prefix are allowed. Signs, other currencies, decimal commas,
+scientific notation, incomplete numbers, and malformed text are rejected with
+`IllegalArgumentException`; characters are never silently discarded.
+
+Calculations use `BigDecimal` without rounding. Price and total assertions compare
+numeric values, so `12.50` and `12.500` are equal regardless of the currency prefix.
+Invoice expectations use plain decimal text without a prefix, grouping, scientific
+notation, or insignificant trailing zeros: `500.00` becomes `500`, and `12.50`
+becomes `12.5`. Display strings remain available for diagnostics.
+
+Run the monetary parser, arithmetic, formatting, checkout DOM, and BDD invoice
+regression checks without a browser or external service:
+
+```sh
+./mvnw test -Dtest=MonetaryValuesTest,AssertionCorrectnessTest
+```
+
 The real browser probes are skipped by default. Enable them to verify
 intentionally failed TestNG and Cucumber tests against local HTML pages,
 including real PNG and URL attachments:
