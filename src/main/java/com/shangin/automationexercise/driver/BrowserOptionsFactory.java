@@ -25,10 +25,7 @@ public final class BrowserOptionsFactory {
 
         ChromeOptions options = new ChromeOptions();
         
-        options.addArguments(
-                "--window-size=%d,%d".formatted(
-                        ConfigReader.getBrowserWidth(),
-                        ConfigReader.getBrowserHeight()));
+        options.addArguments(windowSizeArgument());
 
         options.addArguments("--disable-notifications");
         
@@ -48,7 +45,9 @@ public final class BrowserOptionsFactory {
     }
 
     public static FirefoxOptions firefox() {
-        FirefoxOptions options = new FirefoxOptions();
+        FirefoxOptions options = new FirefoxOptions().configureFromEnv();
+        options.addArguments("--width=" + ConfigReader.getBrowserWidth(),
+                "--height=" + ConfigReader.getBrowserHeight());
         if (ConfigReader.isHeadless()) {
             options.addArguments("-headless");
         }
@@ -57,10 +56,14 @@ public final class BrowserOptionsFactory {
 
     public static EdgeOptions edge() {
         EdgeOptions options = new EdgeOptions();
+        options.addArguments(windowSizeArgument());
         if (ConfigReader.isHeadless()) {
             options.addArguments("--headless=new");
         }
         return options;
     }
 
+    private static String windowSizeArgument() {
+        return "--window-size=%d,%d".formatted(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight());
+    }
 }

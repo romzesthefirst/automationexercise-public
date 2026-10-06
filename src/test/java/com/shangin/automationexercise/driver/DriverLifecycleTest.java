@@ -54,8 +54,8 @@ public class DriverLifecycleTest {
         Assert.assertEquals(calls, List.of("initialize"));
     }
 
-    @Test public void eachTimeoutFailureClosesTheUnpublishedBrowser() {
-        for (String failingCommand : List.of("implicitlyWait", "pageLoadTimeout", "scriptTimeout")) {
+    @Test public void windowAndTimeoutFailuresCloseTheUnpublishedBrowser() {
+        for (String failingCommand : List.of("setSize", "implicitlyWait", "pageLoadTimeout", "scriptTimeout")) {
             List<String> calls = new ArrayList<>();
             var timeouts = (WebDriver.Timeouts) Proxy.newProxyInstance(WebDriver.class.getClassLoader(),
                     new Class<?>[] {WebDriver.Timeouts.class}, (proxy, method, args) -> {
@@ -65,8 +65,16 @@ public class DriverLifecycleTest {
                         }
                         return proxy;
                     });
+            var window = (WebDriver.Window) Proxy.newProxyInstance(WebDriver.class.getClassLoader(),
+                    new Class<?>[] {WebDriver.Window.class}, (proxy, method, args) -> {
+                        calls.add(method.getName());
+                        if (method.getName().equals(failingCommand)) {
+                            throw new IllegalStateException("Timeout failure: " + failingCommand);
+                        }
+                        return null;
+                    });
             var options = (WebDriver.Options) Proxy.newProxyInstance(WebDriver.class.getClassLoader(),
-                    new Class<?>[] {WebDriver.Options.class}, (proxy, method, args) -> timeouts);
+                    new Class<?>[] {WebDriver.Options.class}, (proxy, method, args) -> method.getName().equals("window") ? window : timeouts);
             var browser = (WebDriver) Proxy.newProxyInstance(WebDriver.class.getClassLoader(),
                     new Class<?>[] {WebDriver.class}, (proxy, method, args) -> {
                         if (method.getName().equals("manage")) { return options; }

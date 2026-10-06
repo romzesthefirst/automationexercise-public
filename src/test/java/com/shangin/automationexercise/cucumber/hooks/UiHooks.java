@@ -22,7 +22,9 @@ public class UiHooks {
             return;
         }
 
-        BrowserFailureAttachments.captureCurrentTest();
+        // During an Allure hook fixture, the thread context contains the fixture UUID.
+        // Cucumber's scenario ID is the UUID used by the Allure scenario result.
+        BrowserFailureAttachments.captureTest(scenario.getId());
     }
 
     @After(value = "@ui", order = 1)

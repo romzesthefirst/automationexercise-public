@@ -91,10 +91,14 @@ public class DriverReportingTest {
                 String uuid = UUID.randomUUID().toString();
                 lifecycle.scheduleTestCase(new TestResult().setUuid(uuid).setName("failed scenario").setStatus(Status.FAILED));
                 lifecycle.startTestCase(uuid);
+                lifecycle.startTestContainer(new TestResultContainer().setUuid("hook-container"));
+                lifecycle.startTearDownFixture("hook-container", "failure-hook",
+                        new io.qameta.allure.model.FixtureResult().setName("after hook"));
                 DriverManager.setDriver(fakeDriver(broken));
-                hooks.addFailureInfo(failedScenario());
-                hooks.addFailureInfo(failedScenario());
+                hooks.addFailureInfo(failedScenario(uuid));
+                hooks.addFailureInfo(failedScenario(uuid));
                 hooks.tearDownDriver();
+                lifecycle.stopFixture("failure-hook");
                 lifecycle.stopTestCase(uuid);
                 lifecycle.writeTestCase(uuid);
                 Assert.assertFalse(DriverManager.hasDriver());
@@ -135,11 +139,15 @@ public class DriverReportingTest {
         }
     }
 
-    private static io.cucumber.java.Scenario failedScenario() throws Exception {
+    private static io.cucumber.java.Scenario failedScenario(String uuid) throws Exception {
         var state = (io.cucumber.core.backend.TestCaseState) Proxy.newProxyInstance(
                 io.cucumber.java.Scenario.class.getClassLoader(),
                 new Class<?>[] {io.cucumber.core.backend.TestCaseState.class},
-                (proxy, method, args) -> method.getName().equals("isFailed") ? true : null);
+                (proxy, method, args) -> switch (method.getName()) {
+                    case "isFailed" -> true;
+                    case "getId" -> uuid;
+                    default -> null;
+                });
         var constructor = io.cucumber.java.Scenario.class.getDeclaredConstructor(io.cucumber.core.backend.TestCaseState.class);
         constructor.setAccessible(true);
         return constructor.newInstance(state);

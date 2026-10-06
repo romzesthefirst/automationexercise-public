@@ -18,8 +18,11 @@ public final class BrowserFailureAttachments {
     private BrowserFailureAttachments() { }
 
     public static void captureCurrentTest() {
-        Allure.getLifecycle().getCurrentTestCase().ifPresent(uuid ->
-                Allure.getLifecycle().updateTestCase(uuid, BrowserFailureAttachments::capture));
+        Allure.getLifecycle().getCurrentTestCase().ifPresent(BrowserFailureAttachments::captureTest);
+    }
+
+    public static void captureTest(String uuid) {
+        Allure.getLifecycle().updateTestCase(uuid, BrowserFailureAttachments::capture);
     }
 
     public static void capture(TestResult result) {

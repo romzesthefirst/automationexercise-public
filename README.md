@@ -71,39 +71,93 @@ Expected discovery at this revision: API 14, UI 26, BDD 35 (including Examples),
 and one test/scenario for each smoke selection. Use a separate run or `clean`
 to avoid mixing discovery results with real execution results.
 
+## Browser launch settings
+
+All three browsers use `headless`, `browser.width`, and `browser.height` from
+`src/main/resources/config.properties`. The committed defaults are headed mode
+(`headless=false`) and a 1920 by 1080 window. `-Dheadless=true` or
+`-Dheadless=false` overrides the file for any browser. Startup arguments and a
+shared WebDriver window-size operation apply the configured dimensions before
+either runner receives the browser. These are outer window dimensions; browser
+chrome can make the page viewport height differ between browsers.
+
+Firefox also accepts Selenium's `-Dwebdriver.firefox.bin` binary override.
+On macOS 27, direct execution can fail before profile selection because Firefox
+cannot access its app-data directory; see the
+[Mozilla startup issue](https://bugzilla.mozilla.org/show_bug.cgi?id=2062988).
+The optional `bin/firefox-macos` launcher starts a signed Firefox application
+through macOS LaunchServices. It keeps the launch process alive until the browser
+exits while geckodriver owns the temporary profile, Marionette session, and
+shutdown. It verifies the application signature and does not disable browser
+sandboxing or change macOS privacy permissions.
+
+Use the installed `/Applications/Firefox.app`, or point `AUTOMATION_FIREFOX_APP`
+at another signed official Firefox application:
+
+```sh
+AUTOMATION_FIREFOX_APP="/path/to/Firefox.app" ./mvnw test -Pui \
+  -Dbrowser=firefox -Dheadless=true -Dwebdriver.firefox.bin="$PWD/bin/firefox-macos"
+AUTOMATION_FIREFOX_APP="/path/to/Firefox.app" ./mvnw test -Pbdd \
+  -Dbrowser=firefox -Dheadless=true -Dwebdriver.firefox.bin="$PWD/bin/firefox-macos"
+```
+
+Without `AUTOMATION_FIREFOX_APP`, the launcher uses `/Applications/Firefox.app`.
+A damaged signature requires a valid browser copy; the launcher does not alter
+or re-sign the installed application. Other platforms use normal Selenium
+Firefox launch without this macOS launcher.
+
 ## Browser lifecycle and failure evidence
 
-The driver factory configures advertisement blocking and all three configured
+The driver factory configures window size, advertisement blocking, and all three
 Selenium timeouts before publishing a browser to either runner. If initialization
 fails, it attempts to close the new browser and preserves the initialization
 error, with a shutdown error suppressed when present. Driver teardown always
 clears its worker's thread-local reference, even when browser shutdown fails.
 
 TestNG captures browser evidence from an invocation listener before teardown;
-Cucumber captures it in its failure hook before the driver shutdown hook.
+Cucumber captures it in its failure hook before the driver shutdown hook, using
+the scenario UUID rather than the current Allure fixture UUID.
 Allure's lifecycle listener is a fallback. A single shared collector adds at most
 one URL and screenshot per report, plus browser diagnostics. Failed URL or
 screenshot commands do not replace the original error or prevent the other
 attachment from being attempted. Setup evidence belongs to the Allure setup
 report; API failures without a browser need no browser attachments.
 
+WebDriver responses are bounded by the largest configured page-load, script,
+or implicit wait timeout plus ten seconds (40 seconds with the current file). This also bounds stalled
+screenshot and shutdown commands; transport failures retain the original test
+error and allow teardown to proceed.
+
 Focused regression checks do not call the external website:
 
 ```sh
-./mvnw test -Dtest=DriverLifecycleTest,DriverReportingTest,AccountCleanupTest
+./mvnw test -Dtest=DriverLifecycleTest,DriverTransportTimeoutTest,DriverReportingTest,CucumberFailureReportingTest,AccountCleanupTest
 ```
 
-The browser probe is skipped by default. Enable it to verify an intentionally
-failed TestNG test against a local HTML page in headless Chrome, including real
-PNG and URL attachments:
+The real browser probes are skipped by default. Enable them to verify
+intentionally failed TestNG and Cucumber tests against local HTML pages,
+including real PNG and URL attachments:
 
 ```sh
-./mvnw test -Dtest=DriverReportingTest -Ddriver.lifecycle.live=true -Dheadless=true
+./mvnw test -Dtest=DriverReportingTest,CucumberFailureReportingTest \
+  -Ddriver.lifecycle.live=true -Dbrowser=chrome -Dheadless=true
 ```
 
 The harness expects its inner failures and passes only when their original
 errors, evidence, and teardown behavior are verified. Probe Allure reports are
 written under `target/driver-lifecycle-validation/`.
+
+The Cucumber regression also executes the actual Allure Cucumber adapter in
+fixture context with healthy and failed evidence commands. To check actual
+session headless state and window dimensions, including the file default and
+its system-property override, run:
+
+```sh
+./mvnw test -Dtest=BrowserConfigurationLiveTest -Ddriver.lifecycle.live=true -Dbrowser=chrome
+```
+
+Repeat for `edge` and `firefox`; add the macOS Firefox launcher when needed.
+This probe opens and closes both headed and headless sessions.
 
 ## Dependency audit
 
@@ -137,8 +191,8 @@ The repeated audit queried 97 dependencies and found no affected packages.
 Validation on Java 17.0.20 passed all discovery selections in a fresh candidate
 copy, all 14 real API tests, and one real smoke check in each of TestNG UI and
 Cucumber with headless Chrome. Chrome 154 reported a Selenium CDP version warning;
-both smoke checks passed. Full UI/BDD regression, Windows Wrapper execution, and
-hosted Jenkins execution remain unverified.
+both smoke checks passed. Subsequent full browser regression results are recorded
+in roadmap item 4. Windows Wrapper and hosted Jenkins execution remain unverified.
 
 Test results are written to `target/surefire-reports`; Allure results are written
 to `target/allure-results`. Full report presentation and portable CI setup are
