@@ -1,8 +1,7 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
+import org.openqa.selenium.By;
 
 public class TestCasesPage extends BasePage {
 
@@ -21,5 +20,4 @@ public class TestCasesPage extends BasePage {
     public boolean isOpened() {
         return getCurrentUrl().endsWith("/test_cases");
     }
-
 }

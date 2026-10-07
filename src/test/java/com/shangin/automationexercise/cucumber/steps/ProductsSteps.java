@@ -1,11 +1,7 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import java.util.List;
-
-import org.testng.Assert;
-
 import com.shangin.automationexercise.assertions.CartAssertions;
-import com.shangin.automationexercise.assertions.ProductDetailsAssertations;
+import com.shangin.automationexercise.assertions.ProductDetailsAssertions;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.ProductCardComponent;
 import com.shangin.automationexercise.components.ProductDetailsComponent;
@@ -18,9 +14,10 @@ import com.shangin.automationexercise.model.Review;
 import com.shangin.automationexercise.pages.CartPage;
 import com.shangin.automationexercise.pages.ProductDetailsPage;
 import com.shangin.automationexercise.pages.ProductsPage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
+import org.testng.Assert;
 
 public class ProductsSteps {
 
@@ -62,7 +59,6 @@ public class ProductsSteps {
     public void userSetsProductQuantityTo(int quantity) {
 
         productDetailPage.productDetails().setQuantity(quantity);
-
     }
 
     @When("adds the product to the cart")
@@ -71,7 +67,9 @@ public class ProductsSteps {
         ProductDetailsComponent productDetails = productDetailPage.productDetails();
 
         context.addExpectedProduct(
-                new ExpectedProduct(productDetails.getName(), productDetails.getPrice(),
+                new ExpectedProduct(
+                        productDetails.getName(),
+                        productDetails.getPrice(),
                         productDetails.getQuantity()));
 
         AddToCartModalComponent modal = productDetailPage.addToCart();
@@ -122,23 +120,21 @@ public class ProductsSteps {
     public void productsListShouldBeDisplayed() {
 
         Assert.assertTrue(
-                productsPage.products().hasProducts(),
-                "The products list should be displayed");
+                productsPage.products().hasProducts(), "The products list should be displayed");
     }
 
     @Then("the product details page should be displayed")
     public void productDetailsPageShouldBeDisplayed() {
 
         Assert.assertTrue(
-                productDetailPage.isLoaded(),
-                "The product detail page should be displayed");
+                productDetailPage.isLoaded(), "The product detail page should be displayed");
     }
 
     @Then("the product information should be displayed")
     public void productInformationShouldBeDisplayed() {
 
-        ProductDetailsAssertations
-                .assertProductDetailInfoIsVisible(productDetailPage.productDetails());
+        ProductDetailsAssertions.assertProductDetailInfoIsVisible(
+                productDetailPage.productDetails());
     }
 
     @Then("the search results should be displayed")
@@ -161,25 +157,26 @@ public class ProductsSteps {
     @Then("both products should be present in the cart with correct details")
     public void bothProductsShouldBePresentInTheCart() {
 
-        CartAssertions
-                .assertProductsMatch(cartPage.getActualProducts(), context.getExpectedProducts());
+        CartAssertions.assertProductsMatch(
+                cartPage.getActualProducts(), context.getExpectedProducts());
     }
 
     @Then("the product should be present in the cart with quantity {int}")
     public void productShouldBePresentInCartWithQuantity(int quantity) {
 
-        Assert.assertEquals(context.getExpectedProducts().size(), 1,
+        Assert.assertEquals(
+                context.getExpectedProducts().size(),
+                1,
                 "The quantity step expects exactly one added product");
         ExpectedProduct product = context.getExpectedProducts().get(0);
-        CartAssertions.assertProductsMatch(cartPage.getActualProducts(),
+        CartAssertions.assertProductsMatch(
+                cartPage.getActualProducts(),
                 List.of(new ExpectedProduct(product.name(), product.price(), quantity)));
     }
 
     @Then("the review success message should be displayed")
     public void reviewSuccessMessageShouldBeDisplayed() {
         Assert.assertEquals(
-                productDetailPage.getSuccessMessage(),
-                UiMessages.SUCCESS_REVIEW_MESSAGE);
+                productDetailPage.getSuccessMessage(), UiMessages.SUCCESS_REVIEW_MESSAGE);
     }
-
 }

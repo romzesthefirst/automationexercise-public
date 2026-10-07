@@ -2,8 +2,7 @@ package com.shangin.automationexercise.constants;
 
 public final class UiMessages {
 
-    private UiMessages() {
-    }
+    private UiMessages() {}
 
     // login
     public static final String LOGIN_TO_YOUR_ACCOUNT = "Login to your account";
@@ -17,12 +16,12 @@ public final class UiMessages {
 
     // home
     public static final String RECOMMENDED_ITEMS = "RECOMMENDED ITEMS";
-    public static final String CAROUSEL_SUBTITLE
-            = "Full-Fledged practice website for Automation Engineers";
+    public static final String CAROUSEL_SUBTITLE =
+            "Full-Fledged practice website for Automation Engineers";
 
     // contact_us
-    public static final String SUCCESS_FEEDBACK_MESSAGE
-            = "Success! Your details have been submitted successfully.";
+    public static final String SUCCESS_FEEDBACK_MESSAGE =
+            "Success! Your details have been submitted successfully.";
 
     // products
     public static final String ALL_PPRODUCTS = "ALL PPRODUCTS";
@@ -36,8 +35,8 @@ public final class UiMessages {
     public static final String SUCCESS_SUBSCRIBE = "You have been successfully subscribed!";
 
     // payment
-    public static final String ORDER_PLACED_SUCCESSFULLY
-            = "Your order has been placed successfully!";
+    public static final String ORDER_PLACED_SUCCESSFULLY =
+            "Your order has been placed successfully!";
 
     // category_products
     private static final String CATEGORY_PRODUCTS_TITLE = "%s - %s PRODUCTS";
@@ -54,8 +53,8 @@ public final class UiMessages {
     }
 
     // invoice file
-    private static final String INVOICE_TEXT
-            = "Hi %s %s, Your total purchase amount is %s. Thank you";
+    private static final String INVOICE_TEXT =
+            "Hi %s %s, Your total purchase amount is %s. Thank you";
 
     public static String invoiceText(String firstName, String secondName, String amount) {
         return INVOICE_TEXT.formatted(firstName, secondName, amount);

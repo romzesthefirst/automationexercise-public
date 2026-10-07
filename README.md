@@ -156,7 +156,26 @@ Firefox passed **22/26 UI + 32/35 BDD**, with all seven failures showing Cloudfl
 Windows/Linux execution remains unverified.
 [Exact runs, repeats and browser limitations](docs/RUN_GUIDE.md#compare-complete-browser-runs).
 
+## Source style
+
+Java sources use the pinned Spotless formatter with Google Java Format's AOSP
+style (four-space indentation). The check runs during Maven's `validate` phase,
+including ordinary test commands and Jenkins builds.
+
+```bash
+./mvnw spotless:check   # Check without running tests
+./mvnw spotless:apply   # Apply formatting and remove unused Java imports
+```
+
+The check covers production and test Java sources, plus whitespace in the POM,
+feature files and properties. Local ignored diagnostic probes are excluded.
+IDE settings are local; no IntelliJ or Eclipse metadata is shared in Git.
+Formatter configuration: [pom.xml](pom.xml).
+
 ## License
 
-A project license has not been added yet. License selection is tracked in the
-repository quality roadmap (private validation notes omitted from public history).
+Copyright 2026 Shangin.
+
+Original project source and documentation are licensed under the
+[Apache License, Version 2.0](LICENSE). Dependencies and third-party website
+content retain their respective licenses and rights.

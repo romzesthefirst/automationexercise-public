@@ -1,11 +1,10 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.ProductDetailsComponent;
 import com.shangin.automationexercise.model.Review;
+import org.openqa.selenium.By;
 
 public class ProductDetailsPage extends BasePage {
 
@@ -13,8 +12,8 @@ public class ProductDetailsPage extends BasePage {
     private static final By PRODUCT_INFORMATION = By.cssSelector(".product-information");
 
     // review
-    private static final By WRITE_YOUR_REVIEW_LABEL
-            = By.cssSelector("li[class='active'] > a[href='#reviews']");
+    private static final By WRITE_YOUR_REVIEW_LABEL =
+            By.cssSelector("li[class='active'] > a[href='#reviews']");
     private static final By REVIEW_NAME_INPUT = By.id("name");
     private static final By REVIEW_EMAIL_INPUT = By.id("email");
     private static final By REVIEW_INPUT = By.id("review");
@@ -61,5 +60,4 @@ public class ProductDetailsPage extends BasePage {
     public String getSuccessMessage() {
         return getText(SUCCESS_ALERT);
     }
-
 }

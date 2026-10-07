@@ -1,12 +1,11 @@
 package com.shangin.automationexercise.cucumber.hooks;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.api.support.OwnedAccounts;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class AccountHooks {
     private final OwnedAccounts ownedAccounts;

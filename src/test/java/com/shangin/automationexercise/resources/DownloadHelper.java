@@ -1,18 +1,23 @@
 package com.shangin.automationexercise.resources;
 
+import com.shangin.automationexercise.driver.DownloadDirectory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.time.Duration;
-import com.shangin.automationexercise.driver.DownloadDirectory;
 
 public final class DownloadHelper {
-    private DownloadHelper() { }
+    private DownloadHelper() {}
 
     private static Path ownedFile(String fileName) {
         Path name = Path.of(fileName);
-        if (fileName.isBlank() || !name.toString().equals(fileName) || name.isAbsolute() || name.getNameCount() != 1 || fileName.equals(".") || fileName.equals("..")) {
+        if (fileName.isBlank()
+                || !name.toString().equals(fileName)
+                || name.isAbsolute()
+                || name.getNameCount() != 1
+                || fileName.equals(".")
+                || fileName.equals("..")) {
             throw new IllegalArgumentException("Expected a download file name: " + fileName);
         }
         return DownloadDirectory.current().resolve(name);
@@ -32,10 +37,14 @@ public final class DownloadHelper {
             try {
                 boolean partial;
                 try (var paths = Files.list(file.getParent())) {
-                    partial = paths.anyMatch(path -> {
-                        String name = path.getFileName().toString();
-                        return name.endsWith(".crdownload") || name.endsWith(".part") || name.endsWith(".tmp");
-                    });
+                    partial =
+                            paths.anyMatch(
+                                    path -> {
+                                        String name = path.getFileName().toString();
+                                        return name.endsWith(".crdownload")
+                                                || name.endsWith(".part")
+                                                || name.endsWith(".tmp");
+                                    });
                 }
                 if (!partial && Files.isRegularFile(file) && Files.size(file) > 0) {
                     long size = Files.size(file);
@@ -44,7 +53,8 @@ public final class DownloadHelper {
                         stableSince = System.nanoTime();
                         previousSize = size;
                         previousModified = modified;
-                    } else if (System.nanoTime() - stableSince >= Duration.ofMillis(600).toNanos()) {
+                    } else if (System.nanoTime() - stableSince
+                            >= Duration.ofMillis(600).toNanos()) {
                         return file;
                     }
                 } else {
@@ -60,15 +70,20 @@ public final class DownloadHelper {
                 Thread.sleep(100);
             } catch (InterruptedException failure) {
                 Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted waiting for download: " + file, failure);
+                throw new IllegalStateException(
+                        "Interrupted waiting for download: " + file, failure);
             }
         }
-        throw new AssertionError("Download did not complete (nonempty stable file without temporary downloads): " + file);
+        throw new AssertionError(
+                "Download did not complete (nonempty stable file without temporary downloads): "
+                        + file);
     }
 
     public static String waitAndRead(String fileName) throws IOException {
-        return waitAndRead(fileName, Duration.ofSeconds(
-                com.shangin.automationexercise.config.ConfigReader.getDownloadTimeout()));
+        return waitAndRead(
+                fileName,
+                Duration.ofSeconds(
+                        com.shangin.automationexercise.config.ConfigReader.getDownloadTimeout()));
     }
 
     public static String waitAndRead(String fileName, Duration timeout) throws IOException {

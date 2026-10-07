@@ -1,16 +1,14 @@
 package com.shangin.automationexercise.base;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.FooterComponent;
 import com.shangin.automationexercise.components.HeaderComponent;
 import com.shangin.automationexercise.core.AbstractPageObject;
 import com.shangin.automationexercise.support.AdsHandler;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 public abstract class BasePage extends AbstractPageObject {
 
@@ -85,13 +83,16 @@ public abstract class BasePage extends AbstractPageObject {
     }
 
     protected final void waitUntilPageAtBottom() {
-        wait.until(ignored -> {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            return (Boolean) js.executeScript("""
+        wait.until(
+                ignored -> {
+                    JavascriptExecutor js = (JavascriptExecutor) driver;
+                    return (Boolean)
+                            js.executeScript(
+                                    """
                     return Math.ceil(window.scrollY + window.innerHeight)
                             >= document.documentElement.scrollHeight;
                     """);
-        });
+                });
     }
 
     private long getScrollY() {
@@ -102,5 +103,4 @@ public abstract class BasePage extends AbstractPageObject {
     public void goBack() {
         driver.navigate().back();
     }
-
 }

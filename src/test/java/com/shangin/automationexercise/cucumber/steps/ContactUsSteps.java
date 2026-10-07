@@ -1,18 +1,16 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.factories.FeedbackFactory;
 import com.shangin.automationexercise.model.Feedback;
 import com.shangin.automationexercise.pages.ContactUsPage;
 import com.shangin.automationexercise.resources.TestResources;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
 public class ContactUsSteps {
-    
+
     private final ContactUsPage contactUsPage = new ContactUsPage();
 
     @When("the user fills in the contact form")
@@ -40,20 +38,16 @@ public class ContactUsSteps {
 
         contactUsPage.confirmAlert();
     }
-    
+
     @Then("the Get In Touch section should be displayed")
     public void getInTouchSectionShouldBeDisplayed() {
 
-        Assert.assertTrue(
-                contactUsPage.isLoaded(),
-                "Get In Touch section should be displayed");
+        Assert.assertTrue(contactUsPage.isLoaded(), "Get In Touch section should be displayed");
     }
 
     @Then("the contact form success message should be displayed")
     public void contactFormSuccessMessageShouldBeDisplayed() {
 
-        Assert.assertEquals(
-                contactUsPage.getSuccessMessage(),
-                UiMessages.SUCCESS_FEEDBACK_MESSAGE);
+        Assert.assertEquals(contactUsPage.getSuccessMessage(), UiMessages.SUCCESS_FEEDBACK_MESSAGE);
     }
 }

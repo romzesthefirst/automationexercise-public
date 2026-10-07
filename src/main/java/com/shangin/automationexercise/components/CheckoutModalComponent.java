@@ -1,9 +1,8 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.pages.SignupLoginPage;
+import org.openqa.selenium.By;
 
 public class CheckoutModalComponent extends BaseComponent {
 
@@ -35,5 +34,4 @@ public class CheckoutModalComponent extends BaseComponent {
         click(CONTINUE_ON_CART_BUTTON);
         waitUntilInvisible(CONTINUE_ON_CART_BUTTON);
     }
-
 }

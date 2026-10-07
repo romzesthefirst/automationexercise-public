@@ -2,7 +2,6 @@ package com.shangin.automationexercise.cucumber.steps;
 
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.steps.ApiUserSteps;
-
 import io.cucumber.java.en.Given;
 
 public class AccountSteps {
@@ -24,5 +23,4 @@ public class AccountSteps {
     public void createUnregisteredUser() {
         context.setUser(context.newUser());
     }
-    
 }

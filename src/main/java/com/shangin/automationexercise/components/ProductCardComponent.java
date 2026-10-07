@@ -1,11 +1,10 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.pages.ProductDetailsPage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class ProductCardComponent extends BaseComponent {
 
@@ -41,13 +40,8 @@ public class ProductCardComponent extends BaseComponent {
         hover(find(ADD_TO_CART));
         click(ADD_TO_CART);
     }
-    
-    public ExpectedProduct getInfo() {
-        return new ExpectedProduct(
-                getName(),
-                getPrice(),
-                1
-        );
-    }
 
+    public ExpectedProduct getInfo() {
+        return new ExpectedProduct(getName(), getPrice(), 1);
+    }
 }

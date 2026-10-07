@@ -1,16 +1,17 @@
 package com.shangin.automationexercise.driver;
 
+import com.shangin.automationexercise.config.ConfigReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
-import com.shangin.automationexercise.config.ConfigReader;
 
 /** A worker owns only its unique browser-session directory. */
 public final class DownloadDirectory {
     private static final ThreadLocal<Path> CURRENT = new ThreadLocal<>();
-    private DownloadDirectory() { }
+
+    private DownloadDirectory() {}
 
     public static Path current() {
         Path directory = CURRENT.get();
@@ -30,13 +31,16 @@ public final class DownloadDirectory {
     public static void close() {
         Path directory = CURRENT.get();
         CURRENT.remove();
-        if (directory == null) { return; }
+        if (directory == null) {
+            return;
+        }
         try (var paths = Files.walk(directory)) {
             for (Path path : paths.sorted(Comparator.reverseOrder()).toList()) {
                 Files.deleteIfExists(path);
             }
         } catch (IOException failure) {
-            throw new UncheckedIOException("Cannot remove owned download directory: " + directory, failure);
+            throw new UncheckedIOException(
+                    "Cannot remove owned download directory: " + directory, failure);
         }
     }
 }

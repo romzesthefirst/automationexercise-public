@@ -1,12 +1,10 @@
 package com.shangin.automationexercise.components;
 
-import java.util.List;
+import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.support.TestRandom;
-
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-
-import com.shangin.automationexercise.base.BaseComponent;
 
 public class ProductListComponent extends BaseComponent {
 
@@ -28,7 +26,8 @@ public class ProductListComponent extends BaseComponent {
 
     public ProductCardComponent getProductCard(String productName) {
         return getProducts().stream()
-                .filter(product -> product.getName().equalsIgnoreCase(productName)).findFirst()
+                .filter(product -> product.getName().equalsIgnoreCase(productName))
+                .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName));
     }
 
@@ -43,14 +42,16 @@ public class ProductListComponent extends BaseComponent {
     public boolean allProductsContain(String query) {
         String normalizedQuery = normalize(query);
         List<ProductCardComponent> products = getProducts();
-        return !products.isEmpty() && products.stream()
-                .allMatch(product -> normalize(product.getName()).contains(normalizedQuery));
+        return !products.isEmpty()
+                && products.stream()
+                        .allMatch(
+                                product -> normalize(product.getName()).contains(normalizedQuery));
     }
 
     public void addProductToCart(int index) {
         getProductCard(index).addToCart();
     }
-    
+
     public void addProductToCart(String name) {
         getProductCard(name).addToCart();
     }
@@ -75,5 +76,4 @@ public class ProductListComponent extends BaseComponent {
     public int getProductCount() {
         return getProducts().size();
     }
-
 }

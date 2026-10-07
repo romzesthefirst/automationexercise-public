@@ -1,14 +1,12 @@
 package com.shangin.automationexercise.driver;
 
+import com.shangin.automationexercise.config.ConfigReader;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
-
-import com.shangin.automationexercise.config.ConfigReader;
 
 public final class BrowserOptionsFactory {
     private BrowserOptionsFactory() {
@@ -24,11 +22,11 @@ public final class BrowserOptionsFactory {
         prefs.put("download.prompt_for_download", false);
 
         ChromeOptions options = new ChromeOptions();
-        
+
         options.addArguments(windowSizeArgument());
 
         options.addArguments("--disable-notifications");
-        
+
         options.setExperimentalOption("prefs", prefs);
 
         if (ConfigReader.isHeadless()) {
@@ -41,7 +39,9 @@ public final class BrowserOptionsFactory {
 
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
-        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) {
+            options.setCapability("webSocketUrl", true);
+        }
         return options;
     }
 
@@ -50,16 +50,20 @@ public final class BrowserOptionsFactory {
         options.addPreference("browser.download.folderList", 2);
         options.addPreference("browser.download.dir", DownloadDirectory.current().toString());
         options.addPreference("browser.download.useDownloadDir", true);
-        options.addPreference("browser.helperApps.neverAsk.saveToDisk", ConfigReader.getDownloadMimeTypes());
+        options.addPreference(
+                "browser.helperApps.neverAsk.saveToDisk", ConfigReader.getDownloadMimeTypes());
         options.addPreference("browser.privatebrowsing.autostart", ConfigReader.isIncognito());
         // Page objects await usable DOM; unrelated ad resources must not delay navigation.
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-        options.addArguments("--width=" + ConfigReader.getBrowserWidth(),
+        options.addArguments(
+                "--width=" + ConfigReader.getBrowserWidth(),
                 "--height=" + ConfigReader.getBrowserHeight());
         if (ConfigReader.isHeadless()) {
             options.addArguments("-headless");
         }
-        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) {
+            options.setCapability("webSocketUrl", true);
+        }
         return options;
     }
 
@@ -69,19 +73,28 @@ public final class BrowserOptionsFactory {
         options.addArguments("--disable-notifications");
         // Prevent temporary test profiles from pinning Edge to the macOS Dock.
         options.addArguments("--disable-features=EdgePinToDockNewUser,EdgePinToDockExistingUser");
-        if (ConfigReader.isIncognito()) { options.addArguments("--inprivate"); }
-        options.setExperimentalOption("prefs", Map.of(
-                "download.default_directory", DownloadDirectory.current().toString(),
-                "download.prompt_for_download", false));
+        if (ConfigReader.isIncognito()) {
+            options.addArguments("--inprivate");
+        }
+        options.setExperimentalOption(
+                "prefs",
+                Map.of(
+                        "download.default_directory",
+                        DownloadDirectory.current().toString(),
+                        "download.prompt_for_download",
+                        false));
         options.addArguments(windowSizeArgument());
         if (ConfigReader.isHeadless()) {
             options.addArguments("--headless=new");
         }
-        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) {
+            options.setCapability("webSocketUrl", true);
+        }
         return options;
     }
 
     private static String windowSizeArgument() {
-        return "--window-size=%d,%d".formatted(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight());
+        return "--window-size=%d,%d"
+                .formatted(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight());
     }
 }

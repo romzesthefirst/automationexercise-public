@@ -1,15 +1,13 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.pages.BrandProductsPage;
 import com.shangin.automationexercise.pages.CategoryProductsPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.ProductsPage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
 public class CategoryBrandSteps {
 
@@ -53,5 +51,4 @@ public class CategoryBrandSteps {
 
         Assert.assertTrue(brandProductsPage.products().hasProducts());
     }
-
 }

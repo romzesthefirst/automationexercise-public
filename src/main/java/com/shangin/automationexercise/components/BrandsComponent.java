@@ -1,13 +1,11 @@
 package com.shangin.automationexercise.components;
 
+import com.shangin.automationexercise.base.BaseComponent;
+import com.shangin.automationexercise.pages.BrandProductsPage;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-
-import com.shangin.automationexercise.base.BaseComponent;
-import com.shangin.automationexercise.pages.BrandProductsPage;
 
 public class BrandsComponent extends BaseComponent {
     private static final By BRANDS = By.cssSelector(".brands-name li a");
@@ -21,9 +19,11 @@ public class BrandsComponent extends BaseComponent {
     }
 
     public BrandProductsPage openBrand(String name) {
-        WebElement brand = findAll(BRANDS).stream()
-                .filter(element -> getBrandName(element).equalsIgnoreCase(name)).findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Brand not found: " + name));
+        WebElement brand =
+                findAll(BRANDS).stream()
+                        .filter(element -> getBrandName(element).equalsIgnoreCase(name))
+                        .findFirst()
+                        .orElseThrow(() -> new NoSuchElementException("Brand not found: " + name));
 
         navigate(brand);
 
@@ -36,5 +36,4 @@ public class BrandsComponent extends BaseComponent {
         String href = brand.getAttribute("href");
         return href.substring(href.lastIndexOf('/') + 1);
     }
-
 }

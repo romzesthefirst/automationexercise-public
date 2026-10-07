@@ -1,18 +1,15 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.model.User;
+import org.openqa.selenium.By;
 
 public class AccountInformationPage extends BasePage {
 
-    private static final By ACCOUNT_INFO_TITLE
-            = By.xpath("//div[contains(@class,'login-form')][.//input[@data-qa='password']]/h2");
+    private static final By ACCOUNT_INFO_TITLE =
+            By.xpath("//div[contains(@class,'login-form')][.//input[@data-qa='password']]/h2");
     private static final By MR_RADIO = By.cssSelector("[data-qa='title'] [value='Mr']");
     private static final By MRS_RADIO = By.cssSelector("[data-qa='title'] [value='Mrs']");
-    // private static final By NAME_INPUT = By.cssSelector("[data-qa='name']");
-    // private static final By EMAIL_INPUT = By.cssSelector("[data-qa='email']");
     private static final By PASSWORD_INPUT = By.cssSelector("[data-qa='password']");
     private static final By DAY_DROPDOWN = By.cssSelector("[data-qa='days']");
     private static final By MONTH_DROPDOWN = By.cssSelector("[data-qa='months']");
@@ -65,16 +62,16 @@ public class AccountInformationPage extends BasePage {
 
     public void selectTitle(String title) {
         switch (title.toLowerCase()) {
-        case "mr":
-            click(MR_RADIO);
-            break;
+            case "mr":
+                click(MR_RADIO);
+                break;
 
-        case "mrs":
-            click(MRS_RADIO);
-            break;
+            case "mrs":
+                click(MRS_RADIO);
+                break;
 
-        default:
-            throw new IllegalArgumentException("Unsupported title: " + title);
+            default:
+                throw new IllegalArgumentException("Unsupported title: " + title);
         }
     }
 
@@ -94,5 +91,4 @@ public class AccountInformationPage extends BasePage {
         waitUntilClickable(CREATE_ACCOUNT_BTN);
         removeAds();
     }
-
 }

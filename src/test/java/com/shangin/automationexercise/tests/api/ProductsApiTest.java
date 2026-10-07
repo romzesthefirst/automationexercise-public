@@ -1,21 +1,17 @@
 package com.shangin.automationexercise.tests.api;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import com.shangin.automationexercise.api.clients.ProductsApiClient;
 import com.shangin.automationexercise.api.models.ProductDto;
 import com.shangin.automationexercise.api.support.ApiResponseParser;
 import com.shangin.automationexercise.assertions.ProductApiAssertions;
 import com.shangin.automationexercise.constants.ApiMessages;
-
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
+import java.util.List;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import tools.jackson.databind.JsonNode;
 
 @Test(groups = "api")
@@ -26,7 +22,8 @@ public class ProductsApiTest {
     private final ProductsApiClient productsApiClient = new ProductsApiClient();
     private final ProductsApiClient searchProductsApiClient = new ProductsApiClient();
 
-    @Test(groups = "smoke") @Description("API 1: Get All Products List")
+    @Test(groups = "smoke")
+    @Description("API 1: Get All Products List")
     public void shouldReturnProductsList() {
         // API URL: https://automationexercise.com/api/productsList
         // Request Method: GET
@@ -38,18 +35,17 @@ public class ProductsApiTest {
         Assert.assertEquals(response.statusCode(), 200, "Unexpected HTTP status code");
 
         Assert.assertEquals(
-                body.get("responseCode").asInt(),
-                200,
-                "Unexpected responseCode in response body");
+                body.get("responseCode").asInt(), 200, "Unexpected responseCode in response body");
 
         // Response JSON: All products list
-        List<ProductDto> products
-                = ApiResponseParser.extractList(response, "products", ProductDto.class);
+        List<ProductDto> products =
+                ApiResponseParser.extractList(response, "products", ProductDto.class);
 
         ProductApiAssertions.assertValidProducts(products);
     }
 
-    @Test @Description("API 2: POST To All Products List")
+    @Test
+    @Description("API 2: POST To All Products List")
     public void shouldRejectPostRequestToProductsList() {
 
         // API URL: https://automationexercise.com/api/productsList
@@ -69,7 +65,8 @@ public class ProductsApiTest {
                 "Unexpected response message");
     }
 
-    @Test @Description("API 5: POST To Search Product")
+    @Test
+    @Description("API 5: POST To Search Product")
     public void shouldSearchProducts() {
         // API URL: https://automationexercise.com/api/searchProduct
         // Request Method: POST
@@ -83,32 +80,29 @@ public class ProductsApiTest {
         // Response Code: 200
         Assert.assertEquals(response.statusCode(), 200, "Unexpected HTTP status code");
         Assert.assertEquals(
-                body.get("responseCode").asInt(),
-                200,
-                "Unexpected responseCode in response body");
+                body.get("responseCode").asInt(), 200, "Unexpected responseCode in response body");
 
         // Response JSON: Searched products list
-        List<ProductDto> products
-                = ApiResponseParser.extractList(response, "products", ProductDto.class);
+        List<ProductDto> products =
+                ApiResponseParser.extractList(response, "products", ProductDto.class);
 
         ProductApiAssertions.assertValidSearchProducts(products, query);
     }
 
-    @Test @Description("API 6: POST To Search Product without search_product parameter")
+    @Test
+    @Description("API 6: POST To Search Product without search_product parameter")
     public void shouldRejectSearchWithoutSearchProductParameter() {
         // API URL: https://automationexercise.com/api/searchProduct
         // Request Method: POST
-        Response response
-                = searchProductsApiClient.postSearchProductsWithoutSearchProductParameter();
+        Response response =
+                searchProductsApiClient.postSearchProductsWithoutSearchProductParameter();
 
         JsonNode body = ApiResponseParser.extractJson(response);
 
         // Response Code: 400
         Assert.assertEquals(response.statusCode(), 200, "Unexpected HTTP status code");
         Assert.assertEquals(
-                body.get("responseCode").asInt(),
-                400,
-                "Unexpected responseCode in response body");
+                body.get("responseCode").asInt(), 400, "Unexpected responseCode in response body");
 
         // Response Message: Bad request, search_product parameter is missing in POST
         // request.
@@ -117,5 +111,4 @@ public class ProductsApiTest {
                 ApiMessages.SEARCH_PRODUCT_PARAMETER_IS_MISSING,
                 "Unexpected error message");
     }
-
 }

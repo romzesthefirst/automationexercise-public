@@ -1,6 +1,6 @@
 package com.shangin.automationexercise.api.models;
 
-public record UserDetailsDto (
+public record UserDetailsDto(
         int id,
         String name,
         String email,
@@ -16,5 +16,4 @@ public record UserDetailsDto (
         String country,
         String state,
         String city,
-        String zipcode
-) {}
+        String zipcode) {}

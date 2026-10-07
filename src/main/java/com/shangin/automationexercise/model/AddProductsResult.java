@@ -1,10 +1,6 @@
 package com.shangin.automationexercise.model;
 
+import com.shangin.automationexercise.components.AddToCartModalComponent;
 import java.util.List;
 
-import com.shangin.automationexercise.components.AddToCartModalComponent;
-
-public record AddProductsResult(
-        AddToCartModalComponent modal,
-        List<ExpectedProduct> products
-) {}
+public record AddProductsResult(AddToCartModalComponent modal, List<ExpectedProduct> products) {}

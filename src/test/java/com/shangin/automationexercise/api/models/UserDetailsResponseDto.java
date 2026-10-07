@@ -1,6 +1,3 @@
 package com.shangin.automationexercise.api.models;
 
-public record UserDetailsResponseDto(
-        int responseCode,
-        UserDetailsDto user
-) {}
+public record UserDetailsResponseDto(int responseCode, UserDetailsDto user) {}

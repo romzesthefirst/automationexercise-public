@@ -1,19 +1,16 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.BrandsComponent;
-import com.shangin.automationexercise.components.BreadcrumbsComponent;
 import com.shangin.automationexercise.components.CategoriesComponent;
 import com.shangin.automationexercise.components.ProductListComponent;
+import org.openqa.selenium.By;
 
 public class CategoryProductsPage extends BasePage {
 
     private static final By HEADER = By.cssSelector(".features_items > h2");
     private static final By PRODUCTS_SECTION = By.cssSelector(".features_items");
     private static final By CATEGORIES = By.id("accordian");
-    private static final By BREADCRUMBS = By.cssSelector(".breadcrumbs");
     private static final By BRANDS = By.cssSelector(".brands_products");
 
     @Override
@@ -26,7 +23,6 @@ public class CategoryProductsPage extends BasePage {
     public void waitUntilLoaded() {
         wait.until(ignored -> isLoaded());
         removeAds();
-
     }
 
     public ProductListComponent products() {
@@ -41,12 +37,7 @@ public class CategoryProductsPage extends BasePage {
         return new BrandsComponent(BRANDS);
     }
 
-    public BreadcrumbsComponent breadcrumbs() {
-        return new BreadcrumbsComponent(BREADCRUMBS);
-    }
-
     public String getTitle() {
         return getText(HEADER);
     }
-
 }

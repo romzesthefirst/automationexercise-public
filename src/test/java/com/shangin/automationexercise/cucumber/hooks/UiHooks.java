@@ -3,7 +3,6 @@ package com.shangin.automationexercise.cucumber.hooks;
 import com.shangin.automationexercise.driver.DriverFactory;
 import com.shangin.automationexercise.driver.DriverManager;
 import com.shangin.automationexercise.listeners.BrowserFailureAttachments;
-
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -17,8 +16,10 @@ public class UiHooks {
 
     @After(order = 3)
     public void recordEnvironment(Scenario scenario) {
-        io.qameta.allure.Allure.getLifecycle().updateTestCase(scenario.getId(),
-                com.shangin.automationexercise.listeners.ReportMetadata::enrich);
+        io.qameta.allure.Allure.getLifecycle()
+                .updateTestCase(
+                        scenario.getId(),
+                        com.shangin.automationexercise.listeners.ReportMetadata::enrich);
     }
 
     @After(value = "@ui", order = 2)

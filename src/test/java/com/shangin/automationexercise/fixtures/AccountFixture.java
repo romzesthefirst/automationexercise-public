@@ -1,14 +1,13 @@
 package com.shangin.automationexercise.fixtures;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.testng.ITestResult;
 import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.api.support.OwnedAccounts;
 import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.steps.ApiUserSteps;
 import io.qameta.allure.Allure;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.testng.ITestResult;
 
 public final class AccountFixture {
     private final AccountApiClient accountApiClient;

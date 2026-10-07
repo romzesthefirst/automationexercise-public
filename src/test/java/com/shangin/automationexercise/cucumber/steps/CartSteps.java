@@ -1,7 +1,5 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import java.util.List;
-
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.components.ProductCardComponent;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
@@ -10,9 +8,9 @@ import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.pages.CartPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.ProductsPage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 
 public class CartSteps {
 
@@ -44,7 +42,6 @@ public class CartSteps {
 
         context.getExpectedProducts()
                 .removeIf(product -> product.name().equalsIgnoreCase(removedProduct));
-
     }
 
     @When("the user adds the first recommended item to the cart")
@@ -53,7 +50,7 @@ public class CartSteps {
         AddToCartResult result = homePage.addFirstVisibleRecommendedProductToCart();
 
         context.setAddToCartModal(result.modal());
-        
+
         context.addExpectedProduct(
                 new ExpectedProduct(result.product().name(), result.product().price(), 1));
     }
@@ -64,7 +61,7 @@ public class CartSteps {
     @Then("the cart should contain the added product")
     public void cartProductsAreCorrect() {
 
-        CartAssertions
-                .assertProductsMatch(cartPage.getActualProducts(), context.getExpectedProducts());
+        CartAssertions.assertProductsMatch(
+                cartPage.getActualProducts(), context.getExpectedProducts());
     }
 }

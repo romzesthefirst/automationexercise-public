@@ -1,11 +1,5 @@
 package com.shangin.automationexercise.tests.ui.account;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import com.shangin.automationexercise.base.AccountUiTestBase;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.factories.UserFactory;
@@ -13,15 +7,19 @@ import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.AccountDeletedPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.SignupLoginPage;
-
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 @Test(groups = "ui")
 @Epic("Automation Exercise")
 @Feature("Account")
 public class LoginTest extends AccountUiTestBase {
 
-    @Test @Description("Test Case 2: Login User with correct email and password")
+    @Test
+    @Description("Test Case 2: Login User with correct email and password")
     public void shouldLoginWithValidCredentials() {
 
         User user = accounts.createUser();
@@ -50,7 +48,8 @@ public class LoginTest extends AccountUiTestBase {
                 "Account deletion confirmation is incorrect");
     }
 
-    @Test @Description("Test Case 3: Login User with incorrect email and password")
+    @Test
+    @Description("Test Case 3: Login User with incorrect email and password")
     public void shouldNotLoginWithIncorrectCredentials() {
 
         User newUser = UserFactory.randomUser();
@@ -67,10 +66,10 @@ public class LoginTest extends AccountUiTestBase {
         loginPage.attemptToLogin(newUser);
 
         Assert.assertEquals(loginPage.getLoginErrorMessage(), UiMessages.INCORRECT_EMAIL_PASSWORD);
-
     }
 
-    @Test @Description("Test Case 4: Logout User")
+    @Test
+    @Description("Test Case 4: Logout User")
     public void userCanLogOut() {
 
         User user = accounts.createUser();

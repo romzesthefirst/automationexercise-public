@@ -1,11 +1,13 @@
 package com.shangin.automationexercise.driver;
 
+import com.shangin.automationexercise.config.ConfigReader;
+import com.shangin.automationexercise.enums.Browser;
+import com.shangin.automationexercise.support.AdsHandler;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,10 +15,6 @@ import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.http.ClientConfig;
-
-import com.shangin.automationexercise.config.ConfigReader;
-import com.shangin.automationexercise.enums.Browser;
-import com.shangin.automationexercise.support.AdsHandler;
 
 public final class DriverFactory {
 
@@ -34,18 +32,27 @@ public final class DriverFactory {
         ConfigReader.validate();
         ClientConfig clientConfig = clientConfiguration();
         try {
-            return createDriver(() -> switch (browser) {
+            return createDriver(
+                    () ->
+                            switch (browser) {
+                                case CHROME ->
+                                        new ChromeDriver(
+                                                BrowserOptionsFactory.chrome(), clientConfig);
 
-                case CHROME -> new ChromeDriver(BrowserOptionsFactory.chrome(), clientConfig);
+                                case FIREFOX ->
+                                        new FirefoxDriver(
+                                                BrowserOptionsFactory.firefox(), clientConfig);
 
-                case FIREFOX -> new FirefoxDriver(BrowserOptionsFactory.firefox(), clientConfig);
-
-                case EDGE -> new EdgeDriver(BrowserOptionsFactory.edge(), clientConfig);
-
-            }, DriverFactory::initialize);
+                                case EDGE ->
+                                        new EdgeDriver(BrowserOptionsFactory.edge(), clientConfig);
+                            },
+                    DriverFactory::initialize);
         } catch (RuntimeException | Error failure) {
-            try { DownloadDirectory.close(); }
-            catch (RuntimeException cleanupFailure) { failure.addSuppressed(cleanupFailure); }
+            try {
+                DownloadDirectory.close();
+            } catch (RuntimeException cleanupFailure) {
+                failure.addSuppressed(cleanupFailure);
+            }
             throw failure;
         }
     }
@@ -53,7 +60,8 @@ public final class DriverFactory {
     static ClientConfig clientConfiguration() {
         // Let configured page/script deadlines expire first, but bound dead sessions
         // during evidence collection and shutdown as well as normal commands.
-        long seconds = Math.max(ConfigReader.getPageLoadTimeout(), ConfigReader.getScriptTimeout()) + 10L;
+        long seconds =
+                Math.max(ConfigReader.getPageLoadTimeout(), ConfigReader.getScriptTimeout()) + 10L;
         return ClientConfig.defaultConfig().readTimeout(Duration.ofSeconds(seconds));
     }
 
@@ -75,17 +83,29 @@ public final class DriverFactory {
     }
 
     static void initialize(WebDriver driver) {
-        driver.manage().window().setSize(new Dimension(ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight()));
+        driver.manage()
+                .window()
+                .setSize(
+                        new Dimension(
+                                ConfigReader.getBrowserWidth(), ConfigReader.getBrowserHeight()));
         if (driver instanceof ChromiumDriver chromium) {
             // Preferences alone do not route private-mode downloads into the owned directory.
-            chromium.executeCdpCommand("Page.setDownloadBehavior", Map.of(
-                    "behavior", "allow", "downloadPath", DownloadDirectory.current().toString()));
+            chromium.executeCdpCommand(
+                    "Page.setDownloadBehavior",
+                    Map.of(
+                            "behavior",
+                            "allow",
+                            "downloadPath",
+                            DownloadDirectory.current().toString()));
         }
         AdsHandler.blockGoogleAds(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
-        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(ConfigReader.getScriptTimeout()));
+        driver.manage()
+                .timeouts()
+                .pageLoadTimeout(Duration.ofSeconds(ConfigReader.getPageLoadTimeout()));
+        driver.manage()
+                .timeouts()
+                .scriptTimeout(Duration.ofSeconds(ConfigReader.getScriptTimeout()));
         BrowserNetworkDiagnostics.start(driver);
     }
-
 }

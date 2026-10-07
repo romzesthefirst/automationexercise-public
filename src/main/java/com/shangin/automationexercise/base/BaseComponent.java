@@ -1,13 +1,11 @@
 package com.shangin.automationexercise.base;
 
+import com.shangin.automationexercise.core.AbstractPageObject;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import com.shangin.automationexercise.core.AbstractPageObject;
 
 public abstract class BaseComponent extends AbstractPageObject {
     private final WebElement snapshot;
@@ -32,7 +30,8 @@ public abstract class BaseComponent extends AbstractPageObject {
             return snapshot;
         } catch (StaleElementReferenceException failure) {
             // Item snapshots have identity: never silently bind them to a different item.
-            throw new IllegalStateException("Component DOM was replaced; obtain a fresh component", failure);
+            throw new IllegalStateException(
+                    "Component DOM was replaced; obtain a fresh component", failure);
         }
     }
 

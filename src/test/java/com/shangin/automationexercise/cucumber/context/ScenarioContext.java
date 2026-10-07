@@ -1,13 +1,12 @@
 package com.shangin.automationexercise.cucumber.context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.shangin.automationexercise.api.support.OwnedAccounts;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.CheckoutModalComponent;
 import com.shangin.automationexercise.model.ExpectedProduct;
 import com.shangin.automationexercise.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScenarioContext {
 
@@ -30,7 +29,7 @@ public class ScenarioContext {
     private final List<ExpectedProduct> expectedProducts = new ArrayList<>();
 
     private String paymentResultMessage;
-    
+
     private String invoiceText;
 
     public User getUser() {
@@ -84,7 +83,7 @@ public class ScenarioContext {
     public String getPaymentResultMessage() {
         return paymentResultMessage;
     }
-    
+
     public void setInvoiceText(String text) {
         this.invoiceText = text;
     }

@@ -1,16 +1,14 @@
 package com.shangin.automationexercise.components;
 
+import com.shangin.automationexercise.base.BaseComponent;
+import com.shangin.automationexercise.pages.CategoryProductsPage;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-
-import com.shangin.automationexercise.base.BaseComponent;
-import com.shangin.automationexercise.pages.CategoryProductsPage;
 
 public class CategoriesComponent extends BaseComponent {
 
@@ -24,15 +22,20 @@ public class CategoriesComponent extends BaseComponent {
 
     public List<String> getCategoryNames() {
         return findAll(CATEGORY).stream()
-                .map(category -> category.findElement(CATEGORY_NAME).getText().trim()).toList();
+                .map(category -> category.findElement(CATEGORY_NAME).getText().trim())
+                .toList();
     }
 
     private WebElement getCategory(String categoryName) {
         return findAll(CATEGORY).stream()
                 .filter(
-                        category -> category.findElement(CATEGORY_NAME).getText().trim()
-                                .equalsIgnoreCase(categoryName))
-                .findFirst().orElseThrow(
+                        category ->
+                                category.findElement(CATEGORY_NAME)
+                                        .getText()
+                                        .trim()
+                                        .equalsIgnoreCase(categoryName))
+                .findFirst()
+                .orElseThrow(
                         () -> new NoSuchElementException("Category not found: " + categoryName));
     }
 
@@ -40,16 +43,20 @@ public class CategoriesComponent extends BaseComponent {
 
         return category.findElements(SUBCATEGORY_NAME).stream()
                 .filter(element -> element.getText().trim().equalsIgnoreCase(subcategoryName))
-                .findFirst().orElseThrow(
-                        () -> new NoSuchElementException(
-                                "Subcategory not found: " + subcategoryName));
+                .findFirst()
+                .orElseThrow(
+                        () ->
+                                new NoSuchElementException(
+                                        "Subcategory not found: " + subcategoryName));
     }
 
     public List<String> getSubcategories(String categoryName) {
         WebElement category = getCategory(categoryName);
 
-        return category.findElements(SUBCATEGORY_NAME).stream().map(WebElement::getText)
-                .map(String::trim).toList();
+        return category.findElements(SUBCATEGORY_NAME).stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .toList();
     }
 
     public Map<String, List<String>> getCategories() {
@@ -60,9 +67,11 @@ public class CategoriesComponent extends BaseComponent {
 
             String categoryName = category.findElement(CATEGORY_NAME).getText().trim();
 
-            List<String> subcategories = category.findElements(SUBCATEGORY_NAME).stream()
-                    .map(element -> element.getDomProperty("textContent")).map(String::trim)
-                    .toList();
+            List<String> subcategories =
+                    category.findElements(SUBCATEGORY_NAME).stream()
+                            .map(element -> element.getDomProperty("textContent"))
+                            .map(String::trim)
+                            .toList();
 
             categories.put(categoryName, subcategories);
         }
@@ -71,7 +80,8 @@ public class CategoriesComponent extends BaseComponent {
     }
 
     private boolean isCategoryExpanded(WebElement category) {
-        return category.findElement(By.cssSelector(".panel-collapse")).getAttribute("class")
+        return category.findElement(By.cssSelector(".panel-collapse"))
+                .getAttribute("class")
                 .contains("in");
     }
 
@@ -95,17 +105,18 @@ public class CategoriesComponent extends BaseComponent {
 
     private WebElement waitUntilSubcategoryVisible(String categoryName, String subcategoryName) {
 
-        return wait.until(ignored -> {
-            try {
-                WebElement category = getCategory(categoryName);
+        return wait.until(
+                ignored -> {
+                    try {
+                        WebElement category = getCategory(categoryName);
 
-                WebElement subcategory = getSubcategory(category, subcategoryName);
+                        WebElement subcategory = getSubcategory(category, subcategoryName);
 
-                return subcategory.isDisplayed() ? subcategory : null;
+                        return subcategory.isDisplayed() ? subcategory : null;
 
-            } catch (NoSuchElementException | StaleElementReferenceException e) {
-                return null;
-            }
-        });
+                    } catch (NoSuchElementException | StaleElementReferenceException e) {
+                        return null;
+                    }
+                });
     }
 }

@@ -1,26 +1,23 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import java.io.IOException;
-
-import org.testng.Assert;
-
-import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.assertions.AddressAssertions;
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.constants.UiMessages;
-import com.shangin.automationexercise.model.MonetaryValues;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.factories.CardFactory;
+import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.model.CardDetails;
+import com.shangin.automationexercise.model.MonetaryValues;
 import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.CartPage;
 import com.shangin.automationexercise.pages.CheckoutPage;
 import com.shangin.automationexercise.pages.PaymentDonePage;
 import com.shangin.automationexercise.pages.PaymentPage;
 import com.shangin.automationexercise.resources.DownloadHelper;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.io.IOException;
+import org.testng.Assert;
 
 public class CheckoutSteps {
 
@@ -39,7 +36,6 @@ public class CheckoutSteps {
     public void userProceedsToCheckoutAsGuest() {
 
         context.setCheckoutModal(cartPage.proceedToCheckoutAsGuest());
-
     }
 
     @When("the user proceeds to checkout as logged in")
@@ -102,16 +98,14 @@ public class CheckoutSteps {
     public void orderDetailsShouldBeCorrect() {
 
         CartAssertions.assertProductsMatch(
-                checkoutPage.getActualProducts(),
-                context.getExpectedProducts());
+                checkoutPage.getActualProducts(), context.getExpectedProducts());
     }
 
     @Then("the total amount should be correct")
     public void totalAmountShouldBeCorrect() {
 
         CartAssertions.assertProductsTotalPrice(
-                checkoutPage.getTotalPrice(),
-                context.getExpectedProducts());
+                checkoutPage.getTotalPrice(), context.getExpectedProducts());
     }
 
     @Then("the order success message should be displayed")
@@ -133,12 +127,12 @@ public class CheckoutSteps {
     public void textInInvoiceShouldBeCorrect() {
 
         User user = context.getUser();
-        String totalAmountStr
-                = MonetaryValues.format(CartAssertions.calculateExpectedTotal(context.getExpectedProducts()));
+        String totalAmountStr =
+                MonetaryValues.format(
+                        CartAssertions.calculateExpectedTotal(context.getExpectedProducts()));
 
         Assert.assertEquals(
                 context.getInvoiceText(),
                 UiMessages.invoiceText(user.firstName(), user.lastName(), totalAmountStr));
     }
-
 }

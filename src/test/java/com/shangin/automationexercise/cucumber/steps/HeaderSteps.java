@@ -1,15 +1,13 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.components.HeaderAccessor;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.AccountDeletedPage;
 import com.shangin.automationexercise.pages.HomePage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
 public class HeaderSteps {
 
@@ -38,7 +36,6 @@ public class HeaderSteps {
 
         User newUser = context.getUser();
         Assert.assertTrue(new HomePage().header().isLoggedInAs(newUser));
-
     }
 
     @Then("the user can return to the home page")
@@ -46,5 +43,4 @@ public class HeaderSteps {
 
         Assert.assertTrue(new AccountDeletedPage().header().openHomePage().isLoaded());
     }
-
 }

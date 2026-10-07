@@ -1,8 +1,8 @@
 package com.shangin.automationexercise.base;
 
+import com.shangin.automationexercise.fixtures.AccountFixture;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import com.shangin.automationexercise.fixtures.AccountFixture;
 
 /** Opt-in account lifecycle for UI tests that create test accounts. */
 public abstract class AccountUiTestBase extends BaseTest {

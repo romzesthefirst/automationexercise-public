@@ -1,11 +1,10 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.BrandsComponent;
 import com.shangin.automationexercise.components.CategoriesComponent;
 import com.shangin.automationexercise.components.ProductListComponent;
+import org.openqa.selenium.By;
 
 public class BrandProductsPage extends BasePage {
 
@@ -24,9 +23,8 @@ public class BrandProductsPage extends BasePage {
     public void waitUntilLoaded() {
         wait.until(ignored -> isLoaded());
         removeAds();
-
     }
-    
+
     public CategoriesComponent categories() {
         return new CategoriesComponent(CATEGORIES);
     }

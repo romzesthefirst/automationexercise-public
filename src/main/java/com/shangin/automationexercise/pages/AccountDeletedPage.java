@@ -1,8 +1,7 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
+import org.openqa.selenium.By;
 
 public class AccountDeletedPage extends BasePage {
 

@@ -1,8 +1,7 @@
 package com.shangin.automationexercise.api.support;
 
-import java.util.List;
-
 import io.restassured.response.Response;
+import java.util.List;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -10,11 +9,10 @@ import tools.jackson.databind.json.JsonMapper;
 
 public final class ApiResponseParser {
 
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-            .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
+    private static final ObjectMapper OBJECT_MAPPER =
+            JsonMapper.builder().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
 
-    private ApiResponseParser() {
-    }
+    private ApiResponseParser() {}
 
     public static JsonNode extractJson(Response response) {
         String json = response.htmlPath().getString("body");

@@ -6,11 +6,10 @@ import java.util.regex.Pattern;
 
 /** Parses nonnegative rupee amounts with a decimal point and optional thousands commas. */
 public final class MonetaryValues {
-    private static final Pattern PRICE = Pattern.compile(
-            "(?:Rs\\.\\s*)?([0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)(\\.[0-9]+)?");
+    private static final Pattern PRICE =
+            Pattern.compile("(?:Rs\\.\\s*)?([0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)(\\.[0-9]+)?");
 
-    private MonetaryValues() {
-    }
+    private MonetaryValues() {}
 
     public static BigDecimal parse(String text) {
         if (text == null) {
@@ -20,8 +19,9 @@ public final class MonetaryValues {
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid monetary value: '" + text + "'");
         }
-        return new BigDecimal(matcher.group(1).replace(",", "")
-                + (matcher.group(2) == null ? "" : matcher.group(2)));
+        return new BigDecimal(
+                matcher.group(1).replace(",", "")
+                        + (matcher.group(2) == null ? "" : matcher.group(2)));
     }
 
     /** Returns plain decimal text without a currency prefix or insignificant trailing zeros. */

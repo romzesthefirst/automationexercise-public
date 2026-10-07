@@ -1,15 +1,13 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.components.FooterComponent;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.factories.TestData;
 import com.shangin.automationexercise.pages.CartPage;
 import com.shangin.automationexercise.pages.HomePage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
 public class FooterSteps {
 
@@ -31,7 +29,9 @@ public class FooterSteps {
 
     @Then("the subscription heading should be displayed")
     public void subscriptionHeadingIsDisplayed() {
-        Assert.assertEquals(footer.getSubscriptionHeader(), UiMessages.SUBSCRIPTION,
+        Assert.assertEquals(
+                footer.getSubscriptionHeader(),
+                UiMessages.SUBSCRIPTION,
                 "Unexpected subscription heading");
     }
 
@@ -42,7 +42,9 @@ public class FooterSteps {
 
     @Then("the subscription success message should be displayed")
     public void subscriptionSuccessIsDisplayed() {
-        Assert.assertEquals(footer.getSubscriptionResult(), UiMessages.SUCCESS_SUBSCRIBE,
+        Assert.assertEquals(
+                footer.getSubscriptionResult(),
+                UiMessages.SUCCESS_SUBSCRIBE,
                 "Unexpected subscription result");
     }
 }

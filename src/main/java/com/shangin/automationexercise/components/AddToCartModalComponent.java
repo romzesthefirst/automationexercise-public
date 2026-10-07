@@ -1,9 +1,8 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BaseComponent;
 import com.shangin.automationexercise.pages.CartPage;
+import org.openqa.selenium.By;
 
 public class AddToCartModalComponent extends BaseComponent {
 

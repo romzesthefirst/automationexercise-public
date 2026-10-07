@@ -1,11 +1,9 @@
 package com.shangin.automationexercise.pages;
 
-import java.nio.file.Path;
-
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.model.Feedback;
+import java.nio.file.Path;
+import org.openqa.selenium.By;
 
 public class ContactUsPage extends BasePage {
 
@@ -22,7 +20,7 @@ public class ContactUsPage extends BasePage {
     public void submitFeedback() {
         click(SUBMIT_BUTTON);
     }
-    
+
     public void confirmAlert() {
         acceptAlert();
     }
@@ -58,5 +56,4 @@ public class ContactUsPage extends BasePage {
     public void waitUntilLoaded() {
         waitUntilVisible(GET_IN_TOUCH_TEXT);
     }
-
 }

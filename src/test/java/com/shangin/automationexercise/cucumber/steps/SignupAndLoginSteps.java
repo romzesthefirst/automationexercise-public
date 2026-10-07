@@ -1,7 +1,5 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
 import com.shangin.automationexercise.model.User;
@@ -10,17 +8,17 @@ import com.shangin.automationexercise.pages.AccountDeletedPage;
 import com.shangin.automationexercise.pages.AccountInformationPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.SignupLoginPage;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
-public class SingupAndLoginSteps {
+public class SignupAndLoginSteps {
 
     private final ScenarioContext context;
-    
+
     SignupLoginPage signupLoginPage = new SignupLoginPage();
 
-    public SingupAndLoginSteps(ScenarioContext context) {
+    public SignupAndLoginSteps(ScenarioContext context) {
         this.context = context;
     }
 
@@ -52,7 +50,6 @@ public class SingupAndLoginSteps {
 
         User newUser = context.getUser();
         new AccountInformationPage().createAccount(newUser);
-
     }
 
     @When("the user continues to the application")
@@ -67,7 +64,7 @@ public class SingupAndLoginSteps {
         User user = context.getUser();
         new HomePage().header().openSignupLoginPage().attemptToRegister(user);
     }
-    
+
     @When("the user creates an account from checkout modal window")
     public void userCreatesAnAccountFromCheckoutModal() {
 
@@ -76,7 +73,7 @@ public class SingupAndLoginSteps {
         signupLoginPage = context.requireCheckoutModal().registerOrLogin();
         signupLoginPage.register(newUser).createAccount(newUser).continueShopping();
     }
-    
+
     @When("the user creates an account")
     public void userCreatesAnAccount() {
 
@@ -99,8 +96,7 @@ public class SingupAndLoginSteps {
     public void invalidLoginErrorShouldBeDisplayed() {
 
         Assert.assertEquals(
-                new SignupLoginPage().getLoginErrorMessage(),
-                UiMessages.INCORRECT_EMAIL_PASSWORD);
+                new SignupLoginPage().getLoginErrorMessage(), UiMessages.INCORRECT_EMAIL_PASSWORD);
     }
 
     @Then("the account created page should be displayed")
@@ -115,16 +111,13 @@ public class SingupAndLoginSteps {
     public void accountShouldBeDeletedSuccessfully() {
 
         Assert.assertEquals(
-                new AccountDeletedPage().getAccountDeletedMessage(),
-                UiMessages.ACCOUNT_DELETED);
+                new AccountDeletedPage().getAccountDeletedMessage(), UiMessages.ACCOUNT_DELETED);
     }
 
     @Then("an email already exists error message should be displayed")
     public void emailAlreadyExistsErrorMessageDisplayed() {
 
         Assert.assertEquals(
-                new SignupLoginPage().getSignUpErrorMessage(),
-                UiMessages.EMAIL_ALREADY_EXISTS);
+                new SignupLoginPage().getSignUpErrorMessage(), UiMessages.EMAIL_ALREADY_EXISTS);
     }
-
 }

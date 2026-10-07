@@ -6,10 +6,12 @@ import io.restassured.response.Response;
 import tools.jackson.databind.JsonNode;
 
 public final class ApiCleanupHelper {
-    public enum Outcome { DELETED, ALREADY_ABSENT }
-
-    private ApiCleanupHelper() {
+    public enum Outcome {
+        DELETED,
+        ALREADY_ABSENT
     }
+
+    private ApiCleanupHelper() {}
 
     public static Outcome deleteAccount(AccountApiClient client, User user) {
         int deletionCode = responseCode(client.deleteAccount(user));
@@ -19,7 +21,8 @@ public final class ApiCleanupHelper {
         // A deletion 404 can also mean wrong credentials; verify absence independently.
         int lookupCode = responseCode(client.getUserByEmail(user.email()));
         if (lookupCode != 404) {
-            throw new AssertionError("Account absence was not confirmed; lookup responseCode: " + lookupCode);
+            throw new AssertionError(
+                    "Account absence was not confirmed; lookup responseCode: " + lookupCode);
         }
         return deletionCode == 200 ? Outcome.DELETED : Outcome.ALREADY_ABSENT;
     }

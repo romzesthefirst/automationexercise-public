@@ -1,16 +1,14 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BaseComponent;
+import org.openqa.selenium.By;
 
 public class ProductDetailsComponent extends BaseComponent {
 
     private static final By NAME = By.cssSelector(".product-information h2");
     private static final By CATEGORY = By.cssSelector(".product-information h2 + p");
     private static final By PRICE = By.cssSelector(".product-information span > span");
-    private static final By AVAILABILITY
-            = By.xpath("//p[b[normalize-space()='Availability:']]");
+    private static final By AVAILABILITY = By.xpath("//p[b[normalize-space()='Availability:']]");
     private static final By CONDITION = By.xpath("//p[b[normalize-space()='Condition:']]");
     private static final By BRAND = By.xpath("//p[b[normalize-space()='Brand:']]");
     private static final By QUANTITY = By.id("quantity");

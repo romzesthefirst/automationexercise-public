@@ -1,21 +1,18 @@
 package com.shangin.automationexercise.tests.api;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import com.shangin.automationexercise.base.AccountTestBase;
 import com.shangin.automationexercise.api.models.UserDetailsResponseDto;
 import com.shangin.automationexercise.api.support.ApiResponseParser;
 import com.shangin.automationexercise.assertions.UserApiAssertions;
+import com.shangin.automationexercise.base.AccountTestBase;
 import com.shangin.automationexercise.constants.ApiMessages;
 import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.model.User;
-
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.response.Response;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import tools.jackson.databind.JsonNode;
 
 @Test(groups = "api")
@@ -23,7 +20,8 @@ import tools.jackson.databind.JsonNode;
 @Feature("Account")
 public class AccountApiTest extends AccountTestBase {
 
-    @Test @Description("API 11: POST To Create/Register User Account")
+    @Test
+    @Description("API 11: POST To Create/Register User Account")
     public void shouldCreateNewUserAccount() {
 
         User user = accounts.newUser();
@@ -35,18 +33,13 @@ public class AccountApiTest extends AccountTestBase {
         // address1, address2, country, zipcode, state, city, mobile_number
         Response createAccountresponse = accountApiClient.createAccount(user);
 
-        Assert.assertEquals(
-                createAccountresponse.statusCode(),
-                200,
-                "Unexpected HTTP status code");
+        Assert.assertEquals(createAccountresponse.statusCode(), 200, "Unexpected HTTP status code");
 
         JsonNode body = ApiResponseParser.extractJson(createAccountresponse);
 
         // Response Code: 201
         Assert.assertEquals(
-                body.get("responseCode").asInt(),
-                201,
-                "Unexpected responseCode in response body");
+                body.get("responseCode").asInt(), 201, "Unexpected responseCode in response body");
 
         // Response Message: User created!
         Assert.assertEquals(
@@ -59,15 +52,16 @@ public class AccountApiTest extends AccountTestBase {
 
         Assert.assertEquals(getUserResponse.statusCode(), 200, "Unexpected HTTP status code");
 
-        UserDetailsResponseDto actual
-                = ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
+        UserDetailsResponseDto actual =
+                ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
 
         Assert.assertEquals(actual.responseCode(), 200, "Unexpected responseCode");
 
         UserApiAssertions.assertMatches(user, actual.user());
     }
 
-    @Test @Description("API 14: GET user account detail by email")
+    @Test
+    @Description("API 14: GET user account detail by email")
     public void shouldGetUserAccountDetailByEmail() {
         User user = accounts.createUser();
 
@@ -78,8 +72,8 @@ public class AccountApiTest extends AccountTestBase {
 
         Assert.assertEquals(getUserResponse.statusCode(), 200, "Unexpected HTTP status code");
 
-        UserDetailsResponseDto body
-                = ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
+        UserDetailsResponseDto body =
+                ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
 
         // Response Code: 200
         Assert.assertEquals(body.responseCode(), 200, "Unexpected responseCode");
@@ -88,7 +82,8 @@ public class AccountApiTest extends AccountTestBase {
         UserApiAssertions.assertMatches(user, body.user());
     }
 
-    @Test @Description("API 13: PUT METHOD To Update User Account")
+    @Test
+    @Description("API 13: PUT METHOD To Update User Account")
     public void shouldUpdateExistingUserAccount() {
         User currentUser = accounts.createUser();
         User updatedUser = UserFactory.updatedUserFrom(currentUser);
@@ -118,15 +113,16 @@ public class AccountApiTest extends AccountTestBase {
 
         // Last checks
         Response getUserResponse = accountApiClient.getUserByEmail(currentUser.email());
-        UserDetailsResponseDto getUserBody
-                = ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
+        UserDetailsResponseDto getUserBody =
+                ApiResponseParser.extract(getUserResponse, UserDetailsResponseDto.class);
 
         // Response Code: 200
         Assert.assertEquals(getUserBody.responseCode(), 200, "Unexpected responseCode");
         UserApiAssertions.assertMatches(updatedUser, getUserBody.user());
     }
 
-    @Test @Description("API 12: DELETE METHOD To Delete User Account")
+    @Test
+    @Description("API 12: DELETE METHOD To Delete User Account")
     public void shouldDeleteExistingUserAccount() {
         User user = accounts.createUser();
         // API URL: https://automationexercise.com/api/deleteAccount
@@ -148,11 +144,11 @@ public class AccountApiTest extends AccountTestBase {
                 updateUserbody.get("message").asString(),
                 ApiMessages.ACCOUNT_DELETED,
                 "Unexpected message in response body");
-
     }
 
-    @Test @Description("API 7: POST To Verify Login with valid details")
-    public void shouldVerifyLoginWithValidEmalAndPassword() {
+    @Test
+    @Description("API 7: POST To Verify Login with valid details")
+    public void shouldVerifyLoginWithValidEmailAndPassword() {
         User user = accounts.createUser();
 
         // API URL: https://automationexercise.com/api/verifyLogin
@@ -161,10 +157,7 @@ public class AccountApiTest extends AccountTestBase {
         Response verifyLoginResponse = accountApiClient.postToVerifyLogin(user);
 
         // Response Code: 200
-        Assert.assertEquals(
-                verifyLoginResponse.statusCode(),
-                200,
-                "Unexpected HTTP status code");
+        Assert.assertEquals(verifyLoginResponse.statusCode(), 200, "Unexpected HTTP status code");
 
         JsonNode verifyLoginBody = ApiResponseParser.extractJson(verifyLoginResponse);
 
@@ -179,19 +172,17 @@ public class AccountApiTest extends AccountTestBase {
                 "Unexpected message in response body");
     }
 
-    @Test @Description("API 8: POST To Verify Login without email parameter")
+    @Test
+    @Description("API 8: POST To Verify Login without email parameter")
     public void shouldVerifyLoginOnlyWithPassword() {
         User user = accounts.createUser();
         // API URL: https://automationexercise.com/api/verifyLogin
         // Request Method: POST
         // Request Parameter: password
-        Response verifyLoginResponse
-                = accountApiClient.postToVerifyLoginOnlyWithPassword(user.password());
+        Response verifyLoginResponse =
+                accountApiClient.postToVerifyLoginOnlyWithPassword(user.password());
 
-        Assert.assertEquals(
-                verifyLoginResponse.statusCode(),
-                200,
-                "Unexpected HTTP status code");
+        Assert.assertEquals(verifyLoginResponse.statusCode(), 200, "Unexpected HTTP status code");
 
         JsonNode verifyLoginBody = ApiResponseParser.extractJson(verifyLoginResponse);
 
@@ -209,7 +200,8 @@ public class AccountApiTest extends AccountTestBase {
                 "Unexpected message in response body");
     }
 
-    @Test @Description("API 9: DELETE To Verify Login")
+    @Test
+    @Description("API 9: DELETE To Verify Login")
     public void shouldRejectDeleteRequestToVerifyLogin() {
 
         // API URL: https://automationexercise.com/api/verifyLogin
@@ -231,10 +223,10 @@ public class AccountApiTest extends AccountTestBase {
                 verifyLoginBody.get("message").asString(),
                 ApiMessages.REQUEST_METHOD_IS_NOT_SUPPORTED,
                 "Unexpected message in response body");
-
     }
 
-    @Test @Description("API 10: POST To Verify Login with invalid details")
+    @Test
+    @Description("API 10: POST To Verify Login with invalid details")
     public void shouldRejectLoginWithInvalidDetails() {
 
         User user1 = accounts.createUser();
@@ -243,13 +235,9 @@ public class AccountApiTest extends AccountTestBase {
         // API URL: https://automationexercise.com/api/verifyLogin
         // Request Method: POST
         // Request Parameters: email, password (invalid values)
-        Response verifyLoginResponse
-                = accountApiClient.postToVerifyLogin(user1, user2.password());
+        Response verifyLoginResponse = accountApiClient.postToVerifyLogin(user1, user2.password());
 
-        Assert.assertEquals(
-                verifyLoginResponse.statusCode(),
-                200,
-                "Unexpected HTTP status code");
+        Assert.assertEquals(verifyLoginResponse.statusCode(), 200, "Unexpected HTTP status code");
 
         JsonNode verifyLoginBody = ApiResponseParser.extractJson(verifyLoginResponse);
 

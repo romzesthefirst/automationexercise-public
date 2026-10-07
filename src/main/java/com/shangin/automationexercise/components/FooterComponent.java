@@ -1,8 +1,7 @@
 package com.shangin.automationexercise.components;
 
-import org.openqa.selenium.By;
-
 import com.shangin.automationexercise.base.BaseComponent;
+import org.openqa.selenium.By;
 
 public class FooterComponent extends BaseComponent {
 
@@ -31,5 +30,4 @@ public class FooterComponent extends BaseComponent {
     public boolean isDisplayed() {
         return root().isDisplayed();
     }
-
 }

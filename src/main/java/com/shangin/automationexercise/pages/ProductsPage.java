@@ -1,13 +1,12 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.components.AddToCartModalComponent;
 import com.shangin.automationexercise.components.BrandsComponent;
 import com.shangin.automationexercise.components.ProductListComponent;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ProductsPage extends BasePage {
 
@@ -58,7 +57,7 @@ public class ProductsPage extends BasePage {
         products().addProductToCart(index);
         return waitForAddToCartModal();
     }
-    
+
     public AddToCartModalComponent addProductToCart(String name) {
         products().addProductToCart(name);
         return waitForAddToCartModal();

@@ -1,7 +1,5 @@
 package com.shangin.automationexercise.cucumber.steps;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.components.HeaderAccessor;
 import com.shangin.automationexercise.constants.UiMessages;
 import com.shangin.automationexercise.cucumber.context.ScenarioContext;
@@ -9,10 +7,10 @@ import com.shangin.automationexercise.pages.AccountDeletedPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.SignupLoginPage;
 import com.shangin.automationexercise.pages.TestCasesPage;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.testng.Assert;
 
 public class NavigationSteps {
 
@@ -92,6 +90,7 @@ public class NavigationSteps {
         context.requireAddToCartModal().viewCart();
         context.setAddToCartModal(null);
     }
+
     // end modals
 
     @When("the home page is scroll to the bottom")
@@ -99,7 +98,7 @@ public class NavigationSteps {
 
         homePage.scrollToBottom();
     }
-    
+
     @When("the home page is scroll to the up")
     public void homePageIsScrollToTop() {
         homePage.scrollToTop();
@@ -110,7 +109,7 @@ public class NavigationSteps {
 
         homePage.clickScrollUp();
     }
-    
+
     @Then("the home page should be displayed")
     public void homePageShouldBeDisplayed() {
 
@@ -121,8 +120,7 @@ public class NavigationSteps {
     public void loginPageShouldBeDisplayed() {
 
         Assert.assertTrue(
-                new SignupLoginPage().isLoaded(),
-                "User should be navigated to Login page");
+                new SignupLoginPage().isLoaded(), "User should be navigated to Login page");
     }
 
     @Then("the Test Cases page should be displayed")
@@ -135,8 +133,7 @@ public class NavigationSteps {
     public void accountDeletedPageShouldBeDisplayed() {
 
         Assert.assertEquals(
-                accountDeletedPage.getAccountDeletedMessage(),
-                UiMessages.ACCOUNT_DELETED);
+                accountDeletedPage.getAccountDeletedMessage(), UiMessages.ACCOUNT_DELETED);
 
         accountDeletedPage.continueShopping();
     }
@@ -146,17 +143,17 @@ public class NavigationSteps {
 
         Assert.assertTrue(homePage.footer().isDisplayed());
     }
-    
+
     @Then("the home page is scrolled up to top")
     public void homePageIsScrolledUpToTop() {
 
         Assert.assertTrue(homePage.isPageAtTop(), "Page should be scrolled to the top");
     }
-    
+
     @Then("{string} text is visible")
     public void homePageTextIsVisible(String text) {
-        
-        Assert.assertEquals(homePage.getActiveSlideSubtitle(), text, "Unexpected home page subtitle");
-    }
 
+        Assert.assertEquals(
+                homePage.getActiveSlideSubtitle(), text, "Unexpected home page subtitle");
+    }
 }

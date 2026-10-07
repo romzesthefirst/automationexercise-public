@@ -1,9 +1,9 @@
 @ui
-Feature: All products and product detail page
+Feature: Product catalog and product details
 
   # Test Case 8: Verify All Products and product detail page
   @TC_08
-  Scenario: Verify all products and product detail page
+  Scenario: Verify all products and product details
     Given the home page is opened
     When the user opens the Products page from the header
     Then the products list should be displayed
@@ -29,7 +29,7 @@ Feature: All products and product detail page
 
   # Test Case 12: Add Products in Cart
   @TC_12
-  Scenario Outline: Add Products in Cartt
+  Scenario Outline: Add products to the cart
     Given the home page is opened
     When the user opens the Products page from the header
     And adds product "<firstProduct>" to the cart

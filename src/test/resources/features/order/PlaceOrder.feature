@@ -52,7 +52,7 @@ Feature: Order
 
   # Test Case 16: Place Order: Login before Checkout
   @TC_16
-  Scenario: Place an order Login before checkout
+  Scenario: Place an order by logging in before checkout
     Given the home page is opened
     And a registered user exists
     When the user logs in with valid credentials

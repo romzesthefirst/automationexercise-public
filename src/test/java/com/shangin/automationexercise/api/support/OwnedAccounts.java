@@ -1,11 +1,10 @@
 package com.shangin.automationexercise.api.support;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.shangin.automationexercise.api.clients.AccountApiClient;
 import com.shangin.automationexercise.factories.UserFactory;
 import com.shangin.automationexercise.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Only fresh, generated identities can enter the cleanup registry. */
 public class OwnedAccounts {
@@ -24,7 +23,8 @@ public class OwnedAccounts {
                 try {
                     ApiCleanupHelper.deleteAccount(client, user);
                 } catch (Exception | AssertionError failure) {
-                    failures.addSuppressed(new AssertionError("Cleanup failed for " + user.email(), failure));
+                    failures.addSuppressed(
+                            new AssertionError("Cleanup failed for " + user.email(), failure));
                 }
             }
         } finally {

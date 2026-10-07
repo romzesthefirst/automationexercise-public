@@ -36,4 +36,3 @@ Feature: Category and Brand filters
     Then the "Biba" brand page should be displayed
     When opens "Madame" brand from Brand page
     Then the "Madame" brand page should be displayed
-    

@@ -1,10 +1,9 @@
 package com.shangin.automationexercise.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-
 import com.shangin.automationexercise.base.BasePage;
 import com.shangin.automationexercise.model.CardDetails;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 
 public class PaymentPage extends BasePage {
 
@@ -42,7 +41,8 @@ public class PaymentPage extends BasePage {
         // can await it after navigation, rather than missing it between remote commands.
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        js.executeScript("""
+        js.executeScript(
+                """
                     sessionStorage.removeItem('orderSuccessMessage');
 
                     const target = document.querySelector('#success_message');
@@ -79,12 +79,16 @@ public class PaymentPage extends BasePage {
 
         click(PAY_AND_CONFIRM_BUTTON);
 
-        String message = wait.withMessage("Order success message was not captured before redirect")
-                .until(ignored -> {
-                    String captured = (String) js.executeScript(
-                            "return sessionStorage.getItem('orderSuccessMessage');");
-                    return captured == null || captured.isBlank() ? null : captured;
-                });
+        String message =
+                wait.withMessage("Order success message was not captured before redirect")
+                        .until(
+                                ignored -> {
+                                    String captured =
+                                            (String)
+                                                    js.executeScript(
+                                                            "return sessionStorage.getItem('orderSuccessMessage');");
+                                    return captured == null || captured.isBlank() ? null : captured;
+                                });
         new PaymentDonePage().waitUntilLoaded();
         js.executeScript("sessionStorage.removeItem('orderSuccessMessage');");
         return message;
@@ -97,5 +101,4 @@ public class PaymentPage extends BasePage {
     public String getSuccessMessage() {
         return getText(SUCCESS_MESSAGE);
     }
-
 }

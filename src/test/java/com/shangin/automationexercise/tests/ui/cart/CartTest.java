@@ -1,14 +1,5 @@
 package com.shangin.automationexercise.tests.ui.cart;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import com.shangin.automationexercise.assertions.CartAssertions;
 import com.shangin.automationexercise.base.AccountUiTestBase;
 import com.shangin.automationexercise.components.ProductCardComponent;
@@ -21,23 +12,30 @@ import com.shangin.automationexercise.model.User;
 import com.shangin.automationexercise.pages.CartPage;
 import com.shangin.automationexercise.pages.HomePage;
 import com.shangin.automationexercise.pages.ProductsPage;
-
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import java.util.ArrayList;
+import java.util.List;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 @Test(groups = "ui")
 @Epic("Automation Exercise")
 @Feature("Cart")
 public class CartTest extends AccountUiTestBase {
 
-    @Test @Description("Test Case 17: Remove Products From Cart")
+    @Test
+    @Description("Test Case 17: Remove Products From Cart")
     public void shouldRemoveProductFromCart() {
 
         HomePage homePage = HomePage.open();
 
         List<ExpectedProduct> expectedProducts = new ArrayList<>();
 
-        String[] productsToBy
-                = { "Sleeveless Dress", "Stylish Dress", "Rose Pink Embroidered Maxi Dress" };
+        String[] productsToBy = {
+            "Sleeveless Dress", "Stylish Dress", "Rose Pink Embroidered Maxi Dress"
+        };
         String productToRemove = productsToBy[1];
 
         for (String productName : List.of(productsToBy)) {
@@ -67,8 +65,9 @@ public class CartTest extends AccountUiTestBase {
                 "Removed product should not be present in cart");
     }
 
-    @Test @Description("Test Case 20: Search Products and Verify Cart After Login")
-    public void shoulSaveCartAfterLogin() {
+    @Test
+    @Description("Test Case 20: Search Products and Verify Cart After Login")
+    public void shouldSaveCartAfterLogin() {
 
         User user = accounts.createUser();
 
@@ -84,8 +83,8 @@ public class CartTest extends AccountUiTestBase {
         Assert.assertTrue(
                 productsPage.products().allProductsContain(query),
                 "Expected nonempty search results matching query: " + query);
-        List<ExpectedProduct> expectedProducts
-                = ProductMapper.toExpectedProducts(productsPage.products());
+        List<ExpectedProduct> expectedProducts =
+                ProductMapper.toExpectedProducts(productsPage.products());
 
         productsPage.addAllProductsToCart();
 
@@ -99,7 +98,8 @@ public class CartTest extends AccountUiTestBase {
         CartAssertions.assertProductsMatch(cartPage.getActualProducts(), expectedProducts);
     }
 
-    @Test @Description("Test Case 22: Add to cart from Recommended items")
+    @Test
+    @Description("Test Case 22: Add to cart from Recommended items")
     public void shouldAddToCartFromRecommended() {
 
         HomePage homePage = HomePage.open();
@@ -112,8 +112,8 @@ public class CartTest extends AccountUiTestBase {
 
         CartPage cartPage = result.modal().viewCart();
 
-        List<ExpectedProduct> expectedProducts
-                = List.of(ProductMapper.toExpectedProduct(result.product()));
+        List<ExpectedProduct> expectedProducts =
+                List.of(ProductMapper.toExpectedProduct(result.product()));
 
         CartAssertions.assertProductsMatch(cartPage.getActualProducts(), expectedProducts);
     }

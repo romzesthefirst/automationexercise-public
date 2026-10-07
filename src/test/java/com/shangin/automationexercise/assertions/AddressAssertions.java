@@ -1,14 +1,12 @@
 package com.shangin.automationexercise.assertions;
 
-import org.testng.Assert;
-
 import com.shangin.automationexercise.components.AddressComponent;
 import com.shangin.automationexercise.formatters.UserAddressFormatter;
 import com.shangin.automationexercise.model.User;
+import org.testng.Assert;
 
 public class AddressAssertions {
-    private AddressAssertions() {
-    }
+    private AddressAssertions() {}
 
     public static void assertMatchesUser(AddressComponent actualAddress, User expectedUser) {
         Assert.assertEquals(
@@ -17,9 +15,7 @@ public class AddressAssertions {
                 "Full name is incorrect");
 
         Assert.assertEquals(
-                actualAddress.getCompany(),
-                expectedUser.company(),
-                "Company is incorrect");
+                actualAddress.getCompany(), expectedUser.company(), "Company is incorrect");
 
         Assert.assertEquals(
                 actualAddress.getAddressLine1(),
@@ -37,9 +33,7 @@ public class AddressAssertions {
                 "City/state/postcode is incorrect");
 
         Assert.assertEquals(
-                actualAddress.getCountry(),
-                expectedUser.country(),
-                "Country is incorrect");
+                actualAddress.getCountry(), expectedUser.country(), "Country is incorrect");
 
         Assert.assertEquals(actualAddress.getPhone(), expectedUser.phone(), "Phone is incorrect");
     }

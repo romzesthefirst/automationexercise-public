@@ -13,22 +13,34 @@ public final class ConfigReader {
     private static final Properties properties = new Properties();
 
     static {
-        try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) { throw new IllegalStateException("config.properties not found"); }
+        try (InputStream input =
+                ConfigReader.class.getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                throw new IllegalStateException("config.properties not found");
+            }
             properties.load(input);
         } catch (IOException failure) {
             throw new IllegalStateException("Cannot read config.properties", failure);
         }
     }
 
-    private ConfigReader() { }
+    private ConfigReader() {}
 
-    static String resolve(String key, Function<String, String> system, Function<String, String> environment,
+    static String resolve(
+            String key,
+            Function<String, String> system,
+            Function<String, String> environment,
             Properties defaults) {
         String value = system.apply(key);
-        if (value == null) { value = environment.apply(environmentKey(key)); }
-        if (value == null) { value = defaults.getProperty(key); }
-        if (value == null || value.isBlank()) { throw invalid(key, "a nonempty value is required"); }
+        if (value == null) {
+            value = environment.apply(environmentKey(key));
+        }
+        if (value == null) {
+            value = defaults.getProperty(key);
+        }
+        if (value == null || value.isBlank()) {
+            throw invalid(key, "a nonempty value is required");
+        }
         return value.strip();
     }
 
@@ -41,22 +53,29 @@ public final class ConfigReader {
     }
 
     private static IllegalArgumentException invalid(String key, String expected) {
-        return new IllegalArgumentException("Invalid configuration '" + key + "' (" + environmentKey(key)
-                + "): " + expected);
+        return new IllegalArgumentException(
+                "Invalid configuration '" + key + "' (" + environmentKey(key) + "): " + expected);
     }
 
     private static int positiveInt(String key) {
         try {
             int value = Integer.parseInt(getProperty(key));
-            if (value > 0) { return value; }
-        } catch (NumberFormatException ignored) { }
+            if (value > 0) {
+                return value;
+            }
+        } catch (NumberFormatException ignored) {
+        }
         throw invalid(key, "expected an integer from 1 to " + Integer.MAX_VALUE);
     }
 
     private static boolean booleanValue(String key) {
         String value = getProperty(key);
-        if (value.equalsIgnoreCase("true")) { return true; }
-        if (value.equalsIgnoreCase("false")) { return false; }
+        if (value.equalsIgnoreCase("true")) {
+            return true;
+        }
+        if (value.equalsIgnoreCase("false")) {
+            return false;
+        }
         throw invalid(key, "expected true or false");
     }
 
@@ -64,37 +83,85 @@ public final class ConfigReader {
         String value = getProperty(key);
         try {
             URI uri = URI.create(value);
-            if (("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme()))
-                    && uri.getHost() != null && uri.getPort() <= 65535 && uri.getUserInfo() == null
-                    && uri.getFragment() == null && uri.getQuery() == null) { return value; }
-        } catch (IllegalArgumentException ignored) { }
-        throw invalid(key, "expected an absolute HTTP(S) URL without credentials, query, or fragment");
+            if (("http".equalsIgnoreCase(uri.getScheme())
+                            || "https".equalsIgnoreCase(uri.getScheme()))
+                    && uri.getHost() != null
+                    && uri.getPort() <= 65535
+                    && uri.getUserInfo() == null
+                    && uri.getFragment() == null
+                    && uri.getQuery() == null) {
+                return value;
+            }
+        } catch (IllegalArgumentException ignored) {
+        }
+        throw invalid(
+                key, "expected an absolute HTTP(S) URL without credentials, query, or fragment");
     }
 
-    public static String getBaseUrl() { return url("base.url"); }
-    public static String getApiBaseUrl() { return url("api.base.url"); }
-    public static int getDownloadTimeout() { return positiveInt("download.timeout"); }
-    public static int getScriptTimeout() { return positiveInt("script.timeout"); }
-    public static int getPageLoadTimeout() { return positiveInt("page.load.timeout"); }
-    public static long getExplicitWait() { return positiveInt("explicit.wait"); }
-    public static int getBrowserWidth() { return positiveInt("browser.width"); }
-    public static int getBrowserHeight() { return positiveInt("browser.height"); }
-    public static boolean isHeadless() { return booleanValue("headless"); }
-    public static boolean isIncognito() { return booleanValue("incognito"); }
-    public static boolean isNetworkDiagnosticsEnabled() { return booleanValue("network.diagnostics.enabled"); }
-    public static boolean isAdsHandlingEnabled() { return booleanValue("ads.handling.enabled"); }
+    public static String getBaseUrl() {
+        return url("base.url");
+    }
+
+    public static String getApiBaseUrl() {
+        return url("api.base.url");
+    }
+
+    public static int getDownloadTimeout() {
+        return positiveInt("download.timeout");
+    }
+
+    public static int getScriptTimeout() {
+        return positiveInt("script.timeout");
+    }
+
+    public static int getPageLoadTimeout() {
+        return positiveInt("page.load.timeout");
+    }
+
+    public static long getExplicitWait() {
+        return positiveInt("explicit.wait");
+    }
+
+    public static int getBrowserWidth() {
+        return positiveInt("browser.width");
+    }
+
+    public static int getBrowserHeight() {
+        return positiveInt("browser.height");
+    }
+
+    public static boolean isHeadless() {
+        return booleanValue("headless");
+    }
+
+    public static boolean isIncognito() {
+        return booleanValue("incognito");
+    }
+
+    public static boolean isNetworkDiagnosticsEnabled() {
+        return booleanValue("network.diagnostics.enabled");
+    }
+
+    public static boolean isAdsHandlingEnabled() {
+        return booleanValue("ads.handling.enabled");
+    }
 
     public static String getBrowser() {
         String value = getProperty("browser").toLowerCase(Locale.ROOT);
-        if (value.equals("chrome") || value.equals("firefox") || value.equals("edge")) { return value; }
+        if (value.equals("chrome") || value.equals("firefox") || value.equals("edge")) {
+            return value;
+        }
         throw invalid("browser", "expected chrome, firefox, or edge");
     }
 
     public static Path getDownloadDirectory() {
         try {
             Path directory = Path.of(getProperty("download.directory"));
-            return (directory.isAbsolute() ? directory : Path.of(System.getProperty("user.dir")).resolve(directory))
-                    .toAbsolutePath().normalize();
+            return (directory.isAbsolute()
+                            ? directory
+                            : Path.of(System.getProperty("user.dir")).resolve(directory))
+                    .toAbsolutePath()
+                    .normalize();
         } catch (java.nio.file.InvalidPathException failure) {
             throw invalid("download.directory", "expected a valid directory path");
         }
@@ -110,9 +177,20 @@ public final class ConfigReader {
 
     /** Validate before launching a browser or making an API request. */
     public static void validate() {
-        getBaseUrl(); getApiBaseUrl(); getBrowser();
-        getScriptTimeout(); getPageLoadTimeout(); getExplicitWait();
-        getBrowserWidth(); getBrowserHeight(); isHeadless(); isIncognito(); isAdsHandlingEnabled(); isNetworkDiagnosticsEnabled();
-        getDownloadDirectory(); getDownloadMimeTypes(); getDownloadTimeout();
+        getBaseUrl();
+        getApiBaseUrl();
+        getBrowser();
+        getScriptTimeout();
+        getPageLoadTimeout();
+        getExplicitWait();
+        getBrowserWidth();
+        getBrowserHeight();
+        isHeadless();
+        isIncognito();
+        isAdsHandlingEnabled();
+        isNetworkDiagnosticsEnabled();
+        getDownloadDirectory();
+        getDownloadMimeTypes();
+        getDownloadTimeout();
     }
 }
