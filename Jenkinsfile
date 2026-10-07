@@ -41,7 +41,17 @@ pipeline {
                                 def arguments = "tools/run_ci.py ${suite} --browser ${params.BROWSER} " +
                                     "--headless ${params.HEADLESS} --threads ${params.THREAD_COUNT}"
                                 if (isUnix()) {
-                                    sh "python3 ${arguments}"
+                                    if (params.BROWSER == 'firefox' && !suite.startsWith('api') &&
+                                            sh(script: 'uname -s', returnStdout: true).trim() == 'Darwin') {
+                                        // Preserve Firefox's app-data identity through macOS LaunchServices.
+                                        withEnv([
+                                            "JAVA_TOOL_OPTIONS=${env.JAVA_TOOL_OPTIONS ?: ''} \"-Dwebdriver.firefox.bin=${pwd()}/bin/firefox-macos\""
+                                        ]) {
+                                            sh "python3 ${arguments}"
+                                        }
+                                    } else {
+                                        sh "python3 ${arguments}"
+                                    }
                                 } else {
                                     bat "python ${arguments}"
                                 }
