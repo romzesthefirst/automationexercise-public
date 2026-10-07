@@ -3,7 +3,6 @@
 A Java 17 test automation framework using Selenium, TestNG, Cucumber, REST Assured,
 and Allure against [Automation Exercise](https://automationexercise.com).
 
-[![Quick checks](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml/badge.svg)](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml)
 
 ## Prerequisites
 
@@ -348,21 +347,9 @@ Allure report presentation is tracked separately in the roadmap.
 
 ## Continuous integration
 
-[Quick checks](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/ci.yml)
-runs on pushes, pull requests, and manual dispatch on fresh Ubuntu 24.04 runners
-with Temurin Java 17 and the installed Chrome. It runs three independent jobs:
-all 14 API tests, one TestNG UI smoke test, and one Cucumber smoke scenario.
-The matrix keeps running after a job fails. Jobs require no repository secrets;
-checkout credentials are not persisted and token permissions are read-only.
-
-[External-site regression](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/regression.yml)
-is a separate manual workflow for full Chrome headless TestNG UI and Cucumber
-suites. Each suite runs in its own job with one worker and a 60-minute timeout.
-Use **Actions → External-site regression → Run workflow** and select the revision.
-Quick checks have a 20-minute timeout per job.
-
-Both workflows use the same portable runner as Jenkins. Python 3.9 or newer is
-required, in addition to the prerequisites above. Local equivalents are:
+Jenkins provides CI using the portable Python/Wrapper runner. Python 3.9 or
+newer is required, in addition to the prerequisites above. GitHub Actions is
+disabled for this repository. Local equivalents are:
 
 ```sh
 python3 tools/run_ci.py api
@@ -382,7 +369,7 @@ The runner defaults to four Cucumber workers; use `--threads` to override.
 It rejects a different Java major version. It returns Maven's failure code and
 also fails when reports are missing, empty, malformed, failed, or skipped.
 `--discovery` is only for local selection validation: it labels outputs as
-**discovery**, and neither CI workflow uses it.
+**discovery**, and Jenkins does not use it.
 
 Every invocation creates a new `target/ci/<run>-<attempt>-<suite>-<unique-id>/`.
 It never reads previous results. Each directory contains `run.json` (source
@@ -392,14 +379,11 @@ existing HTTP/browser failure attachments. Run the local commands in a fresh
 checkout for CI-equivalent compilation; do not run concurrent Maven invocations
 in one workspace. Avoid `clean` between suites because it deletes their evidence.
 
-GitHub exposes the counts in the job summary. Download the corresponding
-`quick-<suite>-<run-id>-<attempt>` or `regression-<suite>-<run-id>-<attempt>` artifact
-from that workflow run. Upload runs on failure as well as success; retention is
-14 days. Compilation/startup failures can have metadata and logs without test
-XML or Allure results. Runner loss or forced cancellation can prevent upload.
-Artifacts contain full test diagnostics and generated synthetic test data.
-They are execution evidence; use the separate publication-sample process when
-preparing curated public examples.
+Download raw results and diagnostics from the Jenkins build artifacts.
+Compilation/startup failures can have metadata and logs without test XML or
+Allure results. Artifacts contain full test diagnostics and generated synthetic
+test data. They are execution evidence; use the separate publication-sample
+process when preparing curated public examples.
 
 Jenkins starts with a fresh checkout, disables concurrent builds in the same job,
 and runs the full API, UI, and BDD suites by default, with `THREAD_COUNT=4`.
@@ -422,8 +406,8 @@ full regression create fresh synthetic accounts and attempt owned-account
 cleanup; the two browser smoke selections only navigate pages. Network outages,
 Cloudflare errors, rate limits, site changes, and cleanup failures remain visible
 as failures. CI does not automatically retry or reinterpret them as success.
-A passing quick workflow proves only its API and smoke selections; full UI/BDD
-coverage requires the separate regression workflow.
+A passing smoke build proves only its selected tests/scenarios; full API/UI/BDD
+coverage requires a build with `SMOKE` unchecked.
 
 ## Test account cleanup
 
