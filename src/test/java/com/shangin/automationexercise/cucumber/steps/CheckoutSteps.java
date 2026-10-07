@@ -73,6 +73,11 @@ public class CheckoutSteps {
         context.setPaymentResultMessage(paymentPage.payAndGetResultMessage());
     }
 
+    @When("the user continues from the Payment Done page")
+    public void continueFromPaymentDonePage() {
+        paymentDonePage.continueButton();
+    }
+
     @When("the user downloads invoice")
     public void userDownloadsInvoice() throws IOException {
 

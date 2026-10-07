@@ -19,7 +19,7 @@ Feature: Category and Brand filters
       | Kids     | Tops & Shirts |
 
   # Test Case 18: View Category Products
-  @TC_08
+  @TC_18
   Scenario: View Category Products
     Given the home page is opened
     When the user opens "Dress" from the "Women" category

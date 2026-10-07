@@ -1,7 +1,7 @@
 @ui
 Feature: Test Case Page
 
-  # Test Case 2: Login User with correct email and password
+  # Test Case 7: Verify Test Cases Page
   @TC_07 @smoke
   Scenario: Verify Test Cases Page
     Given the home page is opened

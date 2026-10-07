@@ -15,7 +15,10 @@
 /tools/*
 !/tools/prepare_invoice_acceptance.py
 !/tools/compare_browser_results.py
-/docs/
+/docs/*
+!/docs/FRAMEWORK.md
+!/docs/COVERAGE.md
+!/docs/RUN_GUIDE.md
 /src/test/java/com/shangin/automationexercise/tests/diagnostics/
 
 !/tools/run_ci.py

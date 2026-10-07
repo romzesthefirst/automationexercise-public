@@ -1,7 +1,7 @@
 @ui
 Feature: Contact Us Form
 
-  # Test Case 2: Login User with correct email and password
+  # Test Case 6: Contact Us Form
   @TC_06
   Scenario: Submit the Contact Us form successfully
     Given the home page is opened

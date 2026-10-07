@@ -2,7 +2,7 @@
 Feature: Cart
 
   # Test Case 17: Remove Products From Cart
-  @TC_06
+  @TC_17
   Scenario: Remove a product from the cart
     Given the home page is opened
     When the user adds the following products to the cart

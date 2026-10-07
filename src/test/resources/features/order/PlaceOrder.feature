@@ -116,3 +116,7 @@ Feature: Order
     And the user redirects to Payment Done page
     When the user downloads invoice
     Then the text in invoice should be correct
+    When the user continues from the Payment Done page
+    Then the home page should be displayed
+    When the user deletes the account
+    Then the account deleted page should be displayed
