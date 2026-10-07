@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.pages;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,6 +13,8 @@ import com.shangin.automationexercise.pages.TestCasesPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Pages")
 public class TestCasesTest extends BaseTest {
     @Test(groups = "smoke") @Description("Test Case 7: Verify Test Cases Page")
     public void shouldOpenTestCase() {

@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.api;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,6 +19,8 @@ import io.restassured.response.Response;
 import tools.jackson.databind.JsonNode;
 
 @Test(groups = "api")
+@Epic("Automation Exercise")
+@Feature("Account")
 public class AccountApiTest extends AccountTestBase {
 
     @Test @Description("API 11: POST To Create/Register User Account")

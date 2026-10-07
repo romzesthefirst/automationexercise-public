@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.api;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import java.util.List;
 
 import org.testng.Assert;
@@ -16,6 +19,8 @@ import io.restassured.response.Response;
 import tools.jackson.databind.JsonNode;
 
 @Test(groups = "api")
+@Epic("Automation Exercise")
+@Feature("Products")
 public class ProductsApiTest {
 
     private final ProductsApiClient productsApiClient = new ProductsApiClient();

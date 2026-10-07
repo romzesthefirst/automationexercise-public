@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.cart;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ import com.shangin.automationexercise.pages.ProductsPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Cart")
 public class CartTest extends AccountUiTestBase {
 
     @Test @Description("Test Case 17: Remove Products From Cart")

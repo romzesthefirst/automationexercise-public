@@ -1,0 +1,128 @@
+{
+  "uuid": "45e554fe-82ec-4d65-ac05-42fa7a192fd1",
+  "historyId": "d67141b7778847bd55144a9ba0bb19f1",
+  "fullName": "com.shangin.automationexercise.tests.reportdemo.AllureDemoTest.syntheticCheckoutFailure",
+  "labels": [
+    {
+      "name": "parentSuite",
+      "value": "Surefire suite"
+    },
+    {
+      "name": "suite",
+      "value": "Surefire test"
+    },
+    {
+      "name": "subSuite",
+      "value": "com.shangin.automationexercise.tests.reportdemo.AllureDemoTest"
+    },
+    {
+      "name": "framework",
+      "value": "testng"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    },
+    {
+      "name": "epic",
+      "value": "Report demonstration"
+    },
+    {
+      "name": "feature",
+      "value": "Synthetic failure diagnostics"
+    }
+  ],
+  "name": "Deliberate UI assertion failure on a synthetic local page",
+  "status": "failed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "Demo failure: checkout is pending expected [Order confirmed] but found [Report demonstration]"
+  },
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "Open a synthetic checkout confirmation",
+      "status": "passed",
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1791328938679,
+      "stop": 1791328938705
+    },
+    {
+      "name": "Verify that the order was confirmed (deliberate failure)",
+      "status": "failed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false,
+        "message": "Demo failure: checkout is pending expected [Order confirmed] but found [Report demonstration]"
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1791328938706,
+      "stop": 1791328938713
+    }
+  ],
+  "attachments": [
+    {
+      "name": "Current URL",
+      "source": "1e2fd380-3a93-4c79-afc4-f7370a41cf06-attachment.txt",
+      "type": "text/plain"
+    },
+    {
+      "name": "Screenshot on failure",
+      "source": "b0da9eaa-6b98-4922-9bae-e60c1248c78b-attachment.png",
+      "type": "image/png"
+    },
+    {
+      "name": "Browser diagnostics",
+      "source": "f62b0b63-2be0-4dc2-8495-a6572629b5c4-attachment.txt",
+      "type": "text/plain"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Execution",
+      "value": "Real execution",
+      "excluded": true
+    },
+    {
+      "name": "Source revision",
+      "value": "af825d89f6d532defd6308d504eb6d0624376e2d + working tree changes",
+      "excluded": true
+    },
+    {
+      "name": "Java",
+      "value": "17.0.20",
+      "excluded": true
+    },
+    {
+      "name": "UI environment",
+      "value": "https://automationexercise.com/",
+      "excluded": true
+    },
+    {
+      "name": "API environment",
+      "value": "https://automationexercise.com/api",
+      "excluded": true
+    },
+    {
+      "name": "Browser",
+      "value": "chrome 154.0.8037.98",
+      "excluded": true
+    },
+    {
+      "name": "Headless",
+      "value": "true",
+      "excluded": true
+    }
+  ],
+  "start": 1791328938022,
+  "stop": 1791328938778
+}

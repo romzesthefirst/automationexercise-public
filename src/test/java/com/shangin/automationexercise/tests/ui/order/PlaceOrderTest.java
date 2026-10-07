@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.order;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ import com.shangin.automationexercise.resources.DownloadHelper;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Order")
 public class PlaceOrderTest extends AccountUiTestBase {
 
     @Test @Description("Test Case 14: Place Order: Register while Checkout")

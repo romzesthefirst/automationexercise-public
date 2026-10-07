@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.pages;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,6 +17,8 @@ import com.shangin.automationexercise.resources.TestResources;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Pages")
 public class ContactUsTest extends BaseTest {
     @Test @Description("Test Case 6: Contact Us Form")
     public void shouldSendMessage() {

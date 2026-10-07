@@ -1,0 +1,126 @@
+{
+  "uuid": "3c5576a8-b843-47b4-8c8a-9bc127167574",
+  "historyId": "2e34baf50a6285a8569ae41e2aa603d6",
+  "testCaseId": "8b6d68cfef2bdb2f5ad8eeba1ad58baf",
+  "fullName": "examples/allure/failure.feature:3",
+  "labels": [
+    {
+      "name": "feature",
+      "value": "Cucumber failure evidence"
+    },
+    {
+      "name": "story",
+      "value": "Diagnose a deliberate failure on a synthetic browser page"
+    },
+    {
+      "name": "suite",
+      "value": "Cucumber failure evidence"
+    },
+    {
+      "name": "framework",
+      "value": "cucumber4jvm"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    }
+  ],
+  "name": "Diagnose a deliberate failure on a synthetic browser page",
+  "status": "failed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false,
+    "message": "Original Cucumber failure"
+  },
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "Given a local browser failure probe is opened",
+      "status": "passed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1791328936497,
+      "stop": 1791328936521
+    },
+    {
+      "name": "Then the browser probe deliberately fails",
+      "status": "failed",
+      "statusDetails": {
+        "known": false,
+        "muted": false,
+        "flaky": false,
+        "message": "Original Cucumber failure"
+      },
+      "stage": "finished",
+      "steps": [],
+      "attachments": [],
+      "parameters": [],
+      "start": 1791328936521,
+      "stop": 1791328936523
+    }
+  ],
+  "attachments": [
+    {
+      "name": "Current URL",
+      "source": "f2ecf441-fe97-453c-972d-afea9831fe24-attachment.txt",
+      "type": "text/plain"
+    },
+    {
+      "name": "Screenshot on failure",
+      "source": "16efc7f8-fdb3-4766-99c9-018af7314465-attachment.png",
+      "type": "image/png"
+    },
+    {
+      "name": "Browser diagnostics",
+      "source": "1e13f2ce-c0d9-4fc6-8cae-8ea32a8e8d55-attachment.txt",
+      "type": "text/plain"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Execution",
+      "value": "Real execution",
+      "excluded": true
+    },
+    {
+      "name": "Source revision",
+      "value": "af825d89f6d532defd6308d504eb6d0624376e2d + working tree changes",
+      "excluded": true
+    },
+    {
+      "name": "Java",
+      "value": "17.0.20",
+      "excluded": true
+    },
+    {
+      "name": "UI environment",
+      "value": "https://automationexercise.com/",
+      "excluded": true
+    },
+    {
+      "name": "API environment",
+      "value": "https://automationexercise.com/api",
+      "excluded": true
+    },
+    {
+      "name": "Browser",
+      "value": "chrome 154.0.8037.98",
+      "excluded": true
+    },
+    {
+      "name": "Headless",
+      "value": "true",
+      "excluded": true
+    }
+  ],
+  "start": 1791328935313,
+  "stop": 1791328936727
+}

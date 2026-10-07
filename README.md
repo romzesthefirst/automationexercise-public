@@ -342,8 +342,76 @@ both smoke checks passed. Subsequent full browser regression results are recorde
 in roadmap item 4. Windows Wrapper and hosted Jenkins execution remain unverified.
 
 Test results are written to `target/surefire-reports`; Allure results are written
-to `target/allure-results`. CI uses separate directories described below; full
-Allure report presentation is tracked separately in the roadmap.
+to `target/allure-results`. CI uses separate directories described below;
+Allure report generation and the checked-in demonstration are described below.
+
+
+## Allure reports
+
+Use Java 17 and the Wrapper; the project pins Allure Maven 2.16.1 and report
+CLI 2.30.0, so no global Allure installation is needed:
+
+```sh
+./mvnw clean test -Papi
+./mvnw allure:serve
+# Or generate static HTML under target/site/allure-maven-plugin:
+./mvnw allure:report
+```
+
+Always use a fresh results directory for each run. `clean` removes earlier
+results; when retaining evidence, override `-Dallure.results.directory` on both
+the test and report commands. Never merge unrelated reruns, browser variants or
+discovery output. CI suite directories are already isolated. Report generation
+does not execute tests and must not replace the test command's exit status.
+
+Business steps cover catalog/brand requests, owned-account creation, and adding
+products to the cart. TestNG tests have epic/feature labels; Cucumber uses feature,
+scenario and Gherkin step names. Provenance parameters identify Java, base URLs,
+source revision (including tracked working-tree changes), execution mode and,
+for active browsers, actual browser version and headless configuration. Exported
+sources without Git can supply `-Dsource.revision=<reviewed-revision>`.
+The Overview environment lists configuration; individual tests carry the actual
+browser version. Each report directory must use one consistent configuration.
+
+Both adapters can write into one fresh directory. The Cucumber TestNG runner
+must retain its `cucumber` group: Allure TestNG 2.33.0 skips that wrapper while
+the Cucumber adapter writes one result per scenario. Setup failures may create
+additional configuration results intentionally; keep them visible for diagnosis.
+
+A focused combined real check uses:
+
+```sh
+./mvnw test -Dtest=ProductsApiTest,CucumberTest -DtestGroups=smoke \
+  -Dcucumber.filter.tags=@smoke -Dheadless=true -DthreadCount=1 \
+  -Dallure.results.directory=target/report-check/real
+./mvnw allure:serve -Dallure.results.directory="$PWD/target/report-check/real"
+```
+
+Expect two Surefire tests and two Allure results, with the scenario present once.
+For discovery, run each selector separately into a fresh directory:
+
+```sh
+./mvnw test -Papi,smoke -Dtestng.mode.dryrun=true \
+  -Dallure.results.directory=target/report-check/api-discovery
+./mvnw test -Pbdd,smoke -Dcucumber.execution.dry-run=true \
+  -Dallure.results.directory=target/report-check/bdd-discovery
+```
+
+Result names and metadata say `DISCOVERY ONLY`; discovery is not execution
+evidence. Do not set TestNG dry-run for BDD: it bypasses the Cucumber runner,
+so no scenario results are generated. Cucumber dry-run metadata resolves
+`cucumber.execution.dry-run` through Cucumber itself: Java system properties take
+precedence over environment variables (including `CUCUMBER_EXECUTION_DRY_RUN`),
+then classpath `cucumber.properties`. Explicit `false` overrides lower-priority
+`true`; Cucumber's supported boolean values and property aliases are preserved.
+A mixed command using either discovery flag is conservatively labelled discovery.
+Pass absolute paths when overriding
+the report plugin's input directory, as in the combined example above.
+
+The [sanitized example](examples/allure/README.md) contains actual API HTTP
+attachments and two deliberate browser failures with real screenshots. It
+includes commands to reproduce, export, generate and view that three-test report.
+
 
 ## Continuous integration
 

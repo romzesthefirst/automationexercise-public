@@ -1,5 +1,7 @@
 package com.shangin.automationexercise.steps;
 
+import io.qameta.allure.Step;
+
 import org.testng.Assert;
 
 import com.shangin.automationexercise.api.clients.AccountApiClient;
@@ -21,6 +23,7 @@ public class ApiUserSteps {
         this.ownedAccounts = ownedAccounts;
     }
 
+    @Step("Create an owned test account and verify registration")
     public User createUser() {
         
         User user = ownedAccounts.newUser();

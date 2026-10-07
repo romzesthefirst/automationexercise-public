@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.products;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,6 +18,8 @@ import com.shangin.automationexercise.testdata.ExpectedCategories;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Products")
 public class CategoryBrandTest extends BaseTest {
     @Test @Description("Test Case 18: View Category Products")
     public void shouldViewCategory() {

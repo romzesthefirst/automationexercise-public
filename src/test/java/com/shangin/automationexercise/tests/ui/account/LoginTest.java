@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.account;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,6 +17,8 @@ import com.shangin.automationexercise.pages.SignupLoginPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Account")
 public class LoginTest extends AccountUiTestBase {
 
     @Test @Description("Test Case 2: Login User with correct email and password")

@@ -20,3 +20,6 @@
 
 !/tools/run_ci.py
 !/tools/test_run_ci.py
+
+/.allure/
+!/tools/export_allure_demo.py

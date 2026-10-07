@@ -15,6 +15,12 @@ public class UiHooks {
         DriverManager.setDriver(DriverFactory.createDriver());
     }
 
+    @After(order = 3)
+    public void recordEnvironment(Scenario scenario) {
+        io.qameta.allure.Allure.getLifecycle().updateTestCase(scenario.getId(),
+                com.shangin.automationexercise.listeners.ReportMetadata::enrich);
+    }
+
     @After(value = "@ui", order = 2)
     public void addFailureInfo(Scenario scenario) {
 

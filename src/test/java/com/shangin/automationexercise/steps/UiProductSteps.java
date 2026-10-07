@@ -1,5 +1,7 @@
 package com.shangin.automationexercise.steps;
 
+import io.qameta.allure.Step;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import com.shangin.automationexercise.pages.ProductsPage;
 
 public class UiProductSteps {
 
+    @Step("Add selected products to the cart and record expected totals")
     public AddProductsResult addProductsToCart(ProductsPage productsPage, String... productNames) {
 
         if (productNames.length == 0) {

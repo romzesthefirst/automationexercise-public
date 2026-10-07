@@ -1,5 +1,8 @@
 package com.shangin.automationexercise.tests.ui.products;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ import com.shangin.automationexercise.pages.ProductsPage;
 import io.qameta.allure.Description;
 
 @Test(groups = "ui")
+@Epic("Automation Exercise")
+@Feature("Products")
 public class ProductsPageTest extends BaseTest {
 
     @Test @Description("Test Case 8: Verify All Products and product detail page")
