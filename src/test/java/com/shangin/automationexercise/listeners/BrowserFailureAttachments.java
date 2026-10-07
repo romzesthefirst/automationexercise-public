@@ -9,6 +9,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import com.shangin.automationexercise.driver.DriverManager;
+import com.shangin.automationexercise.driver.BrowserNetworkDiagnostics;
 import io.qameta.allure.Allure;
 import io.qameta.allure.model.Attachment;
 import io.qameta.allure.model.TestResult;
@@ -47,6 +48,15 @@ public final class BrowserFailureAttachments {
             }
         } catch (RuntimeException failure) {
             diagnostics.append("Screenshot collection failed: ").append(failure).append('\n');
+        }
+        try {
+            String network = BrowserNetworkDiagnostics.snapshot();
+            if (network != null) {
+                attach(result, "Browser network responses", "application/json", ".json",
+                        network.getBytes(StandardCharsets.UTF_8));
+            }
+        } catch (RuntimeException failure) {
+            diagnostics.append("Network collection failed: ").append(failure).append('\n');
         }
         if (diagnostics.isEmpty()) {
             diagnostics.append("URL and screenshot collected before browser shutdown.\n");

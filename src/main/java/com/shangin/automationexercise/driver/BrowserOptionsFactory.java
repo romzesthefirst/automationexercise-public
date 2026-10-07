@@ -41,6 +41,7 @@ public final class BrowserOptionsFactory {
 
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
 
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
         return options;
     }
 
@@ -58,6 +59,7 @@ public final class BrowserOptionsFactory {
         if (ConfigReader.isHeadless()) {
             options.addArguments("-headless");
         }
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
         return options;
     }
 
@@ -75,6 +77,7 @@ public final class BrowserOptionsFactory {
         if (ConfigReader.isHeadless()) {
             options.addArguments("--headless=new");
         }
+        if (ConfigReader.isNetworkDiagnosticsEnabled()) { options.setCapability("webSocketUrl", true); }
         return options;
     }
 

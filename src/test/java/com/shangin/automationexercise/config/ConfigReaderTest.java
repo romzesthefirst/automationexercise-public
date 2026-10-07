@@ -10,7 +10,7 @@ public class ConfigReaderTest {
         Properties defaults = new Properties();
         for (String key : new String[] {"base.url", "api.base.url", "browser", "headless", "incognito",
                 "browser.width", "browser.height", "script.timeout", "page.load.timeout", "explicit.wait",
-                "ads.handling.enabled", "download.directory", "download.mime.types", "download.timeout"}) {
+                "ads.handling.enabled", "network.diagnostics.enabled", "download.directory", "download.mime.types", "download.timeout"}) {
             defaults.setProperty(key, "file");
             var environment = Map.of(ConfigReader.environmentKey(key), "env");
             Assert.assertEquals(ConfigReader.resolve(key, ignored -> "system", environment::get, defaults), "system");
@@ -23,7 +23,7 @@ public class ConfigReaderTest {
 
     @Test public void invalidSettingsFailBeforeBrowserLaunch() {
         for (String[] setting : new String[][] {{"browser", "safari"}, {"headless", "yes"},
-                {"incognito", "1"}, {"ads.handling.enabled", "maybe"}, {"browser.width", "0"},
+                {"network.diagnostics.enabled", "maybe"}, {"incognito", "1"}, {"ads.handling.enabled", "maybe"}, {"browser.width", "0"},
                 {"browser.height", "-1"}, {"explicit.wait", "abc"}, {"script.timeout", "2147483648"},
                 {"page.load.timeout", "-5"}, {"base.url", "/relative"}, {"api.base.url", "ftp://example.com"}, {"base.url", "http://example.com:99999"},
                 {"download.directory", "\u0000"}, {"download.mime.types", "true"}, {"download.timeout", "0"}}) {

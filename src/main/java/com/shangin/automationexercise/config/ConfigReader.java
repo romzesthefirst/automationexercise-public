@@ -81,6 +81,7 @@ public final class ConfigReader {
     public static int getBrowserHeight() { return positiveInt("browser.height"); }
     public static boolean isHeadless() { return booleanValue("headless"); }
     public static boolean isIncognito() { return booleanValue("incognito"); }
+    public static boolean isNetworkDiagnosticsEnabled() { return booleanValue("network.diagnostics.enabled"); }
     public static boolean isAdsHandlingEnabled() { return booleanValue("ads.handling.enabled"); }
 
     public static String getBrowser() {
@@ -111,7 +112,7 @@ public final class ConfigReader {
     public static void validate() {
         getBaseUrl(); getApiBaseUrl(); getBrowser();
         getScriptTimeout(); getPageLoadTimeout(); getExplicitWait();
-        getBrowserWidth(); getBrowserHeight(); isHeadless(); isIncognito(); isAdsHandlingEnabled();
+        getBrowserWidth(); getBrowserHeight(); isHeadless(); isIncognito(); isAdsHandlingEnabled(); isNetworkDiagnosticsEnabled();
         getDownloadDirectory(); getDownloadMimeTypes(); getDownloadTimeout();
     }
 }

@@ -233,6 +233,39 @@ checks the ad-handling toggle. Actual website submissions remain covered by
 `ContactUsTest`, `ProductsPageTest#shouldAddReviewOnProduct`, and
 `PlaceOrderTest#shouldPlaceOrderLoginBeforeCheckout`.
 
+## Browser network diagnostics
+
+Enable `NETWORK_DIAGNOSTICS` in Jenkins, or set
+`-Dnetwork.diagnostics.enabled=true` (`AE_NETWORK_DIAGNOSTICS_ENABLED=true`).
+The default is disabled. Firefox, Chrome and Edge then request WebDriver BiDi
+and passively record first-party response-start and fetch-error events for each
+browser session. This does not intercept requests, override headers, or retry
+failed navigation.
+
+Failed TestNG UI tests and Cucumber scenarios receive a `Browser network
+responses` JSON attachment in Allure. It includes request and response headers,
+status, protocol, timestamp and Cloudflare Ray ID when supplied by the server.
+Headers, including test-session cookies, remain complete for diagnostics.
+Collection errors and omitted-response counts are explicit; successful
+responses are limited after 1,000 events, while error responses are retained.
+Successful tests do not write this attachment. Jenkins already archives the
+Allure result directories under `target/ci/**`. Allure metadata records both
+network diagnostics and advertisement handling settings.
+
+Validate actual HTTP 520 capture, Ray IDs, attachment deduplication and isolation
+with four concurrent sessions against a local HTTP fixture (no external site):
+
+```sh
+./mvnw test -Dtest=BrowserNetworkDiagnosticsLiveTest \
+  -Dnetwork.diagnostics.live=true -Dbrowser=chrome -Dheadless=true
+```
+
+Repeat with `firefox` and the macOS launcher setting above when needed. These
+local fixture checks verify the diagnostic mechanism, not reproduction of the
+external site failure. To investigate intermittent 520 responses, enable the
+Jenkins parameter for the failing browser and inspect the first 520 entry in
+the failed test attachment alongside its URL, screenshot and failing step.
+
 ## Browser lifecycle and failure evidence
 
 The driver factory configures window size, advertisement blocking, and all three

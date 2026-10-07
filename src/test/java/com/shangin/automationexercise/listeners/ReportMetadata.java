@@ -28,6 +28,8 @@ public final class ReportMetadata {
         String execution = discovery ? "DISCOVERY ONLY - no test execution" : "Real execution";
         parameter(result, "Execution", execution);
         parameter(result, "Source revision", REVISION);
+        parameter(result, "Network diagnostics", String.valueOf(ConfigReader.isNetworkDiagnosticsEnabled()));
+        parameter(result, "Advertisement handling", String.valueOf(ConfigReader.isAdsHandlingEnabled()));
         parameter(result, "Java", System.getProperty("java.version"));
         parameter(result, "UI environment", ConfigReader.getBaseUrl());
         parameter(result, "API environment", ConfigReader.getApiBaseUrl());
@@ -57,6 +59,8 @@ public final class ReportMetadata {
         environment.setProperty("API environment", ConfigReader.getApiBaseUrl());
         environment.setProperty("Source revision", REVISION);
         environment.setProperty("Execution", execution);
+        environment.setProperty("Network diagnostics", String.valueOf(ConfigReader.isNetworkDiagnosticsEnabled()));
+        environment.setProperty("Advertisement handling", String.valueOf(ConfigReader.isAdsHandlingEnabled()));
         environment.setProperty("Browser configuration", ConfigReader.getBrowser());
         environment.setProperty("Headless configuration", String.valueOf(ConfigReader.isHeadless()));
         Path directory = Path.of(System.getProperty("allure.results.directory", "target/allure-results"));

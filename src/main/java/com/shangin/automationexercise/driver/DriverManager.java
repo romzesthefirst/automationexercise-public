@@ -30,6 +30,7 @@ public final class DriverManager {
 
         Throwable shutdownFailure = null;
         try {
+            BrowserNetworkDiagnostics.close();
             if (driver != null) {
                 driver.quit();
             }
