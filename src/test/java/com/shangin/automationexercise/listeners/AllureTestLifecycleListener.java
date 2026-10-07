@@ -8,6 +8,7 @@ import io.qameta.allure.model.TestResult;
 public class AllureTestLifecycleListener implements TestLifecycleListener {
     @Override
     public void beforeTestStop(TestResult result) {
+        ReportMetadata.enrich(result);
         if ((result.getStatus() == Status.FAILED || result.getStatus() == Status.BROKEN)
                 && DriverManager.hasDriver()) {
             BrowserFailureAttachments.capture(result);

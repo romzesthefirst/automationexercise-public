@@ -61,6 +61,12 @@ TestNG dry-run discovers API/UI methods without invoking them or browser setup.
 Cucumber dry-run resolves scenarios and steps without executing hooks or steps.
 These are discovery checks, not evidence that website tests passed.
 
+Allure discovery metadata resolves Cucumber's `cucumber.execution.dry-run` from
+Java system properties, then environment variables (including
+`CUCUMBER_EXECUTION_DRY_RUN`), then classpath `cucumber.properties`.
+Explicit `false` overrides lower-priority `true`. Discovery results are labelled
+`[DISCOVERY ONLY]` and `Execution=DISCOVERY ONLY - no test execution`.
+
 ```sh
 ./mvnw clean test -Papi -Dtestng.mode.dryrun=true
 ./mvnw clean test -Pui -Dtestng.mode.dryrun=true
