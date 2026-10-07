@@ -384,9 +384,9 @@ The repeated audit queried 97 dependencies and found no affected packages.
 Validation on Java 17.0.20 passed all discovery selections in a fresh candidate
 copy, all 14 real API tests, and one real smoke check in each of TestNG UI and
 Cucumber with headless Chrome. Chrome 154 reported a Selenium CDP version warning;
-both smoke checks passed. Subsequent full browser regression results are recorded
-in roadmap item 4; later Jenkins validation is recorded in item 11. Windows
-Wrapper execution remains unverified.
+both smoke checks passed. Subsequent full browser regression and CI evidence
+are recorded in the corresponding sections below. Windows Wrapper execution
+remains unverified.
 
 Test results are written to `target/surefire-reports`; Allure results are written
 to `target/allure-results`. CI uses separate directories described below;
@@ -571,16 +571,15 @@ This creates fresh synthetic accounts and checks their absence after a passing
 run, deliberate setup/test failures, and a deliberately lost creation response.
 The outer check passes only when each account is confirmed absent; expected
 fixture failures remain visible in Allure. UI registration/cart/order/invoice
-coverage still requires the corresponding real `ui` and `bdd` runs. Current
-external acceptance status is recorded in roadmap item 3.
+coverage still requires the corresponding real `ui` and `bdd` runs.
 
 Focused cleanup acceptance on Java 17.0.20/headless Chrome passed real API fault
 injection and absence checks. Selected UI tests passed 12/13 (registration failed
 before account creation on the page title assertion); selected BDD scenarios
 passed 11/11, including invoice without `@user`. Additional deliberate browser
 setup/test/scenario failures also left their owned accounts absent. These checks
-verify cleanup, not a clean full-suite UI/BDD regression. Reports and the subsequent registration/readiness fix are recorded in roadmap
-item 3. After adding explicit form readiness and separating duplicate-email
+verify cleanup, not a clean full-suite UI/BDD regression. After adding explicit
+form readiness and separating duplicate-email
 attempts, affected UI checks passed 7/7 and BDD checks passed 6/6 in real Chrome;
 all thirteen owned accounts were confirmed absent.
 
@@ -652,8 +651,8 @@ TestNG runs had Cloudflare 520 after successful invoice checks, and two initial
 BDD scenarios stopped before download on the site's queue-full page. The
 repeated four-worker BDD run passed 4/4. All 32 invoices reached across these
 additional runs passed their content checks and used distinct directories;
-account and directory cleanup succeeded. Exact results and limitations are in
-roadmap item 8; local evidence is `target/parallel-validation/cross-browser/report.md`.
+account and directory cleanup succeeded. Local evidence is
+`target/parallel-validation/cross-browser/report.md`.
 
 ## Compare complete browser runs
 
@@ -684,6 +683,6 @@ separate repeat passed 2/2. Complete headless/ordinary UI/BDD comparison passed
 Chrome 26/26 + 35/35, Edge 26/26 + 35/35, and Firefox 22/26 + 32/35. Every
 Firefox full-run difference displayed a Cloudflare 520 page; focused repeats
 passed except BDD logout, which displayed 520 again. This is not a green full
-Firefox claim. Roadmap item 9 records the scope; local detailed evidence is
+Firefox claim. Local detailed evidence is
 `target/configuration-validation/report.md` and `comparison.md`. Windows/Linux
 and full headed/private suites were not run.

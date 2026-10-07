@@ -4,8 +4,8 @@ This source map was checked on 2026-10-07 against the website's
 [UI cases](https://automationexercise.com/test_cases) and
 [API cases](https://automationexercise.com/api_list). It maps implemented intent,
 not every numbered website step or a current passing run. Actual acceptance
-results and platform limits are recorded in ROADMAP (private validation notes omitted from public history) and
-[README](RUN_GUIDE.md#compare-complete-browser-runs).
+results and platform limits are recorded in
+[RUN_GUIDE](RUN_GUIDE.md#compare-complete-browser-runs).
 
 ## Why two UI styles exist
 

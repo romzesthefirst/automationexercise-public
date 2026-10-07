@@ -161,8 +161,9 @@ Windows/Linux execution remains unverified.
 The 2026-10-07 final publication gate (private validation notes omitted from public history) passed full Chrome
 UI 26/26 and parallel API 14/14. Full Chrome BDD at four workers passed 35/37;
 two product-action timeouts passed focused repeats, but the full run remains
-non-green and their cause is unverified. Public opening remains blocked by
-GitHub retention of old objects and unverified final-revision Jenkins evidence.
+non-green and their cause is unverified. This repository will remain private.
+A separate public repository will be created later from reviewed source files
+and history; private CI diagnostics and recovery archives stay here.
 [Exact runs, repeats and browser limitations](docs/RUN_GUIDE.md#compare-complete-browser-runs).
 
 ## Source style
