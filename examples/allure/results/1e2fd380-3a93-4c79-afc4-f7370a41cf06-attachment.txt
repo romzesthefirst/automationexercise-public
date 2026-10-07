@@ -1,0 +1,1 @@
+data:text/html,<title>Report demonstration</title><h1>Order pending</h1><p>Synthetic checkout; no account or payment.</p>

@@ -1,0 +1,23 @@
+#!/bin/sh
+# Launch Firefox through macOS LaunchServices so it retains its app-data identity.
+set -eu
+
+if [ "$(uname -s)" != "Darwin" ]; then
+    echo "This Firefox launcher requires macOS." >&2
+    exit 1
+fi
+
+browser_app="${AUTOMATION_FIREFOX_APP:-/Applications/Firefox.app}"
+if [ ! -x "$browser_app/Contents/MacOS/firefox" ]; then
+    echo "Firefox executable not found in AUTOMATION_FIREFOX_APP: $browser_app" >&2
+    exit 1
+fi
+
+/usr/bin/codesign --verify --deep --strict "$browser_app"
+case "${1:-}" in
+    --version|-version|-v) exec "$browser_app/Contents/MacOS/firefox" "$@" ;;
+esac
+
+# -W keeps the launcher alive until this isolated Firefox instance exits.
+# geckodriver still owns the temporary profile, Marionette session, and shutdown.
+exec /usr/bin/open -W -n -a "$browser_app" --args "$@"
