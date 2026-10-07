@@ -464,7 +464,10 @@ includes commands to reproduce, export, generate and view that three-test report
 
 Jenkins provides CI using the portable Python/Wrapper runner. Python 3.9 or
 newer is required, in addition to the prerequisites above. GitHub Actions is
-disabled for this repository. Local equivalents are:
+disabled for this repository. Keep raw Jenkins logs and artifacts private; use
+reviewed synthetic data for public report samples. Historical GitHub Actions
+logs, artifacts and dependency caches were removed after verified private backup
+on 2026-10-07; run statuses remain as historical metadata. Local equivalents are:
 
 ```sh
 python3 tools/run_ci.py api

@@ -26,3 +26,4 @@
 
 /.allure/
 !/tools/export_allure_demo.py
+!/tools/audit_dependencies.py

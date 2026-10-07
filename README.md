@@ -108,6 +108,10 @@ use `python3 tools/run_ci.py api`, with `ui-smoke`/`bdd-smoke` for browser check
 (Python 3.9+).
 [Agent setup, commands and artifact details](docs/RUN_GUIDE.md#continuous-integration).
 
+Keep full Jenkins diagnostics private; public report samples use synthetic data.
+GitHub Actions is disabled. Historical Actions logs, artifacts and dependency
+caches were removed after verified private backup on 2026-10-07.
+
 ## Project structure
 
 Java paths below are relative to `com/shangin/automationexercise` in each source root:
@@ -154,6 +158,11 @@ Firefox passed **22/26 UI + 32/35 BDD**, with all seven failures showing Cloudfl
 520; smoke modes have execution evidence. These runs covered the then-current
 35 BDD executions; two subscription scenarios were added afterward.
 Windows/Linux execution remains unverified.
+The 2026-10-07 final publication gate (private validation notes omitted from public history) passed full Chrome
+UI 26/26 and parallel API 14/14. Full Chrome BDD at four workers passed 35/37;
+two product-action timeouts passed focused repeats, but the full run remains
+non-green and their cause is unverified. Public opening remains blocked by
+GitHub retention of old objects and unverified final-revision Jenkins evidence.
 [Exact runs, repeats and browser limitations](docs/RUN_GUIDE.md#compare-complete-browser-runs).
 
 ## Source style
