@@ -60,11 +60,17 @@ public class CucumberFailureReportingTest {
                         List.of("--glue", "com.shangin.automationexercise.cucumber.hooks"));
             }
             arguments.add(feature.toString());
+            System.out.println(
+                    "[EXPECTED FAILURE PROBE] The nested Cucumber scenario deliberately fails; "
+                            + "the outer support test verifies its diagnostics.");
             byte exit =
                     io.cucumber.core.cli.Main.run(
                             arguments.toArray(String[]::new),
                             CucumberFailureReportingTest.class.getClassLoader());
             Assert.assertEquals(exit, (byte) 1, "The inner scenario must fail");
+            System.out.println(
+                    "[EXPECTED FAILURE PROBE] Nested exit code 1 verified; "
+                            + "continuing support-test assertions.");
             Assert.assertFalse(DriverManager.hasDriver());
             var report =
                     writer.results.stream()

@@ -19,6 +19,7 @@
 !/docs/FRAMEWORK.md
 !/docs/COVERAGE.md
 !/docs/RUN_GUIDE.md
+!/docs/images/
 /src/test/java/com/shangin/automationexercise/tests/diagnostics/
 
 !/tools/run_ci.py

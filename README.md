@@ -4,6 +4,8 @@ Java test automation for [Automation Exercise](https://automationexercise.com).
 REST API tests and two UI test suites, TestNG and Cucumber BDD, share
 Page Objects, assertions, account fixtures, configuration, and failure diagnostics.
 
+[![Deterministic checks](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/deterministic-checks.yml/badge.svg)](https://github.com/romzesthefirst/automationexercise-public/actions/workflows/deterministic-checks.yml)
+
 ## Highlights
 
 - All 26 published UI cases implemented in both TestNG and Cucumber.
@@ -21,6 +23,11 @@ Page Objects, assertions, account fixtures, configuration, and failure diagnosti
 [View and reproduce the sample Allure report](examples/allure/README.md):
 a successful API request and two deliberate browser failures with screenshots
 and diagnostics. The sample is sanitized and reproducible.
+
+![Allure failure diagnostics](docs/images/allure-failure-report.jpg)
+
+The intentional demo failure shows business steps, a browser screenshot,
+failure diagnostics and execution metadata.
 
 ## Tech stack
 
@@ -54,6 +61,21 @@ to **37 executable scenarios**: 29 executions of published cases after Scenario
 Outline expansion, plus 8 custom executions. Both UI test suites intentionally
 cover the same published cases to demonstrate TestNG and Cucumber integration
 with the shared framework. [Case IDs, source links and scope](docs/COVERAGE.md).
+
+## Latest validation
+
+Full local validation on **2026-10-08**, using Java 17/macOS and headless Chrome
+with four Cucumber workers:
+
+| Suite | Run 1 | Run 2 |
+| --- | --- | --- |
+| REST API | 14/14 passed | 14/14 passed |
+| TestNG UI | 26/26 passed | 26/26 passed |
+| Cucumber BDD | 37/37 passed | 37/37 passed |
+
+Both consecutive cycles passed with zero failures, errors or skipped tests.
+These are real external-site runs. The public CI badge covers formatting,
+compilation and local support tests. [Settings, commands and previous baseline](docs/RUN_GUIDE.md#latest-chrome-validation).
 
 ## Quick start
 
@@ -166,19 +188,14 @@ External-site outages, Cloudflare errors and catalog/markup changes can fail tes
 there are no automatic retries. Ad handling modifies selected requests/DOM and is
 configurable; Firefox lacks the Chromium request-blocking implementation.
 
-The recorded Java 17/macOS full comparison passed Chrome and Edge **26/26 UI + 35/35 BDD**.
+The historical Java 17/macOS comparison passed Chrome and Edge **26/26 UI + 35/35 BDD**.
 Firefox passed **22/26 UI + 32/35 BDD**, with all seven failures showing Cloudflare
 520; smoke modes have execution evidence. These runs covered the then-current
 35 BDD executions; two subscription scenarios were added afterward.
-Windows/Linux execution remains unverified.
-The frozen 2026-10-07 Java 17/headless Chrome baseline ran all three suites with
-four Cucumber workers: API **14/14 passed**, TestNG UI **24/26 passed**, and BDD
-**36/37 passed**, with no skipped tests. The overall result was **failed**.
-Contact Us timed out waiting for its confirmation alert in both UI and BDD;
-one UI scroll test timed out waiting to reach the page bottom. Their causes
-remain unresolved. Tests and assertions are preserved in this publication;
-these failures are documented for follow-up in this public repository. The
-results establish execution of all suites, not a green acceptance claim.
+Windows/Linux external-site suite execution remains unverified; deterministic
+support checks run on Linux in GitHub Actions. The latest Chrome results are
+listed above. Earlier Contact Us and scroll timeouts remain in the dated
+validation history; passing repeats do not establish their root causes.
 [Exact runs, repeats and browser limitations](docs/RUN_GUIDE.md#compare-complete-browser-runs).
 
 ## Source style

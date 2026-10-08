@@ -705,17 +705,49 @@ Firefox claim. Local detailed evidence is
 and full headed/private suites were not run.
 
 
-## Frozen publication baseline
+## Latest Chrome validation
+
+On 2026-10-08, full local execution used Java 17.0.20, macOS and headless
+Chrome 154.0.8037.98 with four Cucumber workers. Advertisement handling was
+enabled and network diagnostics used its default disabled setting. API and
+TestNG UI methods ran sequentially; Cucumber scenarios used four workers.
+No individual test retries, discovery mode, assertion changes or fixed seed
+were used. External-suite and runtime sources match public revision `ecaa288`.
+
+| Suite | Run 1 | Run 2 |
+| --- | --- | --- |
+| REST API | 14/14 passed | 14/14 passed |
+| TestNG UI | 26/26 passed | 26/26 passed |
+| Cucumber BDD | 37/37 passed | 37/37 passed |
+
+Both consecutive full cycles passed with zero failures, errors and skipped tests.
+
+Each cycle executes all three suites with the same commands, in order:
+
+```sh
+JAVA_HOME=/path/to/jdk-17 python3 tools/run_ci.py api --browser chrome --headless true --threads 4
+JAVA_HOME=/path/to/jdk-17 python3 tools/run_ci.py ui --browser chrome --headless true --threads 4
+JAVA_HOME=/path/to/jdk-17 python3 tools/run_ci.py bdd --browser chrome --headless true --threads 4
+```
+
+Every invocation retains its own `run.json`, console log, Surefire XML and
+Allure results under `target/ci/`. Full diagnostics are kept private; the public
+demo screenshot comes from the checked-in synthetic sample. These local
+external-site results are separate from the deterministic GitHub Actions checks.
+
+## Historical publication baseline
 
 The 2026-10-07 reference execution used Java 17.0.20 and headless Chrome with
 advertisement handling and network diagnostics enabled, four Cucumber workers,
 and full suites. API passed 14/14, TestNG UI passed 24/26 and BDD passed 36/37.
 No tests were skipped; the overall run failed. The two Contact Us failures timed
 out while waiting for the confirmation alert. The other UI failure timed out
-while waiting to reach the page bottom after scrolling. Root causes remain
-unresolved; tests, assertions and selectors were retained unchanged for public
-follow-up. Full diagnostics remain private; the public three-case Allure demo
-uses synthetic pages and intentional failures rather than those raw reports.
+while waiting to reach the page bottom after scrolling. Root causes were
+unresolved at publication; tests, assertions and selectors were retained unchanged.
+The newer Chrome repeats above passed these cases, without establishing the
+causes of the earlier failures. Full diagnostics remain private; the public
+three-case Allure demo uses synthetic pages and intentional failures rather
+than those raw reports.
 
 The earlier dated browser comparisons above are historical evidence with their
 own scenario totals. They must not be presented as the latest green result.
