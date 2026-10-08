@@ -14,12 +14,25 @@ import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.ClientConfig;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class DriverTransportTimeoutTest {
+    private static class ProbeExecutor extends HttpCommandExecutor {
+        ProbeExecutor(ClientConfig config) {
+            super(config);
+        }
+
+        void copyCodecsFrom(ProbeExecutor session) {
+            commandCodec = session.commandCodec;
+            responseCodec = session.responseCodec;
+        }
+    }
+
     @Test
     public void transportAllowsEveryConfiguredBrowserWaitToFinish() throws Exception {
         String page = System.getProperty("page.load.timeout");
@@ -90,28 +103,42 @@ public class DriverTransportTimeoutTest {
                                     Path.of("target", "browser-fixes", "transport-timeout"))));
             var config =
                     DriverFactory.clientConfiguration()
-                            .readTimeout(Duration.ofMillis(200))
                             .baseUri(
                                     java.net.URI.create(
                                             "http://127.0.0.1:" + server.getAddress().getPort()));
-            DriverManager.setDriver(
-                    new RemoteWebDriver(new HttpCommandExecutor(config), new ChromeOptions()));
-            var result =
-                    new TestResult()
-                            .setStatus(Status.FAILED)
-                            .setStatusDetails(new StatusDetails().setMessage("Original failure"));
-            long started = System.nanoTime();
-            BrowserFailureAttachments.capture(result);
-            Assert.assertTrue(
-                    Duration.ofNanos(System.nanoTime() - started).toMillis() < 2500,
-                    "Evidence collection must return when the transport times out");
-            Assert.assertEquals(result.getStatusDetails().getMessage(), "Original failure");
-            Assert.assertEquals(result.getStatus(), Status.FAILED);
-            Assert.assertEquals(
-                    result.getAttachments().stream().map(a -> a.getName()).toList(),
-                    java.util.List.of("Current URL", "Browser diagnostics"));
-            DriverManager.quitDriver();
-            Assert.assertFalse(DriverManager.hasDriver());
+            var session = new ProbeExecutor(config.readTimeout(Duration.ofSeconds(10)));
+            var screenshot = new ProbeExecutor(config.readTimeout(Duration.ofMillis(200)));
+            // Session initialization is outside the measured screenshot timeout.
+            try (var sessionClient = session.client;
+                    var screenshotClient = screenshot.client) {
+                DriverManager.setDriver(
+                        new RemoteWebDriver(
+                                command -> {
+                                    if (DriverCommand.SCREENSHOT.equals(command.getName())) {
+                                        screenshot.copyCodecsFrom(session);
+                                        return screenshot.execute(command);
+                                    }
+                                    return session.execute(command);
+                                },
+                                new ChromeOptions()));
+                var result =
+                        new TestResult()
+                                .setStatus(Status.FAILED)
+                                .setStatusDetails(
+                                        new StatusDetails().setMessage("Original failure"));
+                long started = System.nanoTime();
+                BrowserFailureAttachments.capture(result);
+                Assert.assertTrue(
+                        Duration.ofNanos(System.nanoTime() - started).toMillis() < 2500,
+                        "Evidence collection must return when the transport times out");
+                Assert.assertEquals(result.getStatusDetails().getMessage(), "Original failure");
+                Assert.assertEquals(result.getStatus(), Status.FAILED);
+                Assert.assertEquals(
+                        result.getAttachments().stream().map(a -> a.getName()).toList(),
+                        java.util.List.of("Current URL", "Browser diagnostics"));
+                DriverManager.quitDriver();
+                Assert.assertFalse(DriverManager.hasDriver());
+            }
         } finally {
             if (DriverManager.hasDriver()) {
                 DriverManager.quitDriver();
