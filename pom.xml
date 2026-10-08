@@ -255,6 +255,26 @@
     </build>
     <profiles>
         <profile>
+            <id>support</id>
+            <properties>
+                <!-- Explicit local-only allowlist; mixed reporting classes exclude live methods. -->
+                <test>
+                    ConfigReaderTest,
+                    DriverLifecycleTest,
+                    DriverTransportTimeoutTest,
+                    ReportMetadataTest,
+                    AccountCleanupTest,
+                    AssertionCorrectnessTest,
+                    MonetaryValuesTest,
+                    ParallelIsolationTest,
+                    DriverReportingTest,
+                    CucumberFailureReportingTest,
+                    !DriverReportingTest#liveChromeFailureRetainsScreenshotAndUrl,
+                    !CucumberFailureReportingTest#liveCucumberFailureRetainsScreenshotAndUrl
+                </test>
+            </properties>
+        </profile>
+        <profile>
             <id>api</id>
             <properties>
                 <test.includes>**/tests/api/*Test.java</test.includes>

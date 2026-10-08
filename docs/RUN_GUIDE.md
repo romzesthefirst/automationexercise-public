@@ -462,12 +462,29 @@ includes commands to reproduce, export, generate and view that three-test report
 
 ## Continuous integration
 
-Jenkins provides CI using the portable Python/Wrapper runner. Python 3.9 or
-newer is required, in addition to the prerequisites above. GitHub Actions is
-disabled for this repository. Keep raw Jenkins logs and artifacts private; use
-reviewed synthetic data for public report samples. The supplied Jenkinsfile
-is intended for a trusted private Jenkins installation; it does not indicate
-a publicly hosted passing build. Local equivalents are:
+GitHub Actions runs deterministic checks on Java 17/Linux for pushes to `main`,
+pull requests and manual dispatch. The `support` profile selects an explicit
+allowlist of configuration, driver lifecycle/transport, cleanup, assertion,
+monetary value, parallel isolation and reporting tests. Live browser methods in
+the two reporting test classes are excluded. These checks use fake clients/drivers
+and loopback HTTP servers, without a browser or requests to Automation Exercise:
+
+```sh
+./mvnw --batch-mode --no-transfer-progress clean test -Psupport
+```
+
+The command runs Spotless during `validate`, compiles production and test sources,
+and runs the selected tests. An empty selection fails the build. Maven/JDK
+downloads still require internet access. The workflow uses a read-only token and
+does not upload Allure reports or artifacts. Its status covers local checks only.
+Use one suite profile per invocation; `support` is separate from `api`, `ui`, `bdd`
+and `smoke`.
+
+Jenkins provides external-site CI using the portable Python/Wrapper runner.
+Python 3.9 or newer is required, in addition to the prerequisites above. Keep raw
+Jenkins logs and artifacts private; use reviewed synthetic data for public report
+samples. The supplied Jenkinsfile is intended for a trusted private Jenkins
+installation. Local equivalents are:
 
 ```sh
 python3 tools/run_ci.py api

@@ -14,6 +14,7 @@ Page Objects, assertions, account fixtures, configuration, and failure diagnosti
 - Seed-based replay of randomized test data and product selection.
 - Allure business steps, screenshots, browser metadata and API diagnostics.
 - Jenkins CI with isolated artifacts and validated test results.
+- GitHub Actions checks formatting, compilation and local support tests.
 
 ## Demo
 
@@ -25,7 +26,7 @@ and diagnostics. The sample is sanitized and reproducible.
 
 **Language:** Java 17 · **UI:** Selenium WebDriver, TestNG · **BDD:** Cucumber, PicoContainer\
 **API:** REST Assured, Jackson · **Test data:** Datafaker · **Reporting:** Allure\
-**Build:** Maven Wrapper · **CI:** Jenkins
+**Build:** Maven Wrapper · **CI:** GitHub Actions (local checks), Jenkins (external suites)
 
 ## Architecture
 
@@ -109,9 +110,20 @@ use `python3 tools/run_ci.py api`, with `ui-smoke`/`bdd-smoke` for browser check
 [Agent setup, commands and artifact details](docs/RUN_GUIDE.md#continuous-integration).
 
 Full Jenkins diagnostics are kept in private storage. This repository publishes
-only the reviewed synthetic report sample. GitHub Actions is disabled; the
-Jenkinsfile remains available for running the documented pipeline in a trusted
-private Jenkins installation. No green public CI status is claimed.
+only the reviewed synthetic report sample. [GitHub Actions](.github/workflows/deterministic-checks.yml)
+runs deterministic checks on pushes to `main`, pull requests and manual dispatch:
+Spotless, production/test compilation and the explicit local support-test allowlist.
+These tests use fake clients/drivers and loopback HTTP servers; they require no
+browser and make no requests to Automation Exercise. Reproduce them with:
+
+```sh
+./mvnw --batch-mode --no-transfer-progress clean test -Psupport
+```
+
+Spotless runs in Maven's `validate` phase. A passing Actions build covers these
+local checks; external API/UI/BDD coverage and its known limitations remain
+documented separately. The Jenkinsfile remains available for the full pipeline
+in a trusted private Jenkins installation.
 
 ## Project structure
 
